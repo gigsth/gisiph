@@ -17,12 +17,13 @@ var cbxChronics, cbxColors;
 var objHouses;
 
 $(document).ready(function() {
-	initialize();
+	$.getJSON('./dist/default_location.json', initialize);
 	setting();
 });
 
-function initialize() {
-	origin = new google.maps.LatLng(13.997928, 101.310393), // Bangpaung, Prachin-Buri
+function initialize(data) {
+	origin = new google.maps.LatLng(data.origin.lat, data.origin.lon);
+
 	map = new google.maps.Map(
 		document.getElementById('mapCanvas'),
 		{
