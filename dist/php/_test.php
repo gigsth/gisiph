@@ -1,9 +1,4 @@
 <?php
-
-//Gigsth
-
-//dfghbjjhbhjbhyuhihihii
-
 //require 'class.Maps.php';
 
 //$q = new Maps();
