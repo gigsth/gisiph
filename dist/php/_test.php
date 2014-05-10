@@ -1,5 +1,4 @@
 <?php
-// test git in sublime
 //require 'class.Maps.php';
 
 //$q = new Maps();
