@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="th">
+  
+  <head>
+    <title>ลงชื่อเข้าสู่ระบบ • GISIPHo</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Bootstrap -->
+    <link href="./dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="./dist/css/bootstrap-flatly.min.css" rel="stylesheet" media="screen">
+    <!-- Style -->
+    <link href="./dist/css/style.css" rel="stylesheet" media="screen">
+  </head>
+  
+  <body>
+
+    <!-- Menu Bar -->
+    <div class="navbar-default navbar navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <span class="navbar-brand" style="cursor: default;"><big>GISIPH</big><sub><span class="glyphicon glyphicon-globe"></span></sub></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-danger hide" >
+            <button type="button" class="close" aria-hidden="true">&times;</button>
+            <span id="message"></span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 hidden-sm hidden-xs">
+          <div class="jumbotron">
+            <div class="container">
+              <div class="col-xs-3">
+                <img src="./dist/logo.png" class="img-responsive" style="min-width:100px;">
+              </div>
+              <div class="col-xs-9">
+                <h1><big>GISIPH</big><sub><span class="glyphicon glyphicon-globe"></span></sub></h1>
+              </div>
+              <div class="col-xs-12">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus similique maxime itaque id minus. Sed, id, eos, ipsam, molestias consequuntur omnis voluptas quia facilis asperiores molestiae ea deleniti enim repellendus.
+                </p>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h3>ลงชื่อเข้าสู่ระบบ</h3>
+          <form id="loginForm" class="form-horizontal" role="form">
+            <div class="form-group">
+              <div class="col-lg-12">
+                <input id="username" type="text" class="form-control" placeholder="ชื่อผู้ใช้">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-12">
+                <input id="password" type="password" class="form-control" placeholder="รหัสผ่าน">
+              </div>
+            </div>
+            <button id="login" type="submit" class="btn btn-primary btn-block">เข้าสู่ระบบ</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="./dist/js/jquery-2.0.3.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./dist/js/bootstrap.min.js"></script>
+
+    <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+    <script src="./dist/js/respond.min.js"></script>
+
+    <script src="./dist/js/login.js"></script>
+  </body>
+
+</html>
