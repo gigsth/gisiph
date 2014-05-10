@@ -2,7 +2,7 @@
 require 'is_ajax.php';
 //if (!isAjax()) {return;}
 
-$_POST['request'] = 'nameVillage';
+//$_POST['request'] = 'nameVillage';
 
 try {
 	header('Content-Type: application/json; charset=UTF-8');
