@@ -1,0 +1,6 @@
+body {padding-bottom: 20px;}
+
+#map_canvas {min-height: 270px;}
+
+thead > tr > th:first-child, 
+tbody > tr > td:first-child {text-align: center;}
