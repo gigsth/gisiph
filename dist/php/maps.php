@@ -48,17 +48,7 @@ try {
 				)
 			);
 			break;
-	/*	case 'person_detail':
-			echo json_output(
-				array(
-					'response' => 'success',
-					'values' => $maps->getPersonDetail(
-						$_POST['person_id']
-					)
-				)
-			);
-			break;*/
-		
+			
 		default: 
 			throw new Exception('ขอบเขตการเรียกดูข้อมูลของคุณไม่ถูกต้อง');
 			break;
