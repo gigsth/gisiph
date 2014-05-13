@@ -48,7 +48,7 @@ try {
 				)
 			);
 			break;
-		case 'person_detail':
+	/*	case 'person_detail':
 			echo json_output(
 				array(
 					'response' => 'success',
@@ -57,7 +57,7 @@ try {
 					)
 				)
 			);
-			break;
+			break;*/
 		
 		default: 
 			throw new Exception('ขอบเขตการเรียกดูข้อมูลของคุณไม่ถูกต้อง');
