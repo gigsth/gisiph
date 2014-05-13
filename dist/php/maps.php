@@ -1,7 +1,7 @@
 <?php
 require 'is_ajax.php';
 //if (!isAjax()) {return;}
-$_POST['chronics']['hypertension'] = true;
+/*$_POST['chronics']['hypertension'] = true;
 $_POST['chronics']['diabetes']  = true;
 
 $_POST['colors']['unseen']  = true;
@@ -13,7 +13,7 @@ $_POST['colors']['level_4'] = true;
 $_POST['colors']['level_5'] = true;
 $_POST['colors']['level_6'] = true;
 
-$_POST['request'] = 'houses';
+$_POST['request'] = 'houses';*/
 
 try {
 	header('Content-Type: application/json; charset=UTF-8');
@@ -23,7 +23,7 @@ try {
 
 	switch($_POST['request'])
 	{
-		case 'houses': 
+		case 'houses':
 			$chronics = array();
 			if ($_POST['chronics']['hypertension'] == true) array_push($chronics, '01');
 			if ($_POST['chronics']['diabetes'] == true) array_push($chronics, '10');
@@ -48,7 +48,7 @@ try {
 				)
 			);
 			break;
-		case 'person_detail': 
+		case 'person_detail':
 			echo json_output(
 				array(
 					'response' => 'success',
@@ -58,6 +58,7 @@ try {
 				)
 			);
 			break;
+		
 		default: 
 			throw new Exception('ขอบเขตการเรียกดูข้อมูลของคุณไม่ถูกต้อง');
 			break;

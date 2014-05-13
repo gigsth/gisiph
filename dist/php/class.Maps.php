@@ -446,7 +446,7 @@ class Maps
 			if (!$is_patient)
 			{
 				if ($value['systolic'] < 120 && $value['diastolic'] < 80) 		$color_level = 0;
-				else 								$color_level = 1;
+				else 															$color_level = 1;
 				
 			}
 			else
@@ -454,7 +454,7 @@ class Maps
 				if ($value['systolic'] < 140 && $value['diastolic'] < 90) 		$color_level = 2;
 				elseif ($value['systolic'] < 160 && $value['diastolic'] < 100) 	$color_level = 3;
 				elseif ($value['systolic'] < 180 && $value['diastolic'] < 110) 	$color_level = 4;
-				else 								$color_level = 5;
+				else 															$color_level = 5;
 			}
 		}
 		elseif ($disease === 'diabetes')
@@ -462,14 +462,14 @@ class Maps
 			if (!$is_patient)
 			{
 				if ($value < 100) 	$color_level = 0;
-				else 			$color_level = 1;
+				else 				$color_level = 1;
 			}
 			else
 			{
-				if ($value < 126) 	$color_level = 2;
+				if ($value < 126) 		$color_level = 2;
 				elseif ($value < 155) 	$color_level = 3;
 				elseif ($value < 183) 	$color_level = 4;
-				else 			$color_level = 5;
+				else 					$color_level = 5;
 			}
 		}
 

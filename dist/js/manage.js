@@ -251,13 +251,13 @@ $(document).ready(function() {
 		$('#sugar').val('');
 	});
 
-	// Clicked add pgs
+	// Clicked add gps
 	$('#gpsAdd').click(function() {
 		setMarker();
 		$('#latitude, #longitude').removeAttr('readonly');
 	});
 
-	// Clicked delete pgs
+	// Clicked delete gps
 	$('#gpsDel').click(function() {
 		clearMarker();
 		$('#latitude, #longitude').attr('readonly', 'readonly');
@@ -287,8 +287,9 @@ $(document).ready(function() {
 
 	// Changed lat or lng
 	$('#latitude, #longitude').change(function(e) {
-		if ($(this).val() !== parseFloat($(this).val()).toFixed(6).toString()) {
-			$(this) .val(parseFloat($(this).val()).toFixed(6).toString());
+		var tmp = parseFloat($(this).val()).toFixed(6).toString();
+		if ($(this).val() !== tmp) {
+			$(this).val(tmp);
 		}
 
 	});

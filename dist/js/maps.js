@@ -1,4 +1,6 @@
-var origin, map;
+var origin, map, mapOrigin;
+var default_location = {}, current_position;
+var markerOrigin;
 var markersArray = [], infowindowArray = [];
 var pins = [ 'FFFFFF', '00FF00', '007700', 'FFFF00', 'FF7F00', 'FF0000', '000000' ];
 pins[-1] = 'CCCCCC';
@@ -17,12 +19,20 @@ var cbxChronics, cbxColors;
 var objHouses;
 
 $(document).ready(function() {
-	$.getJSON('./dist/default_location.json', initialize);
+	var init_location = {
+			lat: 13.997928,
+			lon: 101.310393
+		},
+		parse_val = JSON.parse(localStorage.getItem('default_location'))
+	;
+
+	default_location = parse_val || init_location;
+	initialize(default_location);
 	setting();
 });
 
 function initialize(data) {
-	origin = new google.maps.LatLng(data.origin.lat, data.origin.lon);
+	origin = new google.maps.LatLng(data.lat, data.lon);
 
 	map = new google.maps.Map(
 		document.getElementById('mapCanvas'),
@@ -32,6 +42,44 @@ function initialize(data) {
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		}
 	);
+
+	mapOrigin = new google.maps.Map(
+		document.getElementById('mapOrigin'),
+		{
+			zoom: 14,
+			center: origin,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		}
+	);
+
+	markerOrigin = new google.maps.Marker({
+		position: mapOrigin.getCenter(),
+		map: mapOrigin,
+		draggable: true
+	});
+
+	// Resized window
+	$(window).resize(function() {
+		if (typeof(mapOrigin) !== 'undefined') {
+			mapOrigin.setCenter(current_position);
+		}
+	});
+
+	$('a[href="#origin_setting"').on('shown.bs.tab', function(e) {
+		google.maps.event.trigger(mapOrigin, "resize");
+		mapOrigin.setCenter(markerOrigin.getPosition());
+	});
+
+	google.maps.event.addListener(markerOrigin, 'dragend', function() {
+		current_position = markerOrigin.getPosition();
+		default_location.lat = current_position.lat();
+		default_location.lon = current_position.lng();
+	});
+}
+
+function setOrigin(options) {
+	if (typeof(options) === 'undefined') return false;
+	localStorage.setItem('default_location', JSON.stringify(options));
 }
 
 function setMaps(option) {
@@ -44,7 +92,7 @@ function setMaps(option) {
 			chronics: option.chronics,
 			colors: option.colors
 		},
-		contentType: "application/x-www-form-urlencoded;charset=utf-8",
+		contentType: 'application/x-www-form-urlencoded;charset=utf-8',
 		success: function(houses) {
 			if (houses.response === 'success') {
 				objHouses = houses.values;
@@ -205,6 +253,7 @@ $('#disease').change(function() {
 	});
 });
 
+// save setting
 function setting()
 {
 	cbxChronics = {
@@ -228,6 +277,8 @@ function setting()
 		chronics: cbxChronics,
 		colors: cbxColors
 	});
+
+	setOrigin(default_location);
 }
 
 $('#setting_modal').on('hidden.bs.modal', function() {
