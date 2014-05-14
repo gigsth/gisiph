@@ -26,10 +26,10 @@ function drawCharts() {
             callJSON('village', drawVillage);
             callJSON('discover', drawDiscover);
         } else if (tab_id === 'tab2') {
-            callJSON('nameVillage',getOptionVillage);
+            //callJSON('nameVillage',getOptionVillage);
             callJSON('colorFromHypertension', drawColorFromHypertension);
         }else if (tab_id === 'tab3') {
-            callJSON('nameVillage',getOptionVillage);
+            //callJSON('nameVillage',getOptionVillage);
             callJSON('colorFromDiabetes', drawColorFromDiabetes);
         };
     }).promise().done(function() {
@@ -172,7 +172,9 @@ function getValues(v) {
     return rows;
 }
 
-function getOptionVillage(nameVillage)
+/*function getOptionVillage(nameVillage)
 {
-    for(var i=0;i<nameVillage.)
-}
+    $(document).ready(function(){
+        
+    });
+}*/
