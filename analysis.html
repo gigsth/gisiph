@@ -1,218 +1,204 @@
 <!DOCTYPE html>
 
 <html lang="th">
-  
-  <head>
-    <title>วิเคราะห์ข้อมูล • GISIPHo</title>
+	
+	<head>
+		<title>วิเคราะห์ข้อมูล • GISIPHo</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <!-- Bootstrap -->
-    <link href="./dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="./dist/css/bootstrap-flatly.min.css" rel="stylesheet" media="screen">
-  </head>
-  
-  <body>
+		<!-- Bootstrap -->
+		<link href="./dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="./dist/css/bootstrap-flatly.min.css" rel="stylesheet" media="screen">
+	</head>
+	
+	<body>
 
-    <!-- Menu Bar -->
-    <div class="navbar-default navbar navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-          </button>
-          <span class="navbar-brand" style="cursor: default;"><big>GISIPH</big><sub><span class="glyphicon glyphicon-globe"></span></sub></span>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li>
-              <a href="./maps.html">
-                <span class="glyphicon glyphicon-map-marker"></span>
-                แสดงข้อมูล
-              </a>
-            </li>
-            <li>
-              <a href="./manage.html">
-                <span class="glyphicon glyphicon-list"></span>
-                จัดการข้อมูล
-              </a>
-            </li>
-            <li class="active">
-              <a href="./analysis.html">
-                <span class="glyphicon glyphicon-stats"></span>
-                วิเคราะห์ข้อมูล
-              </a>
-            </li>
-          </ul>
+		<!-- Menu Bar -->
+		<div class="navbar-default navbar navbar-static-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button>
+					<span class="navbar-brand" style="cursor: default;"><big>GISIPH</big><sub><span class="glyphicon glyphicon-globe"></span></sub></span>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li>
+							<a href="./maps.html">
+								<span class="glyphicon glyphicon-map-marker"></span>
+								แสดงข้อมูล
+							</a>
+						</li>
+						<li>
+							<a href="./manage.html">
+								<span class="glyphicon glyphicon-list"></span>
+								จัดการข้อมูล
+							</a>
+						</li>
+						<li class="active">
+							<a href="./analysis.html">
+								<span class="glyphicon glyphicon-stats"></span>
+								วิเคราะห์ข้อมูล
+							</a>
+						</li>
+					</ul>
 
-          <p class="navbar-text pull-right">
-            
-            <span id="username">
-              ชื่อผู้ใช้
-            </span>
-            <span style="opacity: .6;">
-              (<a id="logout" href="#" class="navbar-link">ออกจากระบบ</a>)
-            </span>
-          </p>
-        </div>
-      </div>
-    </div>
+					<p class="navbar-text pull-right">
+						
+						<span id="username">
+							ชื่อผู้ใช้
+						</span>
+						<span style="opacity: .6;">
+							(<a id="logout" href="#" class="navbar-link">ออกจากระบบ</a>)
+						</span>
+					</p>
+				</div>
+			</div>
+		</div>
 
-    <!-- Main -->
-    <div style="height: 21px; margin-top: -21px;">
-      <div class="progress progress-striped active" style="height: 7px;">
-        <div class="progress-bar progress-bar-success"  role="progressbar" style="width: 100%;">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
-    </div>
+		<!-- Main -->
+		<div style="height: 21px; margin-top: -21px;">
+			<div class="progress progress-striped active" style="height: 7px;">
+				<div class="progress-bar progress-bar-success"  role="progressbar" style="width: 100%;">
+					<span class="sr-only">Loading...</span>
+				</div>
+			</div>
+		</div>
 
-    <div class="container">
-      
-       <!-- Side Menu -->
-      <div class="row">
-        <div class="clearfix col-sm-4 col-md-3">
-          <nav class="side-menu">
+		<div class="container">
+			
+			 <!-- Side Menu -->
+			<div class="row">
+				<div class="clearfix col-sm-4 col-md-3">
+					<nav class="side-menu">
 
-           <!--  <div class="hidden-sm hidden-md hidden-lg" style=" margin-bottom: 20px;">
-             <div class="btn-group btn-group-justified">
-               <a class="menu btn btn-default active" href="#tab1" data-menu="tab1" data-label="Lorem ipsum.">
-                 <span class="glyphicon glyphicon-home"></span>
-               </a>
-               <a class="menu btn btn-default" href="#tab2" data-menu="tab2" data-label="Lorem ipsum.">
-                 <span class="glyphicon glyphicon-user"></span>
-               </a>
-               <a class="menu btn btn-default" href="#tab3" data-menu="tab3" data-label="Lorem ipsum.">
-                 <span class="glyphicon glyphicon-user"></span>
-               </a>
-             </div>
-           </div> 
-            -->
-            <ul class="nav nav-pills nav-stacked visible-sm visible-md visible-lg">
-              <li class="active">
-                <a class="menu" href="#tab1" data-menu="tab1" data-toggle="pill">                 
-                  อัตราผู้ป่วยโรคเรื้อรัง
-                </a>
-              </li>
-              <li>
-                <a class="menu" href="#tab2" data-menu="tab2" data-toggle="pill">  
-                  กราฟผู้ป่วยโรคความดันโลหิตสูง
-                </a>
-              </li>
-              <li>
-                <a class="menu" href="#tab3" data-menu="tab3" data-toggle="pill">  
-                  กราฟผู้ป่วยโรคเบาหวาน
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <!-- Tab panes -->
-        <div class="tab-content">
+						<!-- Nav tabs -->
+						<ul class="nav nav-pills nav-stacked">
+							<li class="active"><a class="menu" href="#tab1" data-menu="tab1" data-toggle="pill">อัตราผู้ป่วยโรคเรื้อรัง</a></li>
+							<li><a class="menu" href="#tab2" data-menu="tab2" data-toggle="pill">กราฟผู้ป่วยโรคความดันโลหิตสูง</a></li>
+							<li><a class="menu" href="#tab3" data-menu="tab3" data-toggle="pill">กราฟผู้ป่วยโรคเบาหวาน</a></li>
+						</ul>
 
-          <div class="tab-pane active" id="tab1">
-            <div class="clearfix col-sm-8 col-md-9">
+					</nav>
+				</div>
+				<!-- Tab panes -->
+				<div class="tab-content">
 
-             <!-- chronics -->
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="panel panel-default">
-                    <div class="panel-body">
-                      <div id="chronics"></div>
-                    </div> <!-- panel-body -->
-                  </div> <!-- panel panel-default -->
-                </div> <!-- col-sm-12 -->
-              </div> <!-- row -->
+					<div class="tab-pane view active" id="tab1">
+						<div class="clearfix col-sm-8 col-md-9">
 
-              <!-- village -->
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="panel panel-default">
-                    <div class="panel-body">
-                      <div id="village"></div>
-                    </div> <!-- panel-body -->
-                  </div> <!-- panel panel-default -->
-                </div> <!-- col-sm-12 -->
-              </div> <!-- row -->
+							<!-- Nav tabs -->
+							<ul class="nav nav-tabs nav-justified">
+								<li class="active"><a class="sub-menu" href="#tab1-1" data-toggle="tab">สัดส่วนของผู้ป่วยโรคเรื้อรัง</a></li>
+								<li><a class="sub-menu" href="#tab1-2" data-toggle="tab">สัดส่วนของผู้ป่วยโรคเรื้อรังในแต่ละหมู่บ้าน</a></li>
+								<li><a class="sub-menu" href="#tab1-3" data-toggle="tab">จำนวนผู้ป่วยโรคเรื้อรังในแต่ละปี</a></li>
+							</ul>
+							
+							<!-- Tab panes -->
+							<div class="tab-content">
+								<div class="tab-pane active" id="tab1-1">
+									<!-- chronics -->
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="panel panel-default">
+												<div class="panel-body">
+													<div id="chronics"></div>
+												</div> <!-- panel-body -->
+											</div> <!-- panel panel-default -->
+										</div> <!-- col-sm-12 -->
+									</div> <!-- row -->
+								</div> <!-- tab1-1 -->
 
-              <div class="row">
-                <!-- discover -->
-                <div class="col-sm-12">
-                  <div class="panel panel-default">
-                    <div class="panel-body">
-                      <div id="discover"></div>
-                    </div> <!-- panel-body -->
-                  </div> <!-- panel panel-default -->
-                </div> <!-- col-sm-12 -->
-              </div> <!-- row -->
-            </div> <!-- col-sm-8 col-md-9 -->
-          </div> <!-- tab-pane -->
+								<div class="tab-pane" id="tab1-2">
+									<!-- village -->
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="panel panel-default">
+												<div class="panel-body">
+													<div id="village"></div>
+												</div> <!-- panel-body -->
+											</div> <!-- panel panel-default -->
+										</div> <!-- col-sm-12 -->
+									</div> <!-- row -->
+								</div> <!-- tab1-2 -->
+
+								<div class="tab-pane" id="tab1-3">
+									<!-- discover -->
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="panel panel-default">
+												<div class="panel-body">
+													<div id="discover"></div>
+												</div> <!-- panel-body -->
+											</div> <!-- panel panel-default -->
+										</div> <!-- col-sm-12 -->
+									</div> <!-- row -->
+								</div> <!-- tab1-3 -->
+							</div> <!-- tab-content -->
+
+						</div> <!-- col-sm-8 col-md-9 -->
+					</div> <!-- tab-pane -->
 
 
-          <div class="tab-pane" id="tab2">
-                    
-            <div class="clearfix col-sm-8 col-md-9">
-             <!--  <select class="form-control">
-               <option>1</option>
-               <option>2</option>
-               <option>3</option>
-               <option>4</option>
-               <option>5</option>
-             </select>   -->
-              <div class="row">
-                <!-- colorFromHypertension -->
-                <div class="col-sm-12">
-                  <div class="panel panel-default">
-                    <div class="panel-body">
-                      <div id="colorFromHypertension"></div>
-                    </div> <!-- panel-body -->
-                  </div> <!-- panel panel-default -->
-                </div> <!-- col-sm-12 -->
-              </div> <!-- row -->
-            </div> <!-- col-sm-8 col-md-9 -->
+					<div class="tab-pane view" id="tab2">
+										
+						<div class="clearfix col-sm-8 col-md-9">
+							<div class="row">
+								<!-- colorFromHypertension -->
+								<div class="col-sm-12">
+									<div class="panel panel-default">
+										<div class="panel-body">
+											<div id="colorFromHypertension"></div>
+										</div> <!-- panel-body -->
+									</div> <!-- panel panel-default -->
+								</div> <!-- col-sm-12 -->
+							</div> <!-- row -->
+						</div> <!-- col-sm-8 col-md-9 -->
 
-          </div> <!-- tab-pane -->
+					</div> <!-- tab-pane -->
 
 
-          <div class="tab-pane" id="tab3">
+					<div class="tab-pane view" id="tab3">
 
-            <div class="clearfix col-sm-8 col-md-9">
-              <div class="row">
-                <!-- colorFromDiabetes -->
-                <div class="col-sm-12">
-                  <div class="panel panel-default">
-                    <div class="panel-body">
-                      <div id="colorFromDiabetes"></div>
-                    </div> <!-- panel-body -->
-                  </div> <!-- panel panel-default -->
-                </div> <!-- col-sm-12 -->
-              </div> <!-- row -->
-            </div> <!-- col-sm-8 col-md-9 -->
-          </div> <!-- tab-pane -->
+						<div class="clearfix col-sm-8 col-md-9">
+							<div class="row">
+								<!-- colorFromDiabetes -->
+								<div class="col-sm-12">
+									<div class="panel panel-default">
+										<div class="panel-body">
+											<div id="colorFromDiabetes"></div>
+										</div> <!-- panel-body -->
+									</div> <!-- panel panel-default -->
+								</div> <!-- col-sm-12 -->
+							</div> <!-- row -->
+						</div> <!-- col-sm-8 col-md-9 -->
+					</div> <!-- tab-pane -->
 
-        </div>
+				</div>
 
-      </div>
+			</div>
 
-      
-    
-    </div> <!-- container -->
+			
+		
+		</div> <!-- container -->
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="./dist/js/jquery-2.0.3.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="./dist/js/bootstrap.min.js"></script>
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="./dist/js/jquery-2.0.3.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="./dist/js/bootstrap.min.js"></script>
 
-    <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-    <script src="./dist/js/respond.min.js"></script>
+		<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+		<script src="./dist/js/respond.min.js"></script>
 
-    <!-- Google Charts API -->
-    <script src="https://www.google.com/jsapi"></script>
+		<!-- Google Charts API -->
+		<script src="https://www.google.com/jsapi"></script>
 
-    <script src="./dist/js/authorization.js"></script>
-    <script src="./dist/js/analysis.js"></script>
-  </body>
+		<script src="./dist/js/authorization.js"></script>
+		<script src="./dist/js/analysis.js"></script>
+	</body>
 
 </html>
