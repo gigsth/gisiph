@@ -7,8 +7,7 @@ class Analysis
 {
 	private $mysql;
 
-	public function __construct()
-	{
+	public function __construct() {
 		$this->mysql = new MySQL_Connection();
 		$this->mysql->connect(HOSTNAME, USERNAME, PASSWORD, DBNAME);
 		$this->mysql->charset = 'utf8';
@@ -18,8 +17,7 @@ class Analysis
 		$this->mysql->close();
 	}
 
-	public function getChronics()
-	{
+	public function getChronics() {
 		$chronics = $this->mysql->queryAndFetchAll(
 			"
 			SELECT
@@ -48,8 +46,7 @@ class Analysis
 		return $chronics;
 	}
 
-	public function getVillage()
-	{
+	public function getVillage() {
 		$village = $this->mysql->queryAndFetchAll(
 			"
 			SELECT
@@ -88,8 +85,7 @@ class Analysis
 		return $village;
 	}
 
-	public function getDiscover()
-	{
+	public function getDiscover() {
 		$discover = $this->mysql->queryAndFetchAll(
 			"
 			SELECT
@@ -120,8 +116,7 @@ class Analysis
 		return $discover;
 	}
 
-	public function getColorFromHypertension()
-	{
+	public function getColorFromHypertension() {
 		$colorFromHypertension = $this->mysql->queryAndFetchAll(
 			"
 			SELECT 
@@ -161,10 +156,8 @@ class Analysis
 		);
 		return $this->calcColorFromHypertension($colorFromHypertension);
 	}
-
 	
-	public function calcColorFromHypertension($colorFromHypertension)
-	{
+	public function calcColorFromHypertension($colorFromHypertension) {
 		$person_color = array();
 		foreach ($colorFromHypertension as $key => &$value) {
 			if($value['person_codechronic'] === '01') {
@@ -240,10 +233,8 @@ class Analysis
 
 		return $color;
 	}
-
 	
-	public function getColorFromDiabetes()
-	{
+	public function getColorFromDiabetes() {
 		$colorFromDiabetes = $this->mysql->queryAndFetchAll(
 			"
 			SELECT 
@@ -287,12 +278,10 @@ class Analysis
 			"
 		);
 		return $this->calcColorFromDiabetes($colorFromDiabetes);
-
 	}
 
 
-	public function calcColorFromDiabetes($colorFromDiabetes)
-	{
+	public function calcColorFromDiabetes($colorFromDiabetes) {
 
 		$person_color = array();
 		foreach ($colorFromDiabetes as $key => &$value) {
@@ -370,8 +359,7 @@ class Analysis
 		return $color;
 	}
 
-	public function getColorFromHypertensionVillage()
-	{
+	public function getColorFromHypertensionVillage(){
 		$village = $this->mysql->queryAndFetchAll(
 			" 
 			SELECT 
@@ -445,9 +433,7 @@ class Analysis
 		return $colorVillage;
 	}
 
-
-	public function getColorFromDiabetesVillage()
-	{
+	public function getColorFromDiabetesVillage() {
 		$village = $this->mysql->queryAndFetchAll(
 			" 
 			SELECT 
@@ -525,9 +511,7 @@ class Analysis
 		return $colorVillage;
 	}
 
-
-	public function getNameVillage()
-	{
+	public function getNameVillage() {
 		$village = $this->mysql->queryAndFetchAll(
 			" 
 			SELECT 
@@ -537,7 +521,6 @@ class Analysis
 			"
 		);
 		return $village;
-
 	}
 
 
