@@ -8,7 +8,7 @@ $(window).on("resize", function(event) {
 
 $(document).ready(function() {
 	google.setOnLoadCallback(drawCharts);
-
+	getNameVillage();
 });
 
 $('a.menu,  a.sub-menu').click(function() {
@@ -43,7 +43,6 @@ function drawCharts() {
 	}).promise().done(function() {
 		$('.progress-bar').delay(100).fadeOut(400);
 	});
-
 }
 
 function drawChronics(chronics) {
@@ -87,7 +86,6 @@ function drawDiscover(discover) {
 	  });
 }
 
-
 function drawColorFromHypertension(colorFromHypertension) {
 	var data = new google.visualization.DataTable();
 	data.addColumn('string', 'ระดับความรุนแรง');
@@ -119,7 +117,6 @@ function drawColorFromHypertension(colorFromHypertension) {
 
 }
 
-
 function drawColorFromDiabetes(colorFromDiabetes) {console.log(colorFromDiabetes);
 	var data = new google.visualization.DataTable();
 	data.addColumn('string', 'ระดับความรุนแรง');
@@ -149,9 +146,7 @@ function drawColorFromDiabetes(colorFromDiabetes) {console.log(colorFromDiabetes
 			legend: { position: "none" }
 
 	  });
-
 }
-
 
 function callJSON(req, callback) {
 	$.ajax({
@@ -181,6 +176,25 @@ function getValues(v) {
 	return rows;
 }
 
+function getNameVillage() {
+	$.ajax({
+		type: 'POST',
+		url: './dist/php/analysis.php',
+		data: {
+			request: 'nameVillage'
+		},
+		contentType: "application/x-www-form-urlencoded;charset=utf-8",
+		success: function(data) {
+			if (data.response == 'success') {
+				$('.name-village').empty();
+				$('.name-village').append('<option value="*">ทั้งหมด</option>');
+				$.each(data.values, function(i, village) {
+					$('.name-village').append('<option value="'+village.villcode+'">'+village.villname+'</option>');
+				});
+			}
+		}
+	});
+}
 
 function getOptionVillage(nameVillage){
 	//for(var i=0;i<nameVillage.);
