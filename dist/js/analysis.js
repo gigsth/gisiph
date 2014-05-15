@@ -53,13 +53,11 @@ function drawCharts() {
 			} else if (sub_tab_id === 'tab1-3') {
 				callJSON('discover', drawDiscover);
 			};
-		} /*else if (tab_id === 'tab2') {
-			//callJSON('nameVillage',getOptionVillage);
-			console.log($("#tab2-selection").val());			
+		} else if (tab_id === 'tab2') {
+			callJSON('colorFromHypertension', drawColorFromHypertension);			
 		}else if (tab_id === 'tab3') {
-			//callJSON('nameVillage',getOptionVillage);
 			callJSON('colorFromDiabetes', drawColorFromDiabetes);
-		};*/
+		};
 	}).promise().done(function() {
 		$('.progress-bar').delay(100).fadeOut(400);
 	});
