@@ -1,6 +1,6 @@
 google.load('visualization', '1', {packages: ["corechart"]});
 
-var cDiscover, cChronics, cVillage, cColorFromHypertension, cColorFromDiabetes,cOptionVillage;
+var cDiscover, cChronics, cVillage, cColorFromHypertension, cColorFromDiabetes, cColorFromHypertensionVillage;
 
 $(window).on("resize", function(event) {
 	drawCharts();
@@ -16,6 +16,17 @@ $('a.menu,  a.sub-menu').click(function() {
 		drawCharts();
 	},200);
 });
+
+$('#tab2-selection').on('change', function() {
+  	alert( this.value ); // or $(this).val()
+  	if ($("#tab2-selection").val() == -1){
+		callJSON('colorFromHypertension', drawColorFromHypertension);
+	}/*else
+	{
+		callJSON
+	}*/
+});
+
 
 function drawCharts() {
 
@@ -33,13 +44,13 @@ function drawCharts() {
 			} else if (sub_tab_id === 'tab1-3') {
 				callJSON('discover', drawDiscover);
 			};
-		} else if (tab_id === 'tab2') {
-			callJSON('nameVillage',getOptionVillage);
-			callJSON('colorFromHypertension', drawColorFromHypertension);
+		} /*else if (tab_id === 'tab2') {
+			//callJSON('nameVillage',getOptionVillage);
+			console.log($("#tab2-selection").val());			
 		}else if (tab_id === 'tab3') {
-			callJSON('nameVillage',getOptionVillage);
+			//callJSON('nameVillage',getOptionVillage);
 			callJSON('colorFromDiabetes', drawColorFromDiabetes);
-		};
+		};*/
 	}).promise().done(function() {
 		$('.progress-bar').delay(100).fadeOut(400);
 	});
@@ -109,6 +120,37 @@ function drawColorFromHypertension(colorFromHypertension) {
 	cColorFromHypertension = new google.visualization.ColumnChart(document.getElementById('colorFromHypertension'));
 	cColorFromHypertension.draw(view, {
 			title: 'จำนวนของผู้ป่วยโรคความดันโลหิตสูงจำแนกตามระดับความรุนแรง',
+			width: '100%',
+			height: '100%',
+			bar: {groupWidth: "70%"},
+			legend: { position: "none" }
+	  });
+
+}
+
+function drawColorFromHypertensionVillage(colorFromHypertensionVillage) {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'ระดับความรุนแรง');
+	data.addColumn('number', 'จำนวน');
+	data.addColumn({type: 'string', role: 'style'});
+	data.addRows(getValues(colorFromHypertensionVillage));
+	var view = new google.visualization.DataView(data);
+	view.setColumns(
+		[
+			0, 
+			1,
+			{ 
+				calc: "stringify",
+				sourceColumn: 1,
+				type: "string",
+				role: "annotation" 
+			},
+			2
+		]
+	);
+	cColorFromHypertensionVillage = new google.visualization.ColumnChart(document.getElementById('colorFromHypertensionVillage'));
+	cColorFromHypertensionVillage.draw(view, {
+			title: 'graph test',
 			width: '100%',
 			height: '100%',
 			bar: {groupWidth: "70%"},
@@ -187,7 +229,7 @@ function getNameVillage() {
 		success: function(data) {
 			if (data.response == 'success') {
 				$('.name-village').empty();
-				$('.name-village').append('<option value="*">ทั้งหมด</option>');
+				$('.name-village').append('<option value=-1>ทั้งหมด</option>');
 				$.each(data.values, function(i, village) {
 					$('.name-village').append('<option value="'+village.villcode+'">'+village.villname+'</option>');
 				});
@@ -196,7 +238,7 @@ function getNameVillage() {
 	});
 }
 
-function getOptionVillage(nameVillage){
+/*function getOptionVillage(nameVillage){
 	//for(var i=0;i<nameVillage.);
-}
+}*/
 
