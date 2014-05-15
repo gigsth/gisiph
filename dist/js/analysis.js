@@ -27,6 +27,15 @@ $('#tab2-selection').on('change', function() {
 	}*/
 });
 
+$('#tab3-selection').on('change', function() {
+  	alert( this.value ); // or $(this).val()
+  	if ($("#tab3-selection").val() == -1){
+		callJSON('colorFromDiabetes', drawColorFromDiabetes);
+	}/*else
+	{
+		callJSON
+	}*/
+});
 
 function drawCharts() {
 
