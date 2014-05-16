@@ -359,28 +359,16 @@ class Analysis
 		return $color;
 	}
 
-	public function getColorFromHypertensionVillage(){
-		$village = $this->mysql->queryAndFetchAll(
-			" 
-			SELECT 
-				`village`.`villcode` AS `villcode`,
-				`village`.`villname` AS `villname`
-			FROM `village`
+	public function getColorFromHypertensionVillage($villcode){
+		$colorFromHypertension = $this->mysql->queryAndFetchAll(
 			"
-		);
-
-		$colorVillage = array();
-		foreach ($village as $key => $value) 
-		{
-			$colorFromHypertension = $this->mysql->queryAndFetchAll(
-				"
-				SELECT 
-					`pressure_pidgroup`.`pid`,
-					`pressure_pidgroup`.`top_pressure`,
-					`pressure_pidgroup`.`down_pressure`,
-					`cdisease`.`codechronic` AS `person_codechronic`
+			SELECT 
+				`pressure_pidgroup`.`pid`,
+				`pressure_pidgroup`.`top_pressure`,
+				`pressure_pidgroup`.`down_pressure`,
+				`cdisease`.`codechronic` AS `person_codechronic`
 				
-				FROM
+			FROM
 				(	SELECT 
 						`person`.`pid` 
 					FROM 
@@ -388,11 +376,11 @@ class Analysis
 					WHERE 
 						`person`.`hcode` = `house`.`hcode` 
 					AND 
-						`house`.`villcode` = %n[VILLAGE_CODE]
+						`house`.`villcode` = $villcode
 					ORDER BY `person`.`pid`
 				) AS `personvillage` 
 
-				JOIN
+			JOIN
 
 				(
 					SELECT `pressure`.*			
@@ -421,32 +409,17 @@ class Analysis
 				GROUP BY 
 					`pressure_pidgroup`.`pid`,
 					`cdisease`.`codechronic`
-				",
-				array(
-					'VILLAGE_CODE' => $value['villcode']
-				)
+				"
 			);
 		
-			$colorVillage[] = $this->calcColorFromHypertension($colorFromHypertension);
-		}
-		
+			$colorVillage = $this->calcColorFromHypertension($colorFromHypertension);
+
 		return $colorVillage;
 	}
 
-	public function getColorFromDiabetesVillage() {
-		$village = $this->mysql->queryAndFetchAll(
-			" 
-			SELECT 
-				`village`.`villcode` AS `villcode`,
-				`village`.`villname` AS `villname`
-			FROM `village`
-			"
-		);
+	public function getColorFromDiabetesVillage($villcode) {
 
-		$colorVillage = array();
-		foreach ($village as $key => $value) 
-		{
-			$colorFromDiabetes = $this->mysql->queryAndFetchAll(
+		$colorFromDiabetes = $this->mysql->queryAndFetchAll(
 				"
 				SELECT 
 					`sugarblood_grouppid`.*,
@@ -460,7 +433,7 @@ class Analysis
 					WHERE 
 						`person`.`hcode` = `house`.`hcode` 
 					AND 
-						`house`.`villcode` = %n[VILLAGE_CODE]
+						`house`.`villcode` = $villcode
 					ORDER BY `person`.`pid`
 				) AS `personvillage` JOIN
 						
@@ -499,15 +472,11 @@ class Analysis
 				GROUP BY 
 					`sugarblood_grouppid`.`pid`,
 					`cdisease`.`codechronic`			
-				",
-				array(
-					'VILLAGE_CODE' => $value['villcode']
-				)
-			);
+				"
+		);
 		
-			$colorVillage[] = $this->calcColorFromHypertension($colorFromDiabetes);
-		}
-		
+		$colorVillage = $this->calcColorFromHypertension($colorFromDiabetes);
+
 		return $colorVillage;
 	}
 
