@@ -17,24 +17,10 @@ $('a.menu,  a.sub-menu').click(function() {
 	},200);
 });
 
-$('#tab2-selection').on('change', function() {
-  	alert( this.value ); // or $(this).val()
-  	if ($("#tab2-selection").val() == -1){
-		callJSON('colorFromHypertension', drawColorFromHypertension);
-	}/*else
-	{
-		callJSON
-	}*/
-});
-
-$('#tab3-selection').on('change', function() {
-  	alert( this.value ); // or $(this).val()
-  	if ($("#tab3-selection").val() == -1){
-		callJSON('colorFromDiabetes', drawColorFromDiabetes);
-	}/*else
-	{
-		callJSON
-	}*/
+$('#tab2-selection, #tab3-selection').on('change', function() {
+	setTimeout(function() {
+		drawCharts();
+	},200);
 });
 
 function drawCharts() {
@@ -47,16 +33,20 @@ function drawCharts() {
 			var sub_tab_id = $('#tab1 .tab-pane.active').attr('id');
 
 			if (sub_tab_id === 'tab1-1') {
-				callJSON('chronics', drawChronics);
+				callJSON({request: 'chronics'}, drawChronics);
 			} else if (sub_tab_id === 'tab1-2') {
-				callJSON('village', drawVillage);
+				callJSON({request: 'village'}, drawVillage);
 			} else if (sub_tab_id === 'tab1-3') {
-				callJSON('discover', drawDiscover);
+				callJSON({request: 'discover'}, drawDiscover);
 			};
 		} else if (tab_id === 'tab2') {
-			callJSON('colorFromHypertension', drawColorFromHypertension);			
+			console.log($('#tab2-selection').val());
+			callJSON({request: 'colorFromHypertension', selection: $('#tab2-selection').val()},
+				drawColorFromHypertension);
 		}else if (tab_id === 'tab3') {
-			callJSON('colorFromDiabetes', drawColorFromDiabetes);
+			console.log($('#tab3-selection').val());
+			callJSON({request: 'colorFromDiabetes', selection: $('#tab3-selection').val()},
+				drawColorFromDiabetes);
 		};
 	}).promise().done(function() {
 		$('.progress-bar').delay(100).fadeOut(400);
@@ -166,7 +156,7 @@ function drawColorFromHypertensionVillage(colorFromHypertensionVillage) {
 
 }
 
-function drawColorFromDiabetes(colorFromDiabetes) {console.log(colorFromDiabetes);
+function drawColorFromDiabetes(colorFromDiabetes) {//console.log(colorFromDiabetes);
 	var data = new google.visualization.DataTable();
 	data.addColumn('string', 'ระดับความรุนแรง');
 	data.addColumn('number', 'จำนวน');
@@ -191,19 +181,20 @@ function drawColorFromDiabetes(colorFromDiabetes) {console.log(colorFromDiabetes
 			title: 'จำนวนของผู้ป่วยโรคเบาหวานจำแนกตามระดับความรุนแรง',
 			width: '100%',
 			height: '100%',
-			bar: {groupWidth: "70%"},
-			legend: { position: "none" }
-
+			bar: {
+				groupWidth: '70%'
+			},
+			legend: {
+				position: 'none'
+			}
 	  });
 }
 
-function callJSON(req, callback) {
+function callJSON(options, callback) {
 	$.ajax({
 		type: 'POST',
 		url: './dist/php/analysis.php',
-		data: {
-			request: req
-		},
+		data: options,
 		contentType: "application/x-www-form-urlencoded;charset=utf-8",
 		success: function(data) {
 			if (data.response == 'success') {
@@ -244,8 +235,3 @@ function getNameVillage() {
 		}
 	});
 }
-
-/*function getOptionVillage(nameVillage){
-	//for(var i=0;i<nameVillage.);
-}*/
-
