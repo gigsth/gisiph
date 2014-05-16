@@ -2,7 +2,7 @@
 require 'is_ajax.php';
 //if (!isAjax()) {return;}
 
-//$_POST['request'] = 'nameVillage';
+//$_POST['request'] = 'colorFromDiabetesVillage';
 
 try {
 	header('Content-Type: application/json; charset=UTF-8');
@@ -40,7 +40,7 @@ try {
 			echo json_output(
 				array(
 					'response' => 'success',
-					'values' => $analysis->getColorFromHypertensionVillage()
+					'values' => $analysis->getColorFromHypertensionVillage($_POST['selection'])
 				)
 			);
 			break;
@@ -48,7 +48,7 @@ try {
 			echo json_output(
 				array(
 					'response' => 'success',
-					'values' => $analysis->getColorFromDiabetesVillage()
+					'values' => $analysis->getColorFromDiabetesVillage($_POST['selection'])
 				)
 			);
 			break;			
