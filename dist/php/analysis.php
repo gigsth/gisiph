@@ -2,7 +2,8 @@
 require 'is_ajax.php';
 //if (!isAjax()) {return;}
 
-//$_POST['request'] = 'colorFromDiabetesVillage';
+// $_POST['request'] = 'colorFromDiabetes';
+// $_POST['selection'] = 25060600;
 
 try {
 	header('Content-Type: application/json; charset=UTF-8');
@@ -32,31 +33,19 @@ try {
 			echo json_output(
 				array(
 					'response' => 'success',
-					'values' => $analysis->getColorFromHypertension()
+					'values' => (isset($_POST['selection']) && $_POST['selection'] != '-1') ? 
+						$analysis->getColorFromHypertensionVillage($_POST['selection']) : 
+						$analysis->getColorFromHypertension()
 				)
 			);
 			break;
-		case 'colorFromHypertensionVillage':
-			echo json_output(
-				array(
-					'response' => 'success',
-					'values' => $analysis->getColorFromHypertensionVillage($_POST['selection'])
-				)
-			);
-			break;
-		case 'colorFromDiabetesVillage':
-			echo json_output(
-				array(
-					'response' => 'success',
-					'values' => $analysis->getColorFromDiabetesVillage($_POST['selection'])
-				)
-			);
-			break;			
 		case 'colorFromDiabetes':
 			echo json_output(
 				array(
 					'response' => 'success',
-					'values' => $analysis->getColorFromDiabetes()
+					'values' => (isset($_POST['selection']) && $_POST['selection'] != '-1') ? 
+						$analysis->getColorFromDiabetesVillage($_POST['selection']) : 
+						$analysis->getColorFromDiabetes()
 				)
 			);
 			break;

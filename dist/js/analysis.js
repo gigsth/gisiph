@@ -41,21 +41,9 @@ function drawCharts() {
 				callJSON({request: 'discover'}, drawDiscover);
 			};
 		} else if (tab_id === 'tab2') {
-			console.log($('#tab2-selection').val());
-			if($('#tab2-selection').val() === -1){
-				callJSON({request: 'colorFromHypertension'}, drawColorFromHypertension);
-			}else{
-				callJSON({request: 'colorFromHypertensionVillage', selection: $('#tab2-selection').val()},
-					drawColorFromHypertensionVillage);
-			};
+			callJSON({request: 'colorFromHypertension', selection: $('#tab2-selection').val()}, drawColorFromHypertension);
 		}else if (tab_id === 'tab3') {
-			console.log($('#tab3-selection').val());
-			if($('#tab3-selection').val() === -1){
-				callJSON({request: 'colorFromDiabetes'}, drawColorFromDiabetes);
-			}else{
-				callJSON({request: 'colorFromDiabetesVillage', selection: $('#tab3-selection').val()},
-					drawColorFromDiabetesVillage);
-			};
+			callJSON({request: 'colorFromDiabetes', selection: $('#tab3-selection').val()}, drawColorFromDiabetes);
 		};
 	}).promise().done(function() {
 		$('.progress-bar').delay(100).fadeOut(400);
@@ -134,37 +122,6 @@ function drawColorFromHypertension(colorFromHypertension) {
 
 }
 
-function drawColorFromHypertensionVillage(colorFromHypertensionVillage) {
-	var data = new google.visualization.DataTable();
-	data.addColumn('string', 'ระดับความรุนแรง');
-	data.addColumn('number', 'จำนวน');
-	data.addColumn({type: 'string', role: 'style'});
-	data.addRows(getValues(colorFromHypertensionVillage));
-	var view = new google.visualization.DataView(data);
-	view.setColumns(
-		[
-			0, 
-			1,
-			{ 
-				calc: "stringify",
-				sourceColumn: 1,
-				type: "string",
-				role: "annotation" 
-			},
-			2
-		]
-	);
-	cColorFromHypertensionVillage = new google.visualization.ColumnChart(document.getElementById('colorFromHypertensionVillage'));
-	cColorFromHypertensionVillage.draw(view, {
-			title: 'graph test',
-			width: '100%',
-			height: '100%',
-			bar: {groupWidth: "70%"},
-			legend: { position: "none" }
-	  });
-
-}
-
 function drawColorFromDiabetes(colorFromDiabetes) {//console.log(colorFromDiabetes);
 	var data = new google.visualization.DataTable();
 	data.addColumn('string', 'ระดับความรุนแรง');
@@ -187,50 +144,16 @@ function drawColorFromDiabetes(colorFromDiabetes) {//console.log(colorFromDiabet
 	);
 	cColorFromDiabetes = new google.visualization.ColumnChart(document.getElementById('colorFromDiabetes'));
 	cColorFromDiabetes.draw(view, {
-			title: 'จำนวนของผู้ป่วยโรคเบาหวานจำแนกตามระดับความรุนแรง',
-			width: '100%',
-			height: '100%',
-			bar: {
-				groupWidth: '70%'
-			},
-			legend: {
-				position: 'none'
-			}
-	  });
-}
-
-function drawColorFromDiabetesVillage(colorFromDiabetesVillage) {//console.log(colorFromDiabetes);
-	var data = new google.visualization.DataTable();
-	data.addColumn('string', 'ระดับความรุนแรง');
-	data.addColumn('number', 'จำนวน');
-	data.addColumn({type: 'string', role: 'style'});
-	data.addRows(getValues(colorFromDiabetesVillage));
-	var view = new google.visualization.DataView(data);
-	view.setColumns(
-		[
-			0, 
-			1,
-			{ 
-				calc: "stringify",
-				sourceColumn: 1,
-				type: "string",
-				role: "annotation" 
-			},
-			2
-		]
-	);
-	cColorFromDiabetesVillage = new google.visualization.ColumnChart(document.getElementById('colorFromDiabetesVillage'));
-	cColorFromDiabetesVillage.draw(view, {
-			title: 'testGraphDiabetesVillage',
-			width: '100%',
-			height: '100%',
-			bar: {
-				groupWidth: '70%'
-			},
-			legend: {
-				position: 'none'
-			}
-	  });
+		title: 'จำนวนของผู้ป่วยโรคเบาหวานจำแนกตามระดับความรุนแรง',
+		width: '100%',
+		height: '100%',
+		bar: {
+			groupWidth: '70%'
+		},
+		legend: {
+			position: 'none'
+		}
+	});
 }
 
 function callJSON(options, callback) {

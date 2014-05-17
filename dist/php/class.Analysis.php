@@ -376,7 +376,7 @@ class Analysis
 					WHERE 
 						`person`.`hcode` = `house`.`hcode` 
 					AND 
-						`house`.`villcode` = $villcode
+						`house`.`villcode` = %s[VILLCODE]
 					ORDER BY `person`.`pid`
 				) AS `personvillage` 
 
@@ -401,18 +401,22 @@ class Analysis
 						) AS `pressure`
 
 					GROUP BY 
-						`pressure`.`pid`) AS `pressure_pidgroup` on `personvillage`.`pid` = `pressure_pidgroup`.`pid`
+						`pressure`.`pid`
+				) AS `pressure_pidgroup` ON `personvillage`.`pid` = `pressure_pidgroup`.`pid`
 					
-					LEFT JOIN `personchronic` ON `pressure_pidgroup`.`pid` = `personchronic`.`pid`
-					LEFT JOIN `cdisease` ON `personchronic`.`chroniccode` = `cdisease`.`diseasecode`
-					
-				GROUP BY 
-					`pressure_pidgroup`.`pid`,
-					`cdisease`.`codechronic`
-				"
-			);
+			LEFT JOIN `personchronic` ON `pressure_pidgroup`.`pid` = `personchronic`.`pid`
+			LEFT JOIN `cdisease` ON `personchronic`.`chroniccode` = `cdisease`.`diseasecode`
+				
+			GROUP BY 
+				`pressure_pidgroup`.`pid`,
+				`cdisease`.`codechronic`
+			",
+			array(
+				'VILLCODE' => $villcode
+			)
+		);
 		
-			$colorVillage = $this->calcColorFromHypertension($colorFromHypertension);
+		$colorVillage = $this->calcColorFromHypertension($colorFromHypertension);
 
 		return $colorVillage;
 	}
@@ -420,59 +424,62 @@ class Analysis
 	public function getColorFromDiabetesVillage($villcode) {
 
 		$colorFromDiabetes = $this->mysql->queryAndFetchAll(
-				"
-				SELECT 
-					`sugarblood_grouppid`.*,
-					`cdisease`.`codechronic` AS 'person_codechronic'
-				FROM
+			"
+			SELECT 
+				`sugarblood_grouppid`.*,
+				`cdisease`.`codechronic` AS 'person_codechronic'
+			FROM
+				
+				(	SELECT 
+					`person`.`pid` 
+				FROM 
+					`person`,`house`
+				WHERE 
+					`person`.`hcode` = `house`.`hcode` 
+				AND 
+					`house`.`villcode` = %s[VILLCODE]
+				ORDER BY `person`.`pid`
+			) AS `personvillage` JOIN
 					
-					(	SELECT 
-						`person`.`pid` 
-					FROM 
-						`person`,`house`
-					WHERE 
-						`person`.`hcode` = `house`.`hcode` 
-					AND 
-						`house`.`villcode` = $villcode
-					ORDER BY `person`.`pid`
-				) AS `personvillage` JOIN
-						
-					(
-						SELECT 
-							`sugarblood`.* 
-						FROM
-							(
-								SELECT 
-									`visit`.`pid`,
-									`visitlabsugarblood`.`sugarnumdigit`,
-									`visit`.`visitdate`
-								FROM 
-									`jhcisdb`.`visitlabsugarblood` 
-								LEFT JOIN 
-									`jhcisdb`.`visit`
-								ON 
-									`visitlabsugarblood`.`visitno` = `visit`.`visitno`
-								ORDER BY 
-									`visit`.`pid`,
-									`visit`.`visitdate` DESC
-							)AS `sugarblood`
-						GROUP BY 
-							`sugarblood`.`pid`
-					) AS `sugarblood_grouppid` 
-				ON `personvillage`.`pid` = `sugarblood_grouppid`.`pid`
-				LEFT JOIN 
-					`jhcisdb`.`personchronic`
-				ON 
-					`sugarblood_grouppid`.`pid` = `personchronic`.`pid`
-				LEFT JOIN 
-					`jhcisdb`.`cdisease`
-				ON 
-					`personchronic`.`chroniccode` = `cdisease`.`diseasecode`
+				(
+					SELECT 
+						`sugarblood`.* 
+					FROM
+						(
+							SELECT 
+								`visit`.`pid`,
+								`visitlabsugarblood`.`sugarnumdigit`,
+								`visit`.`visitdate`
+							FROM 
+								`jhcisdb`.`visitlabsugarblood` 
+							LEFT JOIN 
+								`jhcisdb`.`visit`
+							ON 
+								`visitlabsugarblood`.`visitno` = `visit`.`visitno`
+							ORDER BY 
+								`visit`.`pid`,
+								`visit`.`visitdate` DESC
+						)AS `sugarblood`
+					GROUP BY 
+						`sugarblood`.`pid`
+				) AS `sugarblood_grouppid` 
+			ON `personvillage`.`pid` = `sugarblood_grouppid`.`pid`
+			LEFT JOIN 
+				`jhcisdb`.`personchronic`
+			ON 
+				`sugarblood_grouppid`.`pid` = `personchronic`.`pid`
+			LEFT JOIN 
+				`jhcisdb`.`cdisease`
+			ON 
+				`personchronic`.`chroniccode` = `cdisease`.`diseasecode`
 
-				GROUP BY 
-					`sugarblood_grouppid`.`pid`,
-					`cdisease`.`codechronic`			
-				"
+			GROUP BY 
+				`sugarblood_grouppid`.`pid`,
+				`cdisease`.`codechronic`
+			",
+			array(
+				'VILLCODE' => $villcode
+			)
 		);
 		
 		$colorVillage = $this->calcColorFromHypertension($colorFromDiabetes);
