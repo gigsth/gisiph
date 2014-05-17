@@ -50,7 +50,7 @@ function drawCharts() {
 			};
 		}else if (tab_id === 'tab3') {
 			console.log($('#tab3-selection').val());
-			if($('#tab2-selection').val() === -1){
+			if($('#tab3-selection').val() === -1){
 				callJSON({request: 'colorFromDiabetes'}, drawColorFromDiabetes);
 			}else{
 				callJSON({request: 'colorFromDiabetesVillage', selection: $('#tab3-selection').val()},
