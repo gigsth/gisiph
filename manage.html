@@ -1,440 +1,440 @@
 ﻿<!DOCTYPE html>
 
 <html lang="th">
-  
-  <head>
-    <title>จัดการข้อมูล • GISIPHo</title>
+	
+	<head>
+		<title>จัดการข้อมูล • GISIPHo</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <!-- Bootstrap -->
-    <link href="./dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="./dist/css/bootstrap-flatly.min.css" rel="stylesheet" media="screen">
-    <!-- Alertify -->
-    <link rel="stylesheet" href="./dist/css/alertify.core.css">
-    <link rel="stylesheet" href="./dist/css/alertify.default.css">
-    <!-- Style -->
-    <link href="./dist/css/style.css" rel="stylesheet" media="screen">
-    <style>
-      #mapCanvas {
-        display: block;
-        margin: 10px auto;
-        height: 350px;
-        width: 100%;
-        background-color: #ccc;
-      }
-      .thumbnail {
-        margin-top: 10px;
-        padding: 1px;
-        height: 102px;
-        overflow: hidden;
-      }
-      .modal-dialog {
-          width:100%;
-      }
-    </style>
-  </head>
-  
-  <body>
+		<!-- Bootstrap -->
+		<link href="./dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="./dist/css/bootstrap-flatly.min.css" rel="stylesheet" media="screen">
+		<!-- Alertify -->
+		<link rel="stylesheet" href="./dist/css/alertify.core.css">
+		<link rel="stylesheet" href="./dist/css/alertify.default.css">
+		<!-- Style -->
+		<link href="./dist/css/style.css" rel="stylesheet" media="screen">
+		<style>
+			#mapCanvas {
+				display: block;
+				margin: 10px auto;
+				height: 350px;
+				width: 100%;
+				background-color: #ccc;
+			}
+			.thumbnail {
+				margin-top: 10px;
+				padding: 1px;
+				height: 102px;
+				overflow: hidden;
+			}
+			.modal-dialog {
+					width:100%;
+			}
+		</style>
+	</head>
+	
+	<body>
 
-    <!-- Menu Bar -->
-    <div class="navbar-default navbar navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-          </button>
-          <span class="navbar-brand" style="cursor: default;"><big>GISIPH</big><sub><span class="glyphicon glyphicon-globe"></span></sub></span>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li>
-              <a href="./maps.html">
-                <span class="glyphicon glyphicon-map-marker"></span>
-                แสดงข้อมูล
-              </a>
-            </li>
-            <li class="active">
-              <a href="./manage.html">
-                <span class="glyphicon glyphicon-list"></span>
-                จัดการข้อมูล
-              </a>
-            </li>
-            <li>
-              <a href="./analysis.html">
-                <span class="glyphicon glyphicon-stats"></span>
-                วิเคราะห์ข้อมูล
-              </a>
-            </li>
-          </ul>
+		<!-- Menu Bar -->
+		<div class="navbar-default navbar navbar-static-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button>
+					<span class="navbar-brand" style="cursor: default;"><big>GISIPH</big><sub><span class="glyphicon glyphicon-globe"></span></sub></span>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li>
+							<a href="./maps.html">
+								<span class="glyphicon glyphicon-map-marker"></span>
+								แสดงข้อมูล
+							</a>
+						</li>
+						<li class="active">
+							<a href="./manage.html">
+								<span class="glyphicon glyphicon-list"></span>
+								จัดการข้อมูล
+							</a>
+						</li>
+						<li>
+							<a href="./analysis.html">
+								<span class="glyphicon glyphicon-stats"></span>
+								วิเคราะห์ข้อมูล
+							</a>
+						</li>
+					</ul>
 
-          <p class="navbar-text pull-right">
-            
-            <span id="username">
-              ชื่อผู้ใช้
-            </span>
-            <span style="opacity: .6;">
-              (<a id="logout" href="#" class="navbar-link">ออกจากระบบ</a>)
-            </span>
-          </p>
-        </div>
-      </div>
-    </div>
+					<p class="navbar-text pull-right">
+						
+						<span id="username">
+							ชื่อผู้ใช้
+						</span>
+						<span style="opacity: .6;">
+							(<a id="logout" href="#" class="navbar-link">ออกจากระบบ</a>)
+						</span>
+					</p>
+				</div>
+			</div>
+		</div>
 
-    <div style="height: 21px; margin-top: -21px;">
-      <div class="progress progress-striped active" style="height: 7px;">
-        <div class="progress-bar progress-bar-success"  role="progressbar" style="width: 100%;">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
-    </div>
+		<div style="height: 21px; margin-top: -21px;">
+			<div class="progress progress-striped active" style="height: 7px;">
+				<div class="progress-bar progress-bar-success"  role="progressbar" style="width: 100%;">
+					<span class="sr-only">Loading...</span>
+				</div>
+			</div>
+		</div>
 
-    <!-- Main -->
-    <div class="container main">
+		<!-- Main -->
+		<div class="container main">
 
-      <!-- Side Menu -->
-      <div class="row">
-        <div class="clearfix col-sm-4 col-md-3">
-          <nav class="side-menu">
+			<!-- Side Menu -->
+			<div class="row">
+				<div class="clearfix col-sm-4 col-md-3">
+					<nav class="side-menu">
 
-            <div class="hidden-sm hidden-md hidden-lg" style=" margin-bottom: 20px;">
-              <div class="btn-group btn-group-justified">
-                <a class="menu btn btn-default active" href="#Home" data-menu="Home" data-label="ข้อมูลที่พักอาศัย">
-                  <span class="glyphicon glyphicon-home"></span>
-                </a>
-                <a class="menu btn btn-default" href="#Patient" data-menu="Patient" data-label="ข้อมูลผู้ป่วย">
-                  <span class="glyphicon glyphicon-user"></span>
-                </a>
-              </div>
-            </div>
+						<div class="hidden-sm hidden-md hidden-lg" style=" margin-bottom: 20px;">
+							<div class="btn-group btn-group-justified">
+								<a class="menu btn btn-default active" href="#Home" data-menu="Home" data-label="ข้อมูลที่พักอาศัย">
+									<span class="glyphicon glyphicon-home"></span>
+								</a>
+								<a class="menu btn btn-default" href="#Patient" data-menu="Patient" data-label="ข้อมูลผู้ป่วย">
+									<span class="glyphicon glyphicon-user"></span>
+								</a>
+							</div>
+						</div>
 
-            <ul class="nav nav-pills nav-stacked visible-sm visible-md visible-lg">
-              <li class="active">
-                <a class="menu" href="#Home" data-menu="Home" data-toggle="pill">
-                  <span class="glyphicon glyphicon-home"></span>
-                  ข้อมูลที่พักอาศัย
-                </a>
-              </li>
-              <li>
-                <a class="menu" href="#Patient" data-menu="Patient" data-toggle="pill">  
-                  <span class="glyphicon glyphicon-user"></span>
-                  ข้อมูลผู้ป่วย
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
+						<ul class="nav nav-pills nav-stacked visible-sm visible-md visible-lg">
+							<li class="active">
+								<a class="menu" href="#Home" data-menu="Home" data-toggle="pill">
+									<span class="glyphicon glyphicon-home"></span>
+									ข้อมูลที่พักอาศัย
+								</a>
+							</li>
+							<li>
+								<a class="menu" href="#Patient" data-menu="Patient" data-toggle="pill">  
+									<span class="glyphicon glyphicon-user"></span>
+									ข้อมูลผู้ป่วย
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
 
-        <div class="clearfix col-sm-8 col-md-9">
-          <h3 class="showTitle">ข้อมูลที่พักอาศัย</h3>
-        </div>
+				<div class="clearfix col-sm-8 col-md-9">
+					<h3 class="showTitle">ข้อมูลที่พักอาศัย</h3>
+				</div>
 
-        <div class="clearfix col-sm-8 col-md-9">
-          <form class="form-horizontal" role="form">
-            <div class="form-group">
-              <div class="col-lg-12">
-                <div class="input-group">
-                  <input type="text" class="form-control" id="keyword" placeholder="คำค้นหา">
-                  <span class="input-group-btn">
-                    <button id="search" type="submit" class="btn btn-primary">
-                      <span class="glyphicon glyphicon-search"></span>&nbsp;ค้นหา
-                    </button>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
+				<div class="clearfix col-sm-8 col-md-9">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<div class="col-lg-12">
+								<div class="input-group">
+									<input type="text" class="form-control" id="keyword" placeholder="คำค้นหา">
+									<span class="input-group-btn">
+										<button id="search" type="submit" class="btn btn-primary">
+											<span class="glyphicon glyphicon-search"></span>&nbsp;ค้นหา
+										</button>
+									</span>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
 
-        <div>
-          <!-- From -->
-          <div class="clearfix col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th style="width: 50px;"></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody style="cursor: pointer;">
-                <!-- This is Datatable -->
-              </tbody>
-            </table>
+				<div>
+					<!-- From -->
+					<div class="clearfix col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th style="width: 50px;"></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody style="cursor: pointer;">
+								<!-- This is Datatable -->
+							</tbody>
+						</table>
 
-            <div id="pageSelection" style="margin: -20px 0px;"></div>
+						<div id="pageSelection" style="margin: -20px 0px;"></div>
 
-          </div>
-        </div>
-      </div>
-    </div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <!-- Modal -->
-    <div id="manage" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Manage Data" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
+		<!-- Modal -->
+		<div id="manage" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Manage Data" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
 
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h3 class="modal-title"><!-- this is title --></h3>
-            <small id="address"></small>
-          </div>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h3 class="modal-title"><!-- this is title --></h3>
+						<small id="address"></small>
+					</div>
 
-          <!-- this is body -->
-          <div class="modal-body">
-            <!-- Home body -->
-            <div id="rowHome" class="row">
-              <!-- Left Zone -->
-              <div class="col-sm-6">
-                <!-- Map Panel -->
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">
-                      <span class="glyphicon glyphicon-map-marker"></span>
-                      แผนที่
-                      <span class="pull-right">
-                        <button id="gpsDel" type="button" class="btn btn-default btn-xs" style="width: 80px;"><span class="glyphicon glyphicon-trash"></span> ลบพิกัด</button>
-                        <button id="gpsAdd" type="button" class="btn btn-success btn-xs" style="width: 80px;"><span class="glyphicon glyphicon-tag"></span> เพิ่มพิกัด</button>
-                      </span>
-                    </h3>
-                  </div> <!-- panel-body -->
-                  <div class="panel-body">
-                    <div class="col-sm-12">
-                        <div id="mapCanvas"></div>
-                    </div>
-                    <form class="form-horizontal" role="form">
-                      <div class="col-xs-12 col-sm-6">
-                        <label for="latitude">ละติจูด</label>
-                        <input type="text" id="latitude" class="form-control input-sm" placeholder="ละติจูด" value="">
-                      </div>
-                      <div class="col-xs-12 col-sm-6">
-                        <label for="longitude">ลองจิจูด</label>
-                        <input type="text" id="longitude" class="form-control input-sm" placeholder="ลองจิจูด" value="">
-                      </div>
-                      <label class="col-xs-12 control-label"><small id="zoomScale" style="bg-color: gray;opacity: .8;"></small></label>
-                    </form>
-                  </div> <!-- panel-body -->
-                </div> <!-- panel -->
-              </div> <!-- end of col-sm-6 -->
+					<!-- this is body -->
+					<div class="modal-body">
+						<!-- Home body -->
+						<div id="rowHome" class="row">
+							<!-- Left Zone -->
+							<div class="col-sm-6">
+								<!-- Map Panel -->
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h3 class="panel-title">
+											<span class="glyphicon glyphicon-map-marker"></span>
+											แผนที่
+											<span class="pull-right">
+												<button id="gpsDel" type="button" class="btn btn-default btn-xs" style="width: 80px;"><span class="glyphicon glyphicon-trash"></span> ลบพิกัด</button>
+												<button id="gpsAdd" type="button" class="btn btn-success btn-xs" style="width: 80px;"><span class="glyphicon glyphicon-tag"></span> เพิ่มพิกัด</button>
+											</span>
+										</h3>
+									</div> <!-- panel-body -->
+									<div class="panel-body">
+										<div class="col-sm-12">
+												<div id="mapCanvas"></div>
+										</div>
+										<form class="form-horizontal" role="form">
+											<div class="col-xs-12 col-sm-6">
+												<label for="latitude">ละติจูด</label>
+												<input type="text" id="latitude" class="form-control input-sm" placeholder="ละติจูด" value="">
+											</div>
+											<div class="col-xs-12 col-sm-6">
+												<label for="longitude">ลองจิจูด</label>
+												<input type="text" id="longitude" class="form-control input-sm" placeholder="ลองจิจูด" value="">
+											</div>
+											<label class="col-xs-12 control-label"><small id="zoomScale" style="bg-color: gray;opacity: .8;"></small></label>
+										</form>
+									</div> <!-- panel-body -->
+								</div> <!-- panel -->
+							</div> <!-- end of col-sm-6 -->
 
-              <!-- Right Zone -->
-              <div class="col-sm-6">  
-                <div class="row">
-                  <div class="col-sm-12">
-                    <!-- Detail Panel -->
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        <h3 class="panel-title">
-                          <span class="glyphicon glyphicon-user"></span>
-                            สมาชิกที่พักอาศัย
-                          </h3>
-                        </div> <!-- panel-heading -->
-                      <div id="peopleInHouse" class="panel-body" style="overflow-y: auto; overflow-x: hidden; max-height: 250px;">
-                    </div> <!-- panel-body -->
-                    </div> <!-- panel -->
-                  </div> <!-- end of col-sm-12 -->
+							<!-- Right Zone -->
+							<div class="col-sm-6">  
+								<div class="row">
+									<div class="col-sm-12">
+										<!-- Detail Panel -->
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h3 class="panel-title">
+													<span class="glyphicon glyphicon-user"></span>
+														สมาชิกที่พักอาศัย
+													</h3>
+												</div> <!-- panel-heading -->
+											<div id="peopleInHouse" class="panel-body" style="overflow-y: auto; overflow-x: hidden; max-height: 250px;">
+										</div> <!-- panel-body -->
+										</div> <!-- panel -->
+									</div> <!-- end of col-sm-12 -->
 
-                  <!-- Photo Panel -->
-                  <div class="col-sm-12">
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        <h3 class="panel-title">
-                          <span class="glyphicon glyphicon-picture"></span> 
-                          รูปภาพที่พักอาศัย
-                          <span class="pull-right">
-                            <button type="button" class="btnPhoto btn btn-success btn-xs" style="width: 80px;"><span class="glyphicon glyphicon-plus"></span> เพิ่มรูป</button>
-                          </span>
-                        </h3>
-                      </div> <!-- panel-heading -->
-                      <div class="panel-body" style="overflow-y: auto; overflow-x: hidden; max-height: 250px;">
-                        <div id="photoHome" class="stockImg">
-                        </div> <!-- end of stockImg -->
-                      </div> <!-- panel-body -->
-                    </div> <!-- panel -->
-                  </div> <!-- end of col-sm-12 -->
-                </div> <!-- end of row -->
-              </div> <!-- end of col-sm-6 -->
-            </div> <!-- end of row -->
+									<!-- Photo Panel -->
+									<div class="col-sm-12">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h3 class="panel-title">
+													<span class="glyphicon glyphicon-picture"></span> 
+													รูปภาพที่พักอาศัย
+													<span class="pull-right">
+														<button type="button" class="btnPhoto btn btn-success btn-xs" style="width: 80px;"><span class="glyphicon glyphicon-plus"></span> เพิ่มรูป</button>
+													</span>
+												</h3>
+											</div> <!-- panel-heading -->
+											<div class="panel-body" style="overflow-y: auto; overflow-x: hidden; max-height: 250px;">
+												<div id="photoHome" class="stockImg">
+												</div> <!-- end of stockImg -->
+											</div> <!-- panel-body -->
+										</div> <!-- panel -->
+									</div> <!-- end of col-sm-12 -->
+								</div> <!-- end of row -->
+							</div> <!-- end of col-sm-6 -->
+						</div> <!-- end of row -->
 
-            <!-- Patient body -->
-            <div id="rowPatient" class="row hide">
-              <!-- Left Zone -->
-              <div class="col-sm-6">  
-                <div class="row">
-                  <!-- Detail Panel -->
-                  <div class="col-sm-12">
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        <h3 class="panel-title">
-                        <span class="glyphicon glyphicon-eye-open"></span>
-                        รายละเอียดผู้ป่วย
-                      </h3>
-                    </div> <!-- panel-heading -->
-                    <div class="panel-body">
-                      <form class="form-horizontal" role="form">
-                        <div class="form-group">
-                          <label for="name" class="col-lg-2 control-label">ชื่อ-สกุล</label>
-                          <div class="col-lg-10">
-                            <input type="text" class="form-control" id="name" readonly="readonly">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="age" class="col-lg-2 control-label">อายุ</label>
-                          <div class="col-lg-4">
-                            <input type="text" class="form-control" id="age" readonly="readonly">
-                          </div>
-                          <label for="birth" class="col-lg-2 control-label">วันเกิด</label>
-                          <div class="col-lg-4">
-                            <input type="text" class="form-control" id="birth" readonly="readonly">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="sex" class="col-lg-2 control-label">เพศ</label>
-                          <div class="col-lg-4">
-                            <input type="text" class="form-control" id="sex" readonly="readonly">
-                          </div>
-                          <label for="idcard" class="col-lg-2 control-label">รหัส ปชช.</label>
-                          <div class="col-lg-4">
-                            <input type="text" class="form-control" id="idcard" readonly="readonly">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="origin" class="col-lg-2 control-label">เชื้อชาติ</label>
-                          <div class="col-lg-4">
-                            <input type="text" class="form-control" id="origin" readonly="readonly">
-                          </div>
-                          <label for="nation" class="col-lg-2 control-label">สัญชาติ</label>
-                          <div class="col-lg-4">
-                            <input type="text" class="form-control" id="nation" readonly="readonly">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="educate" class="col-lg-2 control-label">การศึกษา</label>
-                          <div class="col-lg-10">
-                            <input type="text" class="form-control" id="educate" readonly="readonly">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="weight" class="col-lg-2 control-label">น้ำหนัก</label>
-                          <div class="col-lg-4">
-                            <input type="text" class="form-control" id="weight" readonly="readonly">
-                          </div>
-                          <label for="height" class="col-lg-2 control-label">ส่วนสูง</label>
-                          <div class="col-lg-4">
-                            <input type="text" class="form-control" id="height" readonly="readonly">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="waist" class="col-lg-2 control-label">รอบเอว</label>
-                          <div class="col-lg-4">
-                            <input type="text" class="form-control" id="waist" readonly="readonly">
-                          </div>
-                          <label for="ass" class="col-lg-2 control-label">สะโพก</label>
-                          <div class="col-lg-4">
-                            <input type="text" class="form-control" id="ass" readonly="readonly">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="pressure" class="col-lg-2 control-label">ความดัน</label>
-                          <div class="col-lg-4">
-                            <input type="text" class="form-control" id="pressure" readonly="readonly">
-                          </div>
-                          <label for="sugar" class="col-lg-2 control-label">น้ำตาลในเลือด</label>
-                          <div class="col-lg-4">
-                            <input type="text" class="form-control" id="sugar" readonly="readonly">
-                          </div>
-                        </div>
-                        <h6 id="visitdate" class="pull-right"></h6>
-                      </form>
-                    </div> <!-- panel-body -->
-                  </div> <!-- panel -->
-                </div> <!-- end of col-sm-12 -->
-              </div> <!-- end of row -->
-            </div> <!-- end of col-sm-6 -->
+						<!-- Patient body -->
+						<div id="rowPatient" class="row hide">
+							<!-- Left Zone -->
+							<div class="col-sm-6">  
+								<div class="row">
+									<!-- Detail Panel -->
+									<div class="col-sm-12">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h3 class="panel-title">
+												<span class="glyphicon glyphicon-eye-open"></span>
+												รายละเอียดผู้ป่วย
+											</h3>
+										</div> <!-- panel-heading -->
+										<div class="panel-body">
+											<form class="form-horizontal" role="form">
+												<div class="form-group">
+													<label for="name" class="col-lg-2 control-label">ชื่อ-สกุล</label>
+													<div class="col-lg-10">
+														<input type="text" class="form-control" id="name" readonly="readonly">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="age" class="col-lg-2 control-label">อายุ</label>
+													<div class="col-lg-4">
+														<input type="text" class="form-control" id="age" readonly="readonly">
+													</div>
+													<label for="birth" class="col-lg-2 control-label">วันเกิด</label>
+													<div class="col-lg-4">
+														<input type="text" class="form-control" id="birth" readonly="readonly">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="sex" class="col-lg-2 control-label">เพศ</label>
+													<div class="col-lg-4">
+														<input type="text" class="form-control" id="sex" readonly="readonly">
+													</div>
+													<label for="idcard" class="col-lg-2 control-label">รหัส ปชช.</label>
+													<div class="col-lg-4">
+														<input type="text" class="form-control" id="idcard" readonly="readonly">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="origin" class="col-lg-2 control-label">เชื้อชาติ</label>
+													<div class="col-lg-4">
+														<input type="text" class="form-control" id="origin" readonly="readonly">
+													</div>
+													<label for="nation" class="col-lg-2 control-label">สัญชาติ</label>
+													<div class="col-lg-4">
+														<input type="text" class="form-control" id="nation" readonly="readonly">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="educate" class="col-lg-2 control-label">การศึกษา</label>
+													<div class="col-lg-10">
+														<input type="text" class="form-control" id="educate" readonly="readonly">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="weight" class="col-lg-2 control-label">น้ำหนัก</label>
+													<div class="col-lg-4">
+														<input type="text" class="form-control" id="weight" readonly="readonly">
+													</div>
+													<label for="height" class="col-lg-2 control-label">ส่วนสูง</label>
+													<div class="col-lg-4">
+														<input type="text" class="form-control" id="height" readonly="readonly">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="waist" class="col-lg-2 control-label">รอบเอว</label>
+													<div class="col-lg-4">
+														<input type="text" class="form-control" id="waist" readonly="readonly">
+													</div>
+													<label for="ass" class="col-lg-2 control-label">สะโพก</label>
+													<div class="col-lg-4">
+														<input type="text" class="form-control" id="ass" readonly="readonly">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="pressure" class="col-lg-2 control-label">ความดัน</label>
+													<div class="col-lg-4">
+														<input type="text" class="form-control" id="pressure" readonly="readonly">
+													</div>
+													<label for="sugar" class="col-lg-2 control-label">น้ำตาลในเลือด</label>
+													<div class="col-lg-4">
+														<input type="text" class="form-control" id="sugar" readonly="readonly">
+													</div>
+												</div>
+												<h6 id="visitdate" class="pull-right"></h6>
+											</form>
+										</div> <!-- panel-body -->
+									</div> <!-- panel -->
+								</div> <!-- end of col-sm-12 -->
+							</div> <!-- end of row -->
+						</div> <!-- end of col-sm-6 -->
 
-                <!-- Right Zone -->
-            <div class="col-sm-6">
-              <div class="row">
-                <!-- History Panel -->
-                <div class="col-sm-12">
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h3 class="panel-title">
-                        <span class="glyphicon glyphicon-list-alt"></span> 
-                        ประวัติการตรวจพบโรคเรื้อรัง
-                      </h3>
-                    </div> <!-- panel-heading -->
-                    <div class="panel-body" style="overflow-y: auto; overflow-x: hidden; max-height: 250px;">
-                      <div id="historyChronic" class="list-group">
-                      </div> <!-- end of historyChronic -->
-                    </div> <!-- panel-body -->
-                  </div> <!-- panel -->
-                </div> <!-- end of col-sm-12 -->
-              </div>
-            </div>
+								<!-- Right Zone -->
+						<div class="col-sm-6">
+							<div class="row">
+								<!-- History Panel -->
+								<div class="col-sm-12">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h3 class="panel-title">
+												<span class="glyphicon glyphicon-list-alt"></span> 
+												ประวัติการตรวจพบโรคเรื้อรัง
+											</h3>
+										</div> <!-- panel-heading -->
+										<div class="panel-body" style="overflow-y: auto; overflow-x: hidden; max-height: 250px;">
+											<div id="historyChronic" class="list-group">
+											</div> <!-- end of historyChronic -->
+										</div> <!-- panel-body -->
+									</div> <!-- panel -->
+								</div> <!-- end of col-sm-12 -->
+							</div>
+						</div>
 
-            <div class="col-sm-6">
-              <div class="row">
-                <!-- Photo Panel -->
-                <div class="col-sm-12">
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h3 class="panel-title">
-                        <span class="glyphicon glyphicon-picture"></span> 
-                        <span id="phototitle">รูปภาพผู้ป่วย</span>
-                        <span class="pull-right">
-                          <button id="photogroup" type="button" class="btnPhoto btn btn-success btn-xs" data-group="" data-ccode="" style="width: 80px;">
-                            <span class="glyphicon glyphicon-plus"></span> เพิ่มรูป</button>
-                        </span>
-                      </h3>
-                    </div> <!-- panel-heading -->
-                    <div class="panel-body" style="overflow-y: auto; overflow-x: hidden; max-height: 250px;">
-                      <div id="photoPatient" class="stockImg">
-                      </div> <!-- end of stockImg -->
-                    </div> <!-- panel-body -->
-                  </div> <!-- panel -->
-                </div> <!-- end of col-sm-12 -->
-              </div>
-            </div>
-            </div> <!-- end of row -->
-          </div> <!-- end of body -->
+						<div class="col-sm-6">
+							<div class="row">
+								<!-- Photo Panel -->
+								<div class="col-sm-12">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h3 class="panel-title">
+												<span class="glyphicon glyphicon-picture"></span> 
+												<span id="phototitle">รูปภาพผู้ป่วย</span>
+												<span class="pull-right">
+													<button id="photogroup" type="button" class="btnPhoto btn btn-success btn-xs" data-group="" data-ccode="" style="width: 80px;">
+														<span class="glyphicon glyphicon-plus"></span> เพิ่มรูป</button>
+												</span>
+											</h3>
+										</div> <!-- panel-heading -->
+										<div class="panel-body" style="overflow-y: auto; overflow-x: hidden; max-height: 250px;">
+											<div id="photoPatient" class="stockImg">
+											</div> <!-- end of stockImg -->
+										</div> <!-- panel-body -->
+									</div> <!-- panel -->
+								</div> <!-- end of col-sm-12 -->
+							</div>
+						</div>
+						</div> <!-- end of row -->
+					</div> <!-- end of body -->
 
-          <div class="modal-footer">
-            <form enctype="multipart/form-data" method="post">
-              <input type='file' id="imgInput" name="imgInput[]" accept="image/jpeg" style="display: none;">
-            </form>
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-              ปิดหน้าต่าง
-            </button>
-          </div>
+					<div class="modal-footer">
+						<form enctype="multipart/form-data" method="post">
+							<input type='file' id="imgInput" name="imgInput[]" accept="image/jpeg" style="display: none;">
+						</form>
+						<button type="button" class="btn btn-default" data-dismiss="modal">
+							ปิดหน้าต่าง
+						</button>
+					</div>
 
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-             
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="./dist/js/jquery-2.0.3.min.js"></script><script src="./dist/js/holder.js"></script>
-        
-    <!-- Include Aertify.js -->
-    <script src="./dist/js/alertify.min.js"></script>
-        
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="./dist/js/bootstrap.min.js"></script>
-        
-    <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-    <script src="./dist/js/respond.min.js"></script>
-        
-    <!-- jQuery pagination plugin (EDIT) -->
-    <script src="./dist/js/jquery.bootpag.min.js"></script>
-        
-    <!-- Interactive In Site -->
-    <script src="./dist/js/interactive.js"></script>
-        
-    <script src="./dist/js/authorization.js"></script>
-    <script src="./dist/js/manage.js"></script>
-        
-    <!-- Google Maps API V3 -->
-    <script src="http://maps.google.com/maps/api/js?sensor=true&language=th"></script>
-  </body>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+						 
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="./dist/js/jquery-2.0.3.min.js"></script><script src="./dist/js/holder.js"></script>
+				
+		<!-- Include Aertify.js -->
+		<script src="./dist/js/alertify.min.js"></script>
+				
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="./dist/js/bootstrap.min.js"></script>
+				
+		<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+		<script src="./dist/js/respond.min.js"></script>
+				
+		<!-- jQuery pagination plugin (EDIT) -->
+		<script src="./dist/js/jquery.bootpag.min.js"></script>
+				
+		<!-- Interactive In Site -->
+		<script src="./dist/js/interactive.js"></script>
+				
+		<script src="./dist/js/authorization.js"></script>
+		<script src="./dist/js/manage.js"></script>
+				
+		<!-- Google Maps API V3 -->
+		<script src="http://maps.google.com/maps/api/js?sensor=true&language=th"></script>
+	</body>
 </html>

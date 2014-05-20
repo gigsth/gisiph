@@ -12,6 +12,11 @@
 		<!-- Bootstrap -->
 		<link href="./dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="./dist/css/bootstrap-flatly.min.css" rel="stylesheet" media="screen">
+		<style>
+			.chart-view {
+				height: 400px;
+			}
+		</style>
 	</head>
 	
 	<body>
@@ -78,9 +83,9 @@
 
 						<!-- Nav tabs -->
 						<ul class="nav nav-pills nav-stacked">
-							<li class="active"><a class="menu" href="#tab1" data-menu="tab1" data-toggle="pill">อัตราผู้ป่วยโรคเรื้อรัง</a></li>
-							<li><a class="menu" href="#tab2" data-menu="tab2" data-toggle="pill">กราฟผู้ป่วยโรคความดันโลหิตสูง</a></li>
-							<li><a class="menu" href="#tab3" data-menu="tab3" data-toggle="pill">กราฟผู้ป่วยโรคเบาหวาน</a></li>
+							<li class="active"><a class="menu" href="#tab1" data-menu="tab1" data-toggle="pill">แผนภูมิอัตราผู้ป่วยโรคเรื้อรัง<br><small>(เบาหวานและความดันโลหิตสูง)</small></a></li>
+							<li><a class="menu" href="#tab2" data-menu="tab2" data-toggle="pill">แผนภูมิผู้ป่วยโรคความดันโลหิตสูง</a></li>
+							<li><a class="menu" href="#tab3" data-menu="tab3" data-toggle="pill">แผนภูมิผู้ป่วยโรคเบาหวาน</a></li>
 						</ul>
 
 					</nav>
@@ -106,7 +111,7 @@
 										<div class="col-sm-12">
 											<div class="panel panel-default">
 												<div class="panel-body">
-													<div id="chronics"></div>
+													<div id="chronics" class="chart-view"></div>
 												</div> <!-- panel-body -->
 											</div> <!-- panel panel-default -->
 										</div> <!-- col-sm-12 -->
@@ -119,7 +124,7 @@
 										<div class="col-sm-12">
 											<div class="panel panel-default">
 												<div class="panel-body">
-													<div id="village"></div>
+													<div id="village" class="chart-view"></div>
 												</div> <!-- panel-body -->
 											</div> <!-- panel panel-default -->
 										</div> <!-- col-sm-12 -->
@@ -132,7 +137,7 @@
 										<div class="col-sm-12">
 											<div class="panel panel-default">
 												<div class="panel-body">
-													<div id="discover"></div>
+													<div id="discover" class="chart-view"></div>
 												</div> <!-- panel-body -->
 											</div> <!-- panel panel-default -->
 										</div> <!-- col-sm-12 -->
@@ -159,7 +164,7 @@
 								<div class="col-sm-12">
 									<div class="panel panel-default">
 										<div class="panel-body">
-											<div id="colorFromHypertension"></div>
+											<div id="colorFromHypertension" class="chart-view"></div>
 										</div> <!-- panel-body -->
 									</div> <!-- panel panel-default -->
 								</div> <!-- col-sm-12 -->
@@ -184,7 +189,7 @@
 								<div class="col-sm-12">
 									<div class="panel panel-default">
 										<div class="panel-body">
-											<div id="colorFromDiabetes"></div>
+											<div id="colorFromDiabetes" class="chart-view"></div>
 										</div> <!-- panel-body -->
 									</div> <!-- panel panel-default -->
 								</div> <!-- col-sm-12 -->
