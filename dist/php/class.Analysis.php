@@ -274,7 +274,7 @@ class Analysis
 
 			GROUP BY 
 				`sugarblood_grouppid`.`pid`,
-				`cdisease`.`codechronic` DESC			
+				`cdisease`.`codechronic` DESC
 			"
 		);
 		return $this->calcColorFromDiabetes($colorFromDiabetes);
@@ -284,15 +284,16 @@ class Analysis
 	public function calcColorFromDiabetes($colorFromDiabetes) {
 
 		$person_color = array();
+		$last_value = 0;
 		foreach ($colorFromDiabetes as $key => &$value) {
-			if($value['person_codechronic'] === '10') {
-				if($value['sugarnumdigit'] >= 183) {
+			if((int)$value['person_codechronic'] === 10) {
+				if((int)$value['sugarnumdigit'] >= 183) {
 					$person_color[$value['pid']] = 5;
 				}
-				elseif ($value['sugarnumdigit'] >= 155 ) {
+				elseif ((int)$value['sugarnumdigit'] >= 155 ) {
 					$person_color[$value['pid']] = 4;
 				}
-				elseif ($value['sugarnumdigit'] >= 126 ) {
+				elseif ((int)$value['sugarnumdigit'] >= 126 ) {
 					$person_color[$value['pid']] = 3;
 				}
 				else{
@@ -305,7 +306,7 @@ class Analysis
 				}
 			}
 			else {
-				if($value['sugarnumdigit'] >=100 ) {
+				if((int)$value['sugarnumdigit'] >=100 ) {
 					$person_color[$value['pid']] = 1;
 				}
 				else{
@@ -429,8 +430,8 @@ class Analysis
 				`sugarblood_grouppid`.*,
 				`cdisease`.`codechronic` AS 'person_codechronic'
 			FROM
-				
-				(	SELECT 
+			(
+				SELECT 
 					`person`.`pid` 
 				FROM 
 					`person`,`house`
@@ -439,30 +440,30 @@ class Analysis
 				AND 
 					`house`.`villcode` = %s[VILLCODE]
 				ORDER BY `person`.`pid`
-			) AS `personvillage` JOIN
-					
-				(
-					SELECT 
-						`sugarblood`.* 
-					FROM
-						(
-							SELECT 
-								`visit`.`pid`,
-								`visitlabsugarblood`.`sugarnumdigit`,
-								`visit`.`visitdate`
-							FROM 
-								`jhcisdb`.`visitlabsugarblood` 
-							LEFT JOIN 
-								`jhcisdb`.`visit`
-							ON 
-								`visitlabsugarblood`.`visitno` = `visit`.`visitno`
-							ORDER BY 
-								`visit`.`pid`,
-								`visit`.`visitdate` DESC
-						)AS `sugarblood`
-					GROUP BY 
-						`sugarblood`.`pid`
-				) AS `sugarblood_grouppid` 
+			) AS `personvillage` 
+			JOIN
+			(
+				SELECT 
+					`sugarblood`.* 
+				FROM
+					(
+						SELECT 
+							`visit`.`pid`,
+							`visitlabsugarblood`.`sugarnumdigit`,
+							`visit`.`visitdate`
+						FROM 
+							`jhcisdb`.`visitlabsugarblood` 
+						LEFT JOIN 
+							`jhcisdb`.`visit`
+						ON 
+							`visitlabsugarblood`.`visitno` = `visit`.`visitno`
+						ORDER BY 
+							`visit`.`pid`,
+							`visit`.`visitdate` DESC
+					)AS `sugarblood`
+				GROUP BY 
+					`sugarblood`.`pid`
+			) AS `sugarblood_grouppid`
 			ON `personvillage`.`pid` = `sugarblood_grouppid`.`pid`
 			LEFT JOIN 
 				`jhcisdb`.`personchronic`
@@ -475,7 +476,7 @@ class Analysis
 
 			GROUP BY 
 				`sugarblood_grouppid`.`pid`,
-				`cdisease`.`codechronic`
+				`cdisease`.`codechronic` DESC
 			",
 			array(
 				'VILLCODE' => $villcode
