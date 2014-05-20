@@ -295,7 +295,7 @@ class Analysis
 				elseif ($value['sugarnumdigit'] >= 126 ) {
 					$person_color[$value['pid']] = 3;
 				}
-				else {
+				else{
 					$person_color[$value['pid']] = 2;
 				}
 			} 
@@ -308,7 +308,7 @@ class Analysis
 				if($value['sugarnumdigit'] >=100 ) {
 					$person_color[$value['pid']] = 1;
 				}
-				else {
+				else{
 					$person_color[$value['pid']] = 0;
 				}
 			}
