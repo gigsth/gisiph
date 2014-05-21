@@ -282,7 +282,6 @@ class Analysis
 
 
 	public function calcColorFromDiabetes($colorFromDiabetes) {
-
 		$person_color = array();
 		$last_value = 0;
 		$ck_diabetes = array();
@@ -314,7 +313,7 @@ class Analysis
 					$ck_other[$value['pid']] = 1;
 				}
 				if ($ck_diabetes[$value['pid']] == 1 ) {
-					$person_color[$value['pid']] = 6
+					$person_color[$value['pid']] = 6;
 				}
 				elseif ((int)$value['sugarnumdigit'] >= 100) {
 					$person_codechronic[$value['pid']] = 1;
