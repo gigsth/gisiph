@@ -285,32 +285,42 @@ class Analysis
 
 		$person_color = array();
 		$last_value = 0;
+		$ck_diabetes = array();
+		$ck_other = array();
 		foreach ($colorFromDiabetes as $key => &$value) {
-			if((int)$value['person_codechronic'] === 10) {
-				if((int)$value['sugarnumdigit'] >= 183) {
-					$person_color[$value['pid']] = 5;
-				}
-				elseif ((int)$value['sugarnumdigit'] >= 155 ) {
-					$person_color[$value['pid']] = 4;
-				}
-				elseif ((int)$value['sugarnumdigit'] >= 126 ) {
-					$person_color[$value['pid']] = 3;
-				}
-				else{
-					$person_color[$value['pid']] = 2;
-				}
-			} 
-			elseif (isset($person_color[$value['pid']])) {
-				if($value['person_codechronic'] !== '01') {
+			if ($value['person_codechronic'] == '10') {
+				if($ck_other[$value['pid']] == 1) {
 					$person_color[$value['pid']] = 6;
+				}
+				elseif ((int)$value['sugarnumdigit'] >= 183) {
+					$person_color[$value['pid']] = 5;
+					$ck_diabetes[$value['pid']] =  1;
+				}
+				elseif ((int)$value['sugarnumdigit'] >= 155) {
+					$person_color[$value['pid']] = 4;
+					$ck_diabetes[$value['pid']] = 1;
+				}
+				elseif ((int)$value['sugarnumdigit'] >= 126) {
+					$person_color[$value['pid']] = 3;
+					$ck_diabetes[$value['pid']] = 1;
+				}
+				else {
+					$person_color[$value['pid']] =2;
+					$ck_diabetes[$value['pid']] = 1;
 				}
 			}
 			else {
-				if((int)$value['sugarnumdigit'] >=100 ) {
-					$person_color[$value['pid']] = 1;
+				if ($value['person_codechronic'] != '01' && $value['person_codechronic'] != NULL) {
+					$ck_other[$value['pid']] = 1;
 				}
-				else{
-					$person_color[$value['pid']] = 0;
+				if ($ck_diabetes[$value['pid']] == 1 ) {
+					$person_color[$value['pid']] = 6
+				}
+				elseif ((int)$value['sugarnumdigit'] >= 100) {
+					$person_codechronic[$value['pid']] = 1;
+				}
+				else {
+					$person_codechronic[$value['pid']] = 0;
 				}
 			}
 		}
