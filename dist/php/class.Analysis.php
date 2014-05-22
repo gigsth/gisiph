@@ -123,6 +123,7 @@ class Analysis
 				`pressure_pidgroup`.`pid`,
 				`pressure_pidgroup`.`top_pressure`,
 				`pressure_pidgroup`.`down_pressure`,
+				`pressure_pidgroup`.`visitdate`,
 				`cdisease`.`codechronic` AS `person_codechronic`
 			
 			FROM
@@ -133,7 +134,7 @@ class Analysis
 						`visit`.`pid` AS `pid`,
 						SUBSTRING(`visit`.`pressure`,1,INSTR(`visit`.`pressure`,'/')-1) AS `top_pressure`,
 						SUBSTRING(`visit`.`pressure`,INSTR(`visit`.`pressure`,'/')+1, CHAR_LENGTH(`visit`.`pressure`)) AS `down_pressure`,
-						`visit`.`visitdate` AS `date_pressure`
+						`visit`.`visitdate`
 					FROM
 						`jhcisdb`.`visit` 
 					WHERE
@@ -159,33 +160,37 @@ class Analysis
 	
 	public function calcColorFromHypertension($colorFromHypertension) {
 		$person_color = array();
+		$has_disease = array();
 		foreach ($colorFromHypertension as $key => &$value) {
-			if($value['person_codechronic'] === '01') {
-				if($value['top_pressure'] >= 180 AND $value['down_pressure'] >= 110) {
+			$value['top_pressure'] = (int)$value['top_pressure'];
+			$value['down_pressure'] = (int)$value['down_pressure'];
+
+			if (($value['person_codechronic'] === NULL || $value['person_codechronic'] !== '01') && !$has_disease[$value['pid']]) {
+				if ($value['top_pressure'] >= 120 && $value['down_pressure'] >= 80 && (int)$person_color[$value['pid']] <= 1) {
+					$person_color[$value['pid']] = 1;
+				}
+				elseif ((int)$person_color[$value['pid']] === 0) {
+					$person_color[$value['pid']] = 0;
+				}
+			}
+			elseif ($value['person_codechronic'] === '01' && !$has_disease[$value['pid']]) {
+				$has_disease[$value['pid']] = true;
+				if ($value['top_pressure'] >= 180 && $value['down_pressure'] >= 110) {
 					$person_color[$value['pid']] = 5;
 				}
-				elseif ($value['top_pressure'] >= 160 AND $value['down_pressure'] >= 100) {
+				elseif ($value['top_pressure'] >= 160 && $value['down_pressure'] >= 100) {
 					$person_color[$value['pid']] = 4;
 				}
-				elseif ($value['top_pressure'] >= 140 AND $value['down_pressure'] >= 90) {
+				elseif ($value['top_pressure'] >= 140 && $value['down_pressure'] >= 90) {
 					$person_color[$value['pid']] = 3;
 				}
 				else {
 					$person_color[$value['pid']] = 2;
 				}
-			} 
-			elseif (isset($person_color[$value['pid']])) {
-				if($value['person_codechronic'] !== '10') {
-					$person_color[$value['pid']] = 6;
-				}
 			}
-			else {
-				if($value['top_pressure'] >=120 AND $value['down_pressure'] >= 80) {
-					$person_color[$value['pid']] = 1;
-				}
-				else {
-					$person_color[$value['pid']] = 0;
-				}
+			elseif ($value['person_codechronic'] !== NULL && $value['person_codechronic'] !== '01') {
+				$has_disease[$value['pid']] = true;
+				$person_color[$value['pid']] = 6;
 			}
 		}
 
@@ -238,7 +243,8 @@ class Analysis
 		$colorFromDiabetes = $this->mysql->queryAndFetchAll(
 			"
 			SELECT 
-				`sugarblood_grouppid`.*,
+				`sugarblood_grouppid`.`pid`,
+				`sugarblood_grouppid`.`sugarnumdigit`,
 				`cdisease`.`codechronic` AS 'person_codechronic'
 			FROM
 				(
@@ -250,10 +256,10 @@ class Analysis
 								`visit`.`pid`,
 								`visitlabsugarblood`.`sugarnumdigit`,
 								`visit`.`visitdate`
-							FROM 
-								`jhcisdb`.`visitlabsugarblood` 
-							LEFT JOIN 
+							FROM
 								`jhcisdb`.`visit`
+							JOIN
+								`jhcisdb`.`visitlabsugarblood`
 							ON 
 								`visitlabsugarblood`.`visitno` = `visit`.`visitno`
 							ORDER BY 
@@ -280,34 +286,36 @@ class Analysis
 		return $this->calcColorFromDiabetes($colorFromDiabetes);
 	}
 
-
 	public function calcColorFromDiabetes($colorFromDiabetes) {
 		$person_color = array();
-		$last_value = 0;
-		$ck_diabetes = array();
-		$ck_other = array();
+		$has_disease = array();
 		foreach ($colorFromDiabetes as $key => &$value) {
-			if ($value['person_codechronic'] == '10') {
-				if($ck_other[$value['pid']] == 1) {
-					$person_color[$value['pid']] = 6;
+			$value['sugarnumdigit'] = (int)$value['sugarnumdigit'];
+
+			if (($value['person_codechronic'] === NULL || $value['person_codechronic'] !== '10') && !$has_disease[$value['pid']]) {
+				if ($value['sugarnumdigit'] >= 100 && (int)$person_color[$value['pid']] <= 1) {
+					$person_color[$value['pid']] = 1;
 				}
-				elseif ((int)$value['sugarnumdigit'] >= 183) {
-					$person_color[$value['pid']] = 5;
-					$ck_diabetes[$value['pid']] =  1;
-				}
-				elseif ((int)$value['sugarnumdigit'] >= 155) {
-					$person_color[$value['pid']] = 4;
-					$ck_diabetes[$value['pid']] = 1;
-				}
-				elseif ((int)$value['sugarnumdigit'] >= 126) {
-					$person_color[$value['pid']] = 3;
-					$ck_diabetes[$value['pid']] = 1;
-				}
-				else {
-					$person_color[$value['pid']] =2;
-					$ck_diabetes[$value['pid']] = 1;
+				elseif ((int)$person_color[$value['pid']] === 0) {
+					$person_color[$value['pid']] = 0;
 				}
 			}
+			elseif ($value['person_codechronic'] === '10' && !$has_disease[$value['pid']]) {
+				$has_disease[$value['pid']] = true;
+				if ($value['sugarnumdigit'] >= 183) {
+					$person_color[$value['pid']] = 5;
+				}
+				elseif ($value['sugarnumdigit'] >= 155) {
+					$person_color[$value['pid']] = 4;
+				}
+				elseif ($value['sugarnumdigit'] >= 126) {
+					$person_color[$value['pid']] = 3;
+				}
+				else {
+					$person_color[$value['pid']] = 2;
+				}
+			}
+<<<<<<< HEAD
 			else {
 				if ($value['person_codechronic'] != '01' && $value['person_codechronic'] != NULL) {
 					$ck_other[$value['pid']] = 1;
@@ -321,6 +329,11 @@ class Analysis
 				else {
 					$person_codechronic[$value['pid']] = 0;
 				}
+=======
+			elseif ($value['person_codechronic'] !== NULL && $value['person_codechronic'] !== '10') {
+				$has_disease[$value['pid']] = true;
+				$person_color[$value['pid']] = 6;
+>>>>>>> d037a75bc991efe546a3c2c93c26a34248ce6fbb
 			}
 		}
 
@@ -385,7 +398,7 @@ class Analysis
 						`person`,`house`
 					WHERE 
 						`person`.`hcode` = `house`.`hcode` 
-					AND 
+					AND
 						`house`.`villcode` = %s[VILLCODE]
 					ORDER BY `person`.`pid`
 				) AS `personvillage` 
@@ -425,10 +438,8 @@ class Analysis
 				'VILLCODE' => $villcode
 			)
 		);
-		
-		$colorVillage = $this->calcColorFromHypertension($colorFromHypertension);
 
-		return $colorVillage;
+		return $this->calcColorFromHypertension($colorFromHypertension);
 	}
 
 	public function getColorFromDiabetesVillage($villcode) {
@@ -447,7 +458,7 @@ class Analysis
 				WHERE 
 					`person`.`hcode` = `house`.`hcode` 
 				AND 
-					`house`.`villcode` = %s[VILLCODE]
+					`house`.`villcode` = %n[VILLCODE]
 				ORDER BY `person`.`pid`
 			) AS `personvillage` 
 			JOIN
@@ -491,10 +502,8 @@ class Analysis
 				'VILLCODE' => $villcode
 			)
 		);
-		
-		$colorVillage = $this->calcColorFromHypertension($colorFromDiabetes);
 
-		return $colorVillage;
+		return $this->calcColorFromDiabetes($colorFromDiabetes);
 	}
 
 	public function getNameVillage() {
