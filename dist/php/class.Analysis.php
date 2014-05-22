@@ -315,25 +315,9 @@ class Analysis
 					$person_color[$value['pid']] = 2;
 				}
 			}
-<<<<<<< HEAD
-			else {
-				if ($value['person_codechronic'] != '01' && $value['person_codechronic'] != NULL) {
-					$ck_other[$value['pid']] = 1;
-				}
-				if ($ck_diabetes[$value['pid']] == 1 && $ck_other[$value['pid']] == 1) {
-					$person_color[$value['pid']] = 6;
-				}
-				elseif ((int)$value['sugarnumdigit'] >= 100) {
-					$person_codechronic[$value['pid']] = 1;
-				}
-				else {
-					$person_codechronic[$value['pid']] = 0;
-				}
-=======
 			elseif ($value['person_codechronic'] !== NULL && $value['person_codechronic'] !== '10') {
 				$has_disease[$value['pid']] = true;
 				$person_color[$value['pid']] = 6;
->>>>>>> d037a75bc991efe546a3c2c93c26a34248ce6fbb
 			}
 		}
 
