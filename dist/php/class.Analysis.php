@@ -312,7 +312,7 @@ class Analysis
 				if ($value['person_codechronic'] != '01' && $value['person_codechronic'] != NULL) {
 					$ck_other[$value['pid']] = 1;
 				}
-				if ($ck_diabetes[$value['pid']] == 1 ) {
+				if ($ck_diabetes[$value['pid']] == 1 && $ck_other[$value['pid']] == 1) {
 					$person_color[$value['pid']] = 6;
 				}
 				elseif ((int)$value['sugarnumdigit'] >= 100) {
