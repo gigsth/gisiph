@@ -18,14 +18,11 @@ class Analysis
 	}
 
 	public function getChronics() {
-		$chronics = $this->mysql->queryAndFetchAll(
+		$chronics_groupcode = $this->mysql->queryAndFetchAll(
 			"
 			SELECT
-				CASE `cdiseasechronic`.`groupcode`
-					WHEN '10' THEN 'เบาหวาน'
-					WHEN '01' THEN 'ความดันโลหิตสูง'
-				END AS `disease`,
-				COUNT(`cdiseasechronic`.`groupcode`) AS `count`
+				`personchronic`.`pid` AS `pid`, 
+				`cdiseasechronic`.`groupcode` AS `groupcode`
 			FROM
 				`jhcisdb`.`personchronic`,
 				`jhcisdb`.`cdisease`,
@@ -33,14 +30,49 @@ class Analysis
 			WHERE
 				`personchronic`.`chroniccode` = `cdisease`.`diseasecode` AND
 				`cdisease`.`codechronic` = `cdiseasechronic`.`groupcode` AND
-				`cdiseasechronic`.`groupcode` IN ('01', '10')
-			GROUP BY
-				`cdiseasechronic`.`groupcode` DESC
+				`cdiseasechronic`.`groupcode` IN ('01', '10')  
+			GROUP BY 
+				`personchronic`.`pid`,
+				`cdiseasechronic`.`groupcode`
+			ORDER BY 
+				`personchronic`.`pid`
 			"
 		);
 
-		foreach ($chronics as $key => &$value) {
-			$value['count'] = (int)$value['count'];
+		$person_ch = array();
+		$person_disease = array();
+		foreach ($chronics_groupcode as $key => &$value) {
+			if(!isset($person_disease[$value['pid']])) {
+				if($value['groupcode'] === '01') {
+					$person_disease[$value['pid']] = 0;
+				}
+				elseif ($value['groupcode'] === '10') {
+					$person_disease[$value['pid']] = 1;
+				}
+			}
+			else {
+				$person_disease[$value['pid']] = 2;
+			}
+
+		}
+
+		$chronics = array(
+			array(
+				'disease' => 'ความดันโลหิตสูง',
+				'count' => 0
+			),
+			array(
+				'disease' => 'เบาหวาน',
+				'count' => 0
+			),
+			array(
+				'disease' => 'เบาหวานและความดันโลหิตสูง',
+				'count' => 0
+			)
+		);
+
+		foreach ($person_disease as $key => &$value) {
+			$chronics[$value]['count']++;
 		}
 
 		return $chronics;
