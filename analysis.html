@@ -11,10 +11,20 @@
 
 		<!-- Bootstrap -->
 		<link href="./dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
-		<link href="./dist/css/bootstrap-flatly.min.css" rel="stylesheet" media="screen">
+		<link href="./dist/css/bootstrap-flatly.min.css" rel="stylesheet" media="screen, print">
+		<!-- <link href="./dist/css/analysis-print.css" rel="stylesheet" type="text/css" media="print" > -->
 		<style>
 			.chart-view {
 				height: 400px;
+			}
+			#prepare_table th {
+				color: #ecf0f1;
+				background-color: #34495e;
+			}
+			@media print {
+				#prepare_table th {
+					color: black !important;
+				}
 			}
 		</style>
 	</head>
@@ -76,10 +86,10 @@
 
 		<div class="container">
 			
-			 <!-- Side Menu -->
 			<div class="row">
+				<!-- Side Menu -->
 				<div class="clearfix col-sm-4 col-md-3">
-					<nav class="side-menu">
+					<nav class="side-menu hidden-print">
 
 						<!-- Nav tabs -->
 						<ul class="nav nav-pills nav-stacked">
@@ -97,7 +107,7 @@
 						<div class="clearfix col-sm-8 col-md-9">
 
 							<!-- Nav tabs -->
-							<ul class="nav nav-tabs nav-justified">
+							<ul class="nav nav-tabs nav-justified hidden-print">
 								<li class="active"><a class="sub-menu" href="#tab1-1" data-toggle="tab">สัดส่วนของผู้ป่วยโรคเรื้อรัง</a></li>
 								<li><a class="sub-menu" href="#tab1-2" data-toggle="tab">สัดส่วนของผู้ป่วยโรคเรื้อรังในแต่ละหมู่บ้าน</a></li>
 								<li><a class="sub-menu" href="#tab1-3" data-toggle="tab">จำนวนผู้ป่วยโรคเรื้อรังในแต่ละปี</a></li>
@@ -196,12 +206,17 @@
 							</div> <!-- row -->
 						</div> <!-- col-sm-8 col-md-9 -->
 					</div> <!-- tab-pane -->
+				</div> <!-- tab-content -->
+			</div> <!-- row  visible-print-->
 
+			<div class="row">
+				<div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3">
+					<table id="prepare_table" class="table table-bordered table-condensed">
+						<thead><tr></tr></thead>
+						<tbody></tbody>
+					</table>
 				</div>
-
 			</div>
-
-			
 		
 		</div> <!-- container -->
 

@@ -149,7 +149,7 @@ class Analysis
 		$discover = $this->mysql->queryAndFetchAll(
 			"
 			SELECT
-				YEAR(`personchronic`.`datefirstdiag`) + 543 AS `Year`,
+				YEAR(`personchronic`.`datefirstdiag`) + 543 AS `year`,
 				COUNT(
 					CASE WHEN `cdiseasechronic`.`groupcode` = '10' THEN 1 END
 				) AS `diabetes`,

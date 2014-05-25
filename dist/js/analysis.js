@@ -60,7 +60,11 @@ function drawChronics(chronics) {
 			title: 'สัดส่วนของผู้ป่วยโรคเรื้อรัง',
 			width: '100%',
 			height: '100%'
-	  });
+	});
+
+	prepareTable(['โรคเรื้อรัง', 'จำนวน(คน)'], $.map(chronics, function(value, index) {
+		return [[value.disease, value.count]];
+	}));
 }
 
 function drawVillage(village) {
@@ -75,7 +79,11 @@ function drawVillage(village) {
 			title: 'สัดส่วนของผู้ป่วยโรคเรื้อรังในแต่ละหมู่บ้าน',
 			width: '100%',
 			height: '100%'
-	  });
+	});
+
+	prepareTable(['หมู่บ้าน', 'โรคเบาหวาน(คน)', 'โรคความดันโลหิตสูง(คน)', 'โรคเบาหวานและความดันโลหิตสูง(คน)'], $.map(village, function(value, index) {
+		return [[value.villname, value.diabetes, value.hypertension, value.both]];
+	}));
 }
 
 function drawDiscover(discover) {
@@ -89,7 +97,11 @@ function drawDiscover(discover) {
 			title: 'จำนวนผู้ป่วยโรคเรื้อรังในแต่ละปี',
 			width: '100%',
 			height: '100%'
-	  });
+	});
+	
+	prepareTable(['ปี(พ.ศ.)', 'โรคเบาหวาน(คน)', 'โรคความดันโลหิตสูง(คน)'], $.map(discover, function(value, index) {
+		return [[value.year, value.diabetes, value.hypertension]];
+	}));
 }
 
 function drawColorFromHypertension(colorFromHypertension) {
@@ -119,11 +131,14 @@ function drawColorFromHypertension(colorFromHypertension) {
 			height: '100%',
 			bar: {groupWidth: "70%"},
 			legend: { position: "none" }
-	  });
+	});
 
+	prepareTable(['กลุ่มของอาการ', 'จำนวน(คน)'], $.map(colorFromHypertension, function(value, index) {
+		return [[value.name, value.count]];
+	}));
 }
 
-function drawColorFromDiabetes(colorFromDiabetes) {//console.log(colorFromDiabetes);
+function drawColorFromDiabetes(colorFromDiabetes) {
 	var data = new google.visualization.DataTable();
 	data.addColumn('string', 'ระดับความรุนแรง');
 	data.addColumn('number', 'จำนวน');
@@ -155,6 +170,10 @@ function drawColorFromDiabetes(colorFromDiabetes) {//console.log(colorFromDiabet
 			position: 'none'
 		}
 	});
+
+	prepareTable(['กลุ่มของอาการ', 'จำนวน(คน)'], $.map(colorFromDiabetes, function(value, index) {
+		return [[value.name, value.count]];
+	}));
 }
 
 function callJSON(options, callback) {
@@ -201,4 +220,20 @@ function getNameVillage() {
 			}
 		}
 	});
+}
+
+function prepareTable(columns, rows) {
+	var tr;
+	$('#prepare_table thead tr').empty();
+	$('#prepare_table tbody').empty();
+	for (var i = 0, len = columns.length; i < len; i++) {
+		$('#prepare_table thead tr').append('<th>'+columns[i]+'</th>');
+	};
+	for (var i = 0, len_i = rows.length; i < len_i; i++) {
+		tr = $('<tr></tr>');
+		for (var j = 0, len_j = rows[i].length; j < len_j; j++) {
+			$(tr).append('<td>'+rows[i][j]+'</td>');
+		}
+		$('#prepare_table tbody').append(tr);
+	};
 }
