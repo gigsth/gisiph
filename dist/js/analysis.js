@@ -68,6 +68,7 @@ function drawVillage(village) {
 	data.addColumn('string', 'หมู่บ้าน');
 	data.addColumn('number', 'เบาหวาน');
 	data.addColumn('number', 'ความดันโลหิตสูง');
+	data.addColumn('number', 'เบาหวานและความดันโลหิตสูง');
 	data.addRows(getValues(village));
 	cVillage = new google.visualization.ColumnChart(document.getElementById('village'));
 	cVillage.draw(data, {
