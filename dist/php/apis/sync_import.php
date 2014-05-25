@@ -7,7 +7,7 @@ try {
 //$_POST['villcodes'] = 25060601;
 	$_VILLCODES_ = split(',', $_POST['villcodes']);
 
-	$starttime = microtime(true);
+	// $starttime = microtime(true);
 	$villages = Database::getConnection()->queryAndFetchAll(
 		"
 			SELECT
@@ -365,8 +365,8 @@ try {
 			'PERSONS_ID' => $persons_id
 		)
 	);
-	$endtime = microtime(true);
-	$duration = $endtime - $starttime;
+	/*$endtime = microtime(true);
+	$duration = $endtime - $starttime;*/
 	$response = array(
 		'prop' => !empty($houses) ? 'success' : 'fail',
 		'data' => array(
@@ -376,8 +376,8 @@ try {
 			'persons' => $persons,
 			'chronics' => $chronics,
 			'photos_chronic' => $photos_chronic,
-			'visited' => $visited,
-			'query_time' => $duration
+			'visited' => $visited/*,
+			'query_time' => $duration*/
 		)
 	);
 
