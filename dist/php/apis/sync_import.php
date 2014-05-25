@@ -4,9 +4,10 @@ try {
 	header('Content-Type: ' . ($callback ? 'application/javascript' : 'application/json') . ';charset=UTF-8');
 	header('Access-Control-Allow-Origin: *');
 	require_once 'class.Database.php';
-
+//$_POST['villcodes'] = 25060601;
 	$_VILLCODES_ = split(',', $_POST['villcodes']);
 
+	$starttime = microtime(true);
 	$villages = Database::getConnection()->queryAndFetchAll(
 		"
 			SELECT
@@ -364,7 +365,8 @@ try {
 			'PERSONS_ID' => $persons_id
 		)
 	);
-
+	$endtime = microtime(true);
+	$duration = $endtime - $starttime;
 	$response = array(
 		'prop' => !empty($houses) ? 'success' : 'fail',
 		'data' => array(
@@ -374,7 +376,8 @@ try {
 			'persons' => $persons,
 			'chronics' => $chronics,
 			'photos_chronic' => $photos_chronic,
-			'visited' => $visited
+			'visited' => $visited,
+			'query_time' => $duration
 		)
 	);
 

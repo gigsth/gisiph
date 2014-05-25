@@ -215,4 +215,4 @@ pip-log.txt
 .mr.developer.cfg
 
 #My Project
-uploads/*.jpg
+*.jpg
