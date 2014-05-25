@@ -62,6 +62,7 @@ function drawChronics(chronics) {
 			height: '100%'
 	});
 
+	$('#print-header').html('แผนภูมิอัตราผู้ป่วยโรคเรื้อรัง <small>(เบาหวานและความดันโลหิตสูง)</small>');
 	prepareTable(['โรคเรื้อรัง', 'จำนวน(คน)'], $.map(chronics, function(value, index) {
 		return [[value.disease, value.count]];
 	}));
@@ -81,6 +82,7 @@ function drawVillage(village) {
 			height: '100%'
 	});
 
+	$('#print-header').html('แผนภูมิอัตราผู้ป่วยโรคเรื้อรัง <small>(เบาหวานและความดันโลหิตสูง)</small>');
 	prepareTable(['หมู่บ้าน', 'โรคเบาหวาน(คน)', 'โรคความดันโลหิตสูง(คน)', 'โรคเบาหวานและความดันโลหิตสูง(คน)'], $.map(village, function(value, index) {
 		return [[value.villname, value.diabetes, value.hypertension, value.both]];
 	}));
@@ -98,7 +100,8 @@ function drawDiscover(discover) {
 			width: '100%',
 			height: '100%'
 	});
-	
+
+	$('#print-header').html('แผนภูมิอัตราผู้ป่วยโรคเรื้อรัง <small>(เบาหวานและความดันโลหิตสูง)</small>');
 	prepareTable(['ปี(พ.ศ.)', 'โรคเบาหวาน(คน)', 'โรคความดันโลหิตสูง(คน)'], $.map(discover, function(value, index) {
 		return [[value.year, value.diabetes, value.hypertension]];
 	}));
@@ -133,6 +136,7 @@ function drawColorFromHypertension(colorFromHypertension) {
 			legend: { position: "none" }
 	});
 
+	$('#print-header').html('แผนภูมิผู้ป่วยโรคความดันโลหิตสูง <small>('+$('#tab2-selection option:selected').text()+')</small>');
 	prepareTable(['กลุ่มของอาการ', 'จำนวน(คน)'], $.map(colorFromHypertension, function(value, index) {
 		return [[value.name, value.count]];
 	}));
@@ -171,6 +175,7 @@ function drawColorFromDiabetes(colorFromDiabetes) {
 		}
 	});
 
+	$('#print-header').html('แผนภูมิผู้ป่วยโรคเบาหวาน <small>('+$('#tab3-selection option:selected').text()+')</small>');
 	prepareTable(['กลุ่มของอาการ', 'จำนวน(คน)'], $.map(colorFromDiabetes, function(value, index) {
 		return [[value.name, value.count]];
 	}));

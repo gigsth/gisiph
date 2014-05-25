@@ -85,6 +85,12 @@
 		</div>
 
 		<div class="container">
+
+			<div class="row visible-print" style="margin-bottom: 12px;">
+				<div class="col-sm-12">
+					<h2 id="print-header">This is header on print event.</h2>
+				</div>
+			</div>
 			
 			<div class="row">
 				<!-- Side Menu -->
@@ -102,7 +108,7 @@
 				</div>
 				<!-- Tab panes -->
 				<div class="tab-content">
-
+					
 					<div class="tab-pane view active" id="tab1">
 						<div class="clearfix col-sm-8 col-md-9">
 
@@ -162,9 +168,9 @@
 					<div class="tab-pane view" id="tab2">
 						<div class="clearfix col-sm-8 col-md-9">
 
-							<div class="form">
+							<div class="form hidden-print">
 								<div class="form-group">
-									<label class="control-label">Please select</label>
+									<label class="control-label">หมู่บ้านที่ต้องการแสดงผล</label>
 									<select id="tab2-selection" class="form-control name-village"></select>
 								</div> <!-- form-group -->
 							</div> <!-- form -->
@@ -187,9 +193,9 @@
 					<div class="tab-pane view" id="tab3">
 						<div class="clearfix col-sm-8 col-md-9">
 
-							<div class="form">
+							<div class="form hidden-print">
 								<div class="form-group">
-									<label class="control-label">Please select</label>
+									<label class="control-label">หมู่บ้านที่ต้องการแสดงผล</label>
 									<select id="tab3-selection" class="form-control name-village"></select>
 								</div> <!-- form-group -->
 							</div> <!-- form -->
@@ -207,14 +213,22 @@
 						</div> <!-- col-sm-8 col-md-9 -->
 					</div> <!-- tab-pane -->
 				</div> <!-- tab-content -->
-			</div> <!-- row  visible-print-->
+			</div> <!-- row -->
 
-			<div class="row">
+			<div class="row"> <!-- visible-print //insert this class for print only -->
 				<div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3">
 					<table id="prepare_table" class="table table-bordered table-condensed">
 						<thead><tr></tr></thead>
 						<tbody></tbody>
 					</table>
+				</div>
+			</div> <!-- row -->
+
+			<div class="row hidden-print" style="height: 200px;">
+				<div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3">
+					<button type="button" class="btn btn-default pull-right" onclick="javascript:window.print();">
+						<span class="glyphicon glyphicon-print"></span> พิมพ์
+					</button>
 				</div>
 			</div>
 		
