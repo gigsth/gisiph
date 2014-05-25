@@ -2,7 +2,8 @@
 require 'is_ajax.php';
 //if (!isAjax()) {return;}
 
-//$_POST['request'] = 'village';
+
+// $_POST['request'] = 'village';
 // $_POST['selection'] = 25060600;
 
 try {

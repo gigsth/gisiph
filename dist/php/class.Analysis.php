@@ -81,17 +81,24 @@ class Analysis
 		$village_groupcode = $this->mysql->queryAndFetchAll(
 			"
 			SELECT
+<<<<<<< HEAD
 				`person`.`pid` AS `pid`,
 				`village`.`villname` AS `villname`,				
 				`cdiseasechronic`.`groupcode` AS `groupcode`
+=======
+			`person`.`pid` AS `pid`,
+			`village`.`villname` AS `villname`,				
+			`cdiseasechronic`.`groupcode` AS `groupcode`
+>>>>>>> 0c0004ec48795419a706f6db5250366e9b5cc17c
 			FROM
-				`jhcisdb`.`village`,
-				`jhcisdb`.`house`,
-				`jhcisdb`.`person`,
-				`jhcisdb`.`personchronic`,
-				`jhcisdb`.`cdisease`,
-				`jhcisdb`.`cdiseasechronic`
+			`jhcisdb`.`village`,
+			`jhcisdb`.`house`,
+			`jhcisdb`.`person`,
+			`jhcisdb`.`personchronic`,
+			`jhcisdb`.`cdisease`,
+			`jhcisdb`.`cdiseasechronic`
 			WHERE
+<<<<<<< HEAD
 				`village`.`villcode` = `house`.`villcode` AND
 				`house`.`hcode` = `person`.`hcode` AND
 				`person`.`pid` = `personchronic`.`pid` AND
@@ -105,6 +112,21 @@ class Analysis
 				`village`.`villcode`,
 				`person`.`pid`,
 				`cdiseasechronic`.`groupcode`
+=======
+			`village`.`villcode` = `house`.`villcode` AND
+			`house`.`hcode` = `person`.`hcode` AND
+			`person`.`pid` = `personchronic`.`pid` AND
+			`personchronic`.`chroniccode` = `cdisease`.`diseasecode` AND
+			`cdisease`.`codechronic` = `cdiseasechronic`.`groupcode` AND
+			`cdiseasechronic`.`groupcode` IN ('01', '10')
+			GROUP BY 
+			`person`.`pid`,
+			`cdiseasechronic`.`groupcode`
+			ORDER BY 
+			`village`.`villcode`,
+			`person`.`pid`,
+			`cdiseasechronic`.`groupcode`
+>>>>>>> 0c0004ec48795419a706f6db5250366e9b5cc17c
 			"
 		);
 
@@ -112,16 +134,32 @@ class Analysis
 		foreach ($village_groupcode as $key => &$value) {
 			if(!isset($village_disease[$value['pid']])) {
 				if($value['groupcode'] === '01') {
-					$village_disease[$value['pid']] = array($value['villname'], 0);
+					$village_disease[$value['pid']] = array($value['villname'], 'diabetes');
 				}
 				elseif ($value['groupcode'] === '10') {
-					$village_disease[$value['pid']] = array($value['villname'], 1);
+					$village_disease[$value['pid']] = array($value['villname'], 'hypertension');
 				}
 			}
 			else {
-				$village_disease[$value['pid']] = array($value['villname'], 2);
+				$village_disease[$value['pid']] = array($value['villname'], 'both');
 			}
+		}
 
+		$village_prepare = array();
+		foreach ($village_disease as $key => $value) {
+			if (!isset($village_prepare[$value[0]])) {
+				$village_prepare[$value[0]] = array(
+					'villname' => $value[0],
+					'diabetes' => 0,
+					'hypertension' => 0,
+					'both' => 0
+					);
+			}
+			$village_prepare[$value[0]][$value[1]]++;
+		}
+		$village = array();
+		foreach ($village_prepare as $key => $value) {
+			$village[] = $value;
 		}
 
 		$village_prepare = array();
