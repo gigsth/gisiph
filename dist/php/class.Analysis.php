@@ -39,7 +39,6 @@ class Analysis
 			"
 		);
 
-		$person_ch = array();
 		$person_disease = array();
 		foreach ($chronics_groupcode as $key => &$value) {
 			if(!isset($person_disease[$value['pid']])) {
@@ -79,16 +78,12 @@ class Analysis
 	}
 
 	public function getVillage() {
-		$village = $this->mysql->queryAndFetchAll(
+		$village_groupcode = $this->mysql->queryAndFetchAll(
 			"
 			SELECT
-				`village`.`villname`,
-				COUNT(
-					CASE WHEN `cdiseasechronic`.`groupcode` = '10' THEN 1 END
-				) AS `diabetes`,
-				COUNT(
-					CASE WHEN `cdiseasechronic`.`groupcode` = '01' THEN 1 END
-				) AS `hypertension`
+				`person`.`pid` AS `pid`,
+				`village`.`villname` AS `villname`,				
+				`cdiseasechronic`.`groupcode` AS `groupcode`
 			FROM
 				`jhcisdb`.`village`,
 				`jhcisdb`.`house`,
@@ -102,19 +97,53 @@ class Analysis
 				`person`.`pid` = `personchronic`.`pid` AND
 				`personchronic`.`chroniccode` = `cdisease`.`diseasecode` AND
 				`cdisease`.`codechronic` = `cdiseasechronic`.`groupcode` AND
-				`village`.`villno` <> 0 AND
 				`cdiseasechronic`.`groupcode` IN ('01', '10')
-			GROUP BY
-				`village`.`villno`
+			GROUP BY 
+				`person`.`pid`,
+				`cdiseasechronic`.`groupcode`
+			ORDER BY 
+				`village`.`villcode`,
+				`person`.`pid`,
+				`cdiseasechronic`.`groupcode`
 			"
 		);
 
-		foreach ($village as $key => &$value) {
-			$value['diabetes'] = (int)$value['diabetes'];
-			$value['hypertension'] = (int)$value['hypertension'];
+		$village_disease = array();
+		foreach ($village_groupcode as $key => &$value) {
+			if(!isset($village_disease[$value['pid']])) {
+				if($value['groupcode'] === '01') {
+					$village_disease[$value['pid']] = array($value['villname'], 0);
+				}
+				elseif ($value['groupcode'] === '10') {
+					$village_disease[$value['pid']] = array($value['villname'], 1);
+				}
+			}
+			else {
+				$village_disease[$value['pid']] = array($value['villname'], 2);
+			}
+
 		}
 
+		$village_prepare = array();
+		foreach ($village_disease as $key => $value) {
+		    if (!isset($village_prepare[$value[0]])) {
+		        $village_prepare[$value[0]] = array(
+		            'villname' => $value[0],
+		            'diabetes' => 0,
+		            'hypertension' => 0,
+		            'both' => 0
+		        );
+		    }
+		    $village[$value[0]][$value[1]+1]++;
+		}
+		$village = array();
+		foreach ($village_prepare as $key => $value) {
+		    $village[] = $value;
+		}
+		
 		return $village;
+
+
 	}
 
 	public function getDiscover() {
