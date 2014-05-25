@@ -30,7 +30,7 @@ class Analysis
 			WHERE
 				`personchronic`.`chroniccode` = `cdisease`.`diseasecode` AND
 				`cdisease`.`codechronic` = `cdiseasechronic`.`groupcode` AND
-				`cdiseasechronic`.`groupcode` IN ('01', '10')  
+				`cdiseasechronic`.`groupcode` IN ('01', '10') 
 			GROUP BY 
 				`personchronic`.`pid`,
 				`cdiseasechronic`.`groupcode`
@@ -208,7 +208,7 @@ class Analysis
 					`pressure`.`pid`) AS `pressure_pidgroup`
 				
 				LEFT JOIN `personchronic` ON `pressure_pidgroup`.`pid` = `personchronic`.`pid`
-				LEFT JOIN `cdisease` ON `personchronic`.`chroniccode` = `cdisease`.`diseasecode`
+				LEFT JOIN `cdisease` ON `personchronic`.`chroniccode` = `cdisease`.`diseasecode` 
 
 			GROUP BY 
 				`pressure_pidgroup`.`pid`,
