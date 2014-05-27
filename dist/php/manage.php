@@ -89,7 +89,11 @@ try {
 					throw new Exception('ไม่สามารถเพิ่มรูปได้');
 				}
 				$manipulator = new ImageManipulator($file['tmp_name']);
-				$manipulator->save('../../uploads/' . $newName);
+				$dir = '../../uploads/';
+					if(!(file_exists($dir))) {
+					mkdir($dir, 0777);
+				}
+				$manipulator->save($dir . $newName);
 				array_push(
 					$data,
 					array(
