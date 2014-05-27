@@ -81,44 +81,20 @@ class Maps
 
 			foreach ($house['persons'] as $key => &$person)
 			{
-				if (empty($person['chronics']['diabetes']) && empty($person['chronics']['hypertension']))
-				{
-					if ( ((empty($person['last_pressure']['systolic']) || empty($person['last_pressure']['diastolic'])) && in_array('01', $chronics))
-					   || (empty($person['last_sugarblood']) && in_array('10', $chronics)) ) {
-						$person['color_level'] = (int)-1;
-					}
-					elseif (in_array('10', $chronics)) // diabetes
-					{
-						$person['color_level'] = $this->calcColor($person['last_sugarblood'], FALSE);
-					}
-					elseif (in_array('01', $chronics)) // hypertension
-					{
-						$person['color_level'] = $this->calcColor($person['last_pressure'], FALSE);
-					}
-				}
-				else
-				{
-					if ($person['incurrent']) {
-						$person['color_level'] = (int)6;
-					}
-					elseif (!empty($person['chronics']['diabetes']) && in_array('10', $chronics)) // diabetes
-					{
-						$person['color_level'] = $this->calcColor($person['last_sugarblood']);
-					}
-					elseif (!empty($person['chronics']['hypertension']) && in_array('01', $chronics)) // hypertension
-					{
-						$person['color_level'] = $this->calcColor($person['last_pressure']);
-					}
-				}
+				$person_colors = $this->calcColor($person);
 
 				// Fillter Colors
+				if ($person_colors['hypertension'] > $person_colors['diabetes'] && in_array('01', $chronics))
+					$person['color_level'] = $person_colors['hypertension'];
+				elseif ($person_colors['hypertension'] <= $person_colors['diabetes'] && in_array('10', $chronics))
+					$person['color_level'] = $person_colors['diabetes'];
+
 				if (!in_array($person['color_level'], $colors)) {
 					unset($house['persons'][$key]);
 					continue;
 				}
 
-				if ($person['color_level'] > $house['color_level'])
-				{
+				if ($person['color_level'] > $house['color_level']) {
 					$house['color_level'] = $person['color_level'];
 				}
 			}
@@ -175,7 +151,7 @@ class Maps
 					SUBSTRING(`person`.`idcard`, '2', '4'),
 					SUBSTRING(`person`.`idcard`, '6', '5'),
 					SUBSTRING(`person`.`idcard`, '11', '2'),
-					SUBSTRING(`person`.`idcard`, '12', '1')
+					SUBSTRING(`person`.`idcard`, '13', '1')
 				) AS `idcard`,
 				`ceducation`.`educationname` AS `education`,
 				`cnation`.`nationname` AS `nation`,
@@ -221,7 +197,7 @@ class Maps
 				$person[$index]['nation'] = $list['nation'];
 				$person[$index]['origin'] = $list['origin'];
 				
-				$person[$index]['color_level'] = (int)0;
+				$person[$index]['color_level'] = array('hypertension' => -1, 'diabetes' => -1);
 				$person[$index]['last_pressure'] = array('systolic' => (int)$pressure[0], 'diastolic' => (int)$pressure[1]);
 				$person[$index]['last_sugarblood'] = (int)$visited['last_sugarblood'];
 
@@ -436,44 +412,75 @@ class Maps
 		return $visited;
 	}
 
-	public function calcColor($value, $is_patient=true)
+	public function calcColor($person)
 	{
-		$color_level = 0;
-		$disease = is_array($value) ? 'hypertension' : 'diabetes';
-
-		if ($disease === 'hypertension')
-		{
-			if (!$is_patient)
-			{
-				if ($value['systolic'] < 120 && $value['diastolic'] < 80) 		$color_level = 0;
-				else 															$color_level = 1;
-				
+		$hypertension_color_level = 0;
+		$diabetes_color_level = 0;
+		
+		// hypertension
+		if ($person['incurrent'] === TRUE) {
+			$hypertension_color_level = 6;
+		}
+		elseif (!empty($person['chronics']['hypertension'])) {
+			if ($person['last_pressure']['systolic'] >= 180 || $person['last_pressure']['diastolic'] >= 110) {
+				$hypertension_color_level = 5;
 			}
-			else
-			{
-				if ($value['systolic'] < 140 && $value['diastolic'] < 90) 		$color_level = 2;
-				elseif ($value['systolic'] < 160 && $value['diastolic'] < 100) 	$color_level = 3;
-				elseif ($value['systolic'] < 180 && $value['diastolic'] < 110) 	$color_level = 4;
-				else 															$color_level = 5;
+			elseif ($person['last_pressure']['systolic'] >= 160 || $person['last_pressure']['diastolic'] >= 100) {
+				$hypertension_color_level = 4;
+			}
+			elseif ($person['last_pressure']['systolic'] >= 140 || $person['last_pressure']['diastolic'] >= 90) {
+				$hypertension_color_level = 3;
+			}
+			else {
+				$hypertension_color_level = 2;
 			}
 		}
-		elseif ($disease === 'diabetes')
-		{
-			if (!$is_patient)
-			{
-				if ($value < 100) 	$color_level = 0;
-				else 				$color_level = 1;
+		elseif ($person['incurrent'] === FALSE) {
+			if ($person['last_pressure']['systolic'] >= 120 || $person['last_pressure']['diastolic'] >= 80) {
+				$hypertension_color_level = 1;
 			}
-			else
-			{
-				if ($value < 126) 		$color_level = 2;
-				elseif ($value < 155) 	$color_level = 3;
-				elseif ($value < 183) 	$color_level = 4;
-				else 					$color_level = 5;
+			else {
+				$hypertension_color_level = 0;
 			}
 		}
+		else {
+			$hypertension_color_level = -1;
+		}
 
-		return (int)$color_level;
+		// diabetes
+		if ($person['incurrent'] === TRUE) {
+			$diabetes_color_level = 6;
+		}
+		elseif (!empty($person['chronics']['diabetes'])) {
+			if ($person['last_sugarblood'] >= 183) {
+				$diabetes_color_level = 5;
+			}
+			elseif ($person['last_sugarblood'] >= 155) {
+				$diabetes_color_level = 4;
+			}
+			elseif ($person['last_sugarblood'] >= 126) {
+				$diabetes_color_level = 3;
+			}
+			else {
+				$diabetes_color_level = 2;
+			}
+		}
+		elseif ($person['incurrent'] === FALSE) {
+			if ($person['last_sugarblood'] >= 100) {
+				$diabetes_color_level = 1;
+			}
+			else {
+				$diabetes_color_level = 0;
+			}
+		}
+		else {
+			$diabetes_color_level = -1;
+		}
+
+		return array(
+			'hypertension' => $hypertension_color_level,
+			'diabetes' => $diabetes_color_level
+		);
 	}
 
 	function prettyPrint($json)
