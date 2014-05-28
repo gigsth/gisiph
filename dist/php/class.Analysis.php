@@ -9,7 +9,7 @@ class Analysis
 
 	public function __construct() {
 		$this->mysql = new MySQL_Connection();
-		$this->mysql->connect(HOSTNAME, USERNAME, PASSWORD, DBNAME);
+		$this->mysql->connect(HOSTNAME, USERNAME, PASSWORD, DBNAME, PORT);
 		$this->mysql->charset = 'utf8';
 	}
 

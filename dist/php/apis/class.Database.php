@@ -17,7 +17,7 @@ class Database
 	{
 		if (!isset(Database::$connection)) {
 			Database::$connection = new MySQL_Connection();
-			Database::$connection->connect(HOSTNAME, USERNAME, PASSWORD, DBNAME);
+			Database::$connection->connect(HOSTNAME, USERNAME, PASSWORD, DBNAME, PORT);
 			Database::$connection->charset = 'utf8';
 		}
 		return Database::$connection;
