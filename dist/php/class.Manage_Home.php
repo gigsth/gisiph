@@ -27,9 +27,27 @@ class Manage_Home
 				`house`.`address`,
 				`gisiph_gps_house`.`latitude`,
 				`gisiph_gps_house`.`longitude`,
-				`gisiph_gps_house`.`uedit` AS `username`,
+				CONCAT(`user`.`fname`, ' ', `user`.`lname`) AS `uedit`,
 				IF(`gisiph_gps_house`.`status` IS NOT NULL AND `gisiph_gps_house`.`status` <> 'DELETE', 'map-marker', '') AS `glyphicon`,
-				`gisiph_gps_house`.`timestamp`
+				CONCAT(
+					DATE_FORMAT(`gisiph_gps_house`.`timestamp`, '%e '),
+					CASE DATE_FORMAT(`gisiph_gps_house`.`timestamp`, '%c')
+						WHEN '1' THEN 'มกราคม'
+						WHEN '2' THEN 'กุมภาพันธ์'
+						WHEN '3' THEN 'มีนาคม'
+						WHEN '4' THEN 'เมษายน'
+						WHEN '5' THEN 'พฤษภาคม'
+						WHEN '6' THEN 'มิถุนายน'
+						WHEN '7' THEN 'กรกฏาคม'
+						WHEN '8' THEN 'สิงหาคม'
+						WHEN '9' THEN 'กันยายน'
+						WHEN '10' THEN 'ตุลาคม'
+						WHEN '11' THEN 'พฤศจิกายน'
+						WHEN '12' THEN 'ธันวาคม'
+					END,
+					' ',
+					CAST(DATE_FORMAT(`gisiph_gps_house`.`timestamp`, '%Y') + '543' AS CHAR)
+				) AS `timestamp`
 			FROM
 				(
 				SELECT 	
@@ -87,9 +105,12 @@ class Manage_Home
 
 			LEFT JOIN
 				`jhcisdb`.`gisiph_gps_house`
-
 			ON
 				`house`.`id` = `gisiph_gps_house`.`hcode`
+			JOIN
+				`jhcisdb`.`user`
+			ON
+				`gisiph_gps_house`.`uedit` = `user`.`username`
 
 			WHERE
 				`house`.`address` LIKE %s[SEARCH]
@@ -206,12 +227,33 @@ class Manage_Home
 			"
 			SELECT
 				`gisiph_photo_house`.`phcode` AS `key`,
-				`gisiph_photo_house`.`path` AS `file`
+				`gisiph_photo_house`.`path` AS `file`,
+				CONCAT(`user`.`fname`, ' ', `user`.`lname`) AS `uedit`,
+				CONCAT(
+					DATE_FORMAT(`gisiph_photo_house`.`timestamp`, '%e '),
+					CASE DATE_FORMAT(`gisiph_photo_house`.`timestamp`, '%c')
+						WHEN '1' THEN 'มกราคม'
+						WHEN '2' THEN 'กุมภาพันธ์'
+						WHEN '3' THEN 'มีนาคม'
+						WHEN '4' THEN 'เมษายน'
+						WHEN '5' THEN 'พฤษภาคม'
+						WHEN '6' THEN 'มิถุนายน'
+						WHEN '7' THEN 'กรกฏาคม'
+						WHEN '8' THEN 'สิงหาคม'
+						WHEN '9' THEN 'กันยายน'
+						WHEN '10' THEN 'ตุลาคม'
+						WHEN '11' THEN 'พฤศจิกายน'
+						WHEN '12' THEN 'ธันวาคม'
+					END,
+					' ',
+					CAST(DATE_FORMAT(`gisiph_photo_house`.`timestamp`, '%Y') + '543' AS CHAR)
+				) AS `timestamp`
 			FROM
-				`jhcisdb`.`gisiph_photo_house`
+				`jhcisdb`.`gisiph_photo_house`,
+				`jhcisdb`.`user`
 			WHERE
-				`gisiph_photo_house`.`hcode` = %n[HCODE]
-				AND
+				`gisiph_photo_house`.`uedit` = `user`.`username` AND
+				`gisiph_photo_house`.`hcode` = %n[HCODE] AND
 				`gisiph_photo_house`.`status` <> 'DELETE'
 			",
 			array(

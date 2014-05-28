@@ -71,6 +71,8 @@ $(document).ready(function() {
 			$('#latitude').val(lt);
 			$('#longitude').val(ln);
 
+			$('#edit_by').text('Edit by '+$(this).data('uedit')+' ('+$(this).data('timestamp')+')');
+
 			// Person
 			$.ajax({
 				type: 'POST',
@@ -370,7 +372,8 @@ function renderImage(render, item) {
 	var img = $('<img data-key="'+item.key+'" style="height: 159px;">').attr('src', item.file);
 	$(render).append(
 		$('<div class="col-xs-12 col-sm-12 col-md-6"></div>').append(
-			$('<a href="#" class="thumbnail img-responsive"></a>').append(img)
+			$('<a href="#" class="thumbnail img-responsive"></a>').append(img),
+			$('<small style="bg-color: gray;opacity: .8;"></small>').text('Edit by '+item.uedit+' ('+item.timestamp+')')
 		)
 	);
 	$(img).parents(render+' > div > a').on('click', function() {
@@ -673,7 +676,7 @@ function getDataToTable(option) {
 
 					if (option.menu === 'Home') {
 						$('tbody').append(
-							$('<tr id="'+item['id']+'" class="datatable" data-lat="'+item['latitude']+'" data-lng="'+item['longitude']+'"></tr>').append(
+							$('<tr id="'+item['id']+'" class="datatable" data-lat="'+item['latitude']+'" data-lng="'+item['longitude']+'" data-uedit="'+item.uedit+'" data-timestamp="'+item.timestamp+'"></tr>').append(
 								$('<td></td>').append(cls),
 								$('<td></td>').text(item['address'])
 							)

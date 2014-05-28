@@ -197,14 +197,34 @@ class Manage_Patient
 			"
 			SELECT
 				`gisiph_photo_pchronic`.`pccode` AS `key`,
-				`gisiph_photo_pchronic`.`path` AS `file`
+				`gisiph_photo_pchronic`.`path` AS `file`,
+				CONCAT(`user`.`fname`, ' ', `user`.`lname`) AS `uedit`,
+				CONCAT(
+					DATE_FORMAT(`gisiph_photo_pchronic`.`timestamp`, '%e '),
+					CASE DATE_FORMAT(`gisiph_photo_pchronic`.`timestamp`, '%c')
+						WHEN '1' THEN 'มกราคม'
+						WHEN '2' THEN 'กุมภาพันธ์'
+						WHEN '3' THEN 'มีนาคม'
+						WHEN '4' THEN 'เมษายน'
+						WHEN '5' THEN 'พฤษภาคม'
+						WHEN '6' THEN 'มิถุนายน'
+						WHEN '7' THEN 'กรกฏาคม'
+						WHEN '8' THEN 'สิงหาคม'
+						WHEN '9' THEN 'กันยายน'
+						WHEN '10' THEN 'ตุลาคม'
+						WHEN '11' THEN 'พฤศจิกายน'
+						WHEN '12' THEN 'ธันวาคม'
+					END,
+					' ',
+					CAST(DATE_FORMAT(`gisiph_photo_pchronic`.`timestamp`, '%Y') + '543' AS CHAR)
+				) AS `timestamp`
 			FROM
-				`jhcisdb`.`gisiph_photo_pchronic`
+				`jhcisdb`.`gisiph_photo_pchronic`,
+				`jhcisdb`.`user`
 			WHERE
-				`gisiph_photo_pchronic`.`pid` = %n[PCODE]
-				AND
-				`gisiph_photo_pchronic`.`chroniccode` = %s[CCODE]
-				AND
+				`gisiph_photo_pchronic`.`uedit` = `user`.`username` AND
+				`gisiph_photo_pchronic`.`pid` = %n[PCODE] AND
+				`gisiph_photo_pchronic`.`chroniccode` = %s[CCODE] AND
 				`gisiph_photo_pchronic`.`status` <> 'DELETE'
 			",
 			array(

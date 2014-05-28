@@ -98,7 +98,9 @@ try {
 					$data,
 					array(
 						'key' => $lastInsert,
-						'file' => './uploads/' . $newName
+						'file' => './uploads/' . $newName,
+						'uedit' => unserialize($_SESSION['USER'])->getFullname(),
+						'timestamp' => 'second ago.'
 					)
 				);
 			}
