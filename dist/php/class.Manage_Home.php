@@ -107,7 +107,7 @@ class Manage_Home
 				`jhcisdb`.`gisiph_gps_house`
 			ON
 				`house`.`id` = `gisiph_gps_house`.`hcode`
-			JOIN
+			LEFT JOIN
 				`jhcisdb`.`user`
 			ON
 				`gisiph_gps_house`.`uedit` = `user`.`username`
