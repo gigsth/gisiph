@@ -19,7 +19,7 @@ if(!(file_exists($dir))) {
 /*
  * Set your site credentials.
  */
-$host = "localhost"; //host name
+$host = "localhost:8088"; //host name
 $username = "root"; //username
 $password = "toor"; // your password
 $dbname = "jhcisdb"; // database name
@@ -84,7 +84,7 @@ function backup_tables($host,$user,$pass,$name,$tables = '*') {
 	
 	//get all of the tables
 	if($tables == '*') {
-		$tables = array();
+		$tables = '*';
 		$result = mysql_query('SHOW TABLES');
 		while($row = mysql_fetch_row($result)) {
 			$tables[] = $row[0];
