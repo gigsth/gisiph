@@ -83,7 +83,7 @@ function drawVillage(village) {
 	});
 
 	$('#print-header').html('แผนภูมิอัตราผู้ป่วยโรคเรื้อรัง <small>(เบาหวานและความดันโลหิตสูง)</small>');
-	prepareTable(['หมู่บ้าน', 'โรคเบาหวาน(คน)', 'โรคความดันโลหิตสูง(คน)', 'โรคเบาหวานและความดันโลหิตสูง(คน)'], $.map(village, function(value, index) {
+	prepareTable(['หมู่บ้าน', 'โรคความดันโลหิตสูง(คน)','โรคเบาหวาน(คน)',  'โรคเบาหวานและความดันโลหิตสูง(คน)'], $.map(village, function(value, index) {
 		return [[value.villname, value.diabetes, value.hypertension, value.both]];
 	}));
 }
