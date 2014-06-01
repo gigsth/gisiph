@@ -418,11 +418,11 @@ class Maps
 		$diabetes_color_level = 0;
 		
 		// hypertension
-		if ($person['incurrent'] === TRUE) {
-			$hypertension_color_level = 6;
-		}
-		elseif (!empty($person['chronics']['hypertension'])) {
-			if ($person['last_pressure']['systolic'] >= 180 || $person['last_pressure']['diastolic'] >= 110) {
+		if (!empty($person['chronics']['hypertension'])) {
+			if ($person['incurrent'] === TRUE) {
+				$hypertension_color_level = 6;
+			}
+			elseif ($person['last_pressure']['systolic'] >= 180 || $person['last_pressure']['diastolic'] >= 110) {
 				$hypertension_color_level = 5;
 			}
 			elseif ($person['last_pressure']['systolic'] >= 160 || $person['last_pressure']['diastolic'] >= 100) {
@@ -435,7 +435,7 @@ class Maps
 				$hypertension_color_level = 2;
 			}
 		}
-		elseif ($person['incurrent'] === FALSE) {
+		elseif ($person['last_pressure']['systolic'] !== 0 || $person['last_pressure']['diastolic'] !== 0) {
 			if ($person['last_pressure']['systolic'] >= 120 || $person['last_pressure']['diastolic'] >= 80) {
 				$hypertension_color_level = 1;
 			}
@@ -448,11 +448,11 @@ class Maps
 		}
 
 		// diabetes
-		if ($person['incurrent'] === TRUE) {
-			$diabetes_color_level = 6;
-		}
-		elseif (!empty($person['chronics']['diabetes'])) {
-			if ($person['last_sugarblood'] >= 183) {
+		if (!empty($person['chronics']['diabetes'])) {
+			if ($person['incurrent'] === TRUE) {
+				$diabetes_color_level = 6;
+			}
+			elseif ($person['last_sugarblood'] >= 183) {
 				$diabetes_color_level = 5;
 			}
 			elseif ($person['last_sugarblood'] >= 155) {
@@ -465,7 +465,7 @@ class Maps
 				$diabetes_color_level = 2;
 			}
 		}
-		elseif ($person['incurrent'] === FALSE) {
+		elseif ($person['last_sugarblood'] !== 0) {
 			if ($person['last_sugarblood'] >= 100) {
 				$diabetes_color_level = 1;
 			}
