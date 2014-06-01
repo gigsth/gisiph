@@ -60,7 +60,7 @@ $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator("../../
 // iterate over the directory
 // add each file found to the archive
 foreach ($iterator as $key=>$value) {
-	$value = substr(str_replace('\\', '/', $value), 3);
+	$value = substr(str_replace('\\', '/', $value), 6);
 	$zip->addFile(realpath($key), $value) or die ("ERROR: Could not add file: $key");
 	echo 'Add file '.$value.' to archive.<br/>';
 }
@@ -129,6 +129,11 @@ function backup_tables($host,$user,$pass,$name,$tables = '*') {
 		$return.="\n\n\n";
 		echo 'Re-Engineer table `'.$table.'` to sql code.<br/>';
 	}
+
+	$return .= "ALTER TABLE `jhcisdb`.`visit` ADD KEY (`pid`);\n";
+	$return .= "ALTER TABLE `jhcisdb`.`visit` ADD KEY (`visitno`);\n";
+	$return .= "ALTER TABLE `jhcisdb`.`visit` ADD KEY (`pid`, `visitno`);\n";
+	$return .= "ALTER TABLE `jhcisdb`.`visitlabsugarblood` ADD KEY (`visitno`);\n";
 	
 	//save file
 	echo 'Prepare SQL code...<br/>';
@@ -157,6 +162,6 @@ if (glob("*.sql") != false) {
 		}
 	}
 }
-echo 'Backup process is completed.<br/>';
+echo 'Compression already successful.<br/>';
 
 ?>
