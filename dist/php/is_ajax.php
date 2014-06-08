@@ -1,4 +1,5 @@
 <?php
+ini_set("max_execution_time", 0);
 function isAjax() {
 	return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 }

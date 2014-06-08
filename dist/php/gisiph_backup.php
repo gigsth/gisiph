@@ -1,9 +1,44 @@
 <?php
+//type octet-stream. make sure apache does not gzip this type, else it would get buffered
+header('Content-Type: text/octet-stream');
+header('Cache-Control: no-cache'); // recommended to prevent caching of event data.
+session_start();
+
+
 /*
  * Set execution time to 0 if in case your site is huge and will take much time 
  * for back-up as default execution time for PHP is 30 seconds.
  */
 ini_set("max_execution_time", 0);
+
+
+require 'configure.database.php';
+
+
+/*
+ * Set your site credentials.
+ */
+$host = HOSTNAME; //host name
+$username = USERNAME; //username
+$password = PASSWORD; // your password
+$dbname = DBNAME; // database name
+$tables = array(
+	"gisiph_gps_house",
+	"gisiph_photo_house",
+	"gisiph_photo_pchronic"
+);
+
+
+/**
+ *	Send a partial message
+ */
+function send_message($message) {
+	echo $message . PHP_EOL . '&gt;';
+
+	//PUSH THE data out by all FORCE POSSIBLE
+	ob_flush();
+	flush();
+}
 
 
 /*
@@ -14,20 +49,6 @@ $dir = "../backup";
 if(!(file_exists($dir))) {
 	mkdir($dir, 0777);
 }
-
-
-/*
- * Set your site credentials.
- */
-$host = "localhost:8088"; //host name
-$username = "root"; //username
-$password = "toor"; // your password
-$dbname = "jhcisdb"; // database name
-$tables = array(
-	"gisiph_gps_house",
-	"gisiph_photo_house",
-	"gisiph_photo_pchronic"
-);
 
 
 /*
@@ -53,7 +74,7 @@ $zipname = str_replace("/", "-", $zipname);
 if ($zip->open('../backup/'.$zipname, ZIPARCHIVE::CREATE) !== TRUE) {
 	die ("Could not open archive");
 }
-echo "Archive name $zipname is created.<br/>";
+send_message("Archive name $zipname is created.");
 // initialize an iterator
 // pass it the directory to be processed
 $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator("../../uploads/"));
@@ -62,7 +83,7 @@ $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator("../../
 foreach ($iterator as $key=>$value) {
 	$value = substr(str_replace('\\', '/', $value), 6);
 	$zip->addFile(realpath($key), $value) or die ("ERROR: Could not add file: $key");
-	echo 'Add file '.$value.' to archive.<br/>';
+	send_message('Add file '.$value.' to archive.');
 }
 // close and save archive
 $zip->close();
@@ -96,51 +117,55 @@ function backup_tables($host,$user,$pass,$name,$tables = '*') {
 	$return = "";
 			
 	//cycle through
+	send_message('Prepare SQL code...');
 	foreach($tables as $table) {
 		$result = mysql_query('SELECT * FROM '.$table);
 		$num_fields = mysql_num_fields($result);
 		$num_rows = mysql_num_rows($result);
-		$index = 0;
 		$return.= 'DROP TABLE `'.$table.'`;';
 		$row2 = mysql_fetch_row(mysql_query('SHOW CREATE TABLE '.$table));
 		$return.= "\n\n".$row2[1].";\n\n";
 
-		$return.= 'INSERT INTO `'.$table."` VALUES\n";
 		while($row = mysql_fetch_row($result)) {
-			$return .= '(';
+			$line = 'INSERT INTO `'.$table."` VALUES(";
 			for($j=0; $j<$num_fields; $j++) {
 				$row[$j] = addslashes($row[$j]);
 				$row[$j] = ereg_replace("\n","\\n",$row[$j]);
 				if (isset($row[$j])) {
-					$return.= '"'.$row[$j].'"' ;
+					/*if (is_numeric($row[$j]))
+						$sql = $row[$j];
+					else*/
+						$sql = '"'.$row[$j].'"' ;
+					$line.= $sql;
 				} else {
-					$return.= '""';
+					$line.= '""';
 				}
 				if ($j<($num_fields-1)) {
-					$return.= ',';
+					$line.= ',';
 				}
 			}
-			$return.= ")";
-			if ($index < $num_rows) {
-				$return .= ",\n";
-			}
-			++$index;
+			$line.= ");";
+			$return.= $line."\n";
+			send_message('Add '.$line);
 		}
 		$return.="\n\n\n";
-		echo 'Re-Engineer table `'.$table.'` to sql code.<br/>';
 	}
 
-	$return .= "ALTER TABLE `jhcisdb`.`visit` ADD KEY (`pid`);\n";
-	$return .= "ALTER TABLE `jhcisdb`.`visit` ADD KEY (`visitno`);\n";
-	$return .= "ALTER TABLE `jhcisdb`.`visit` ADD KEY (`pid`, `visitno`);\n";
-	$return .= "ALTER TABLE `jhcisdb`.`visitlabsugarblood` ADD KEY (`visitno`);\n";
+	// index
+	$return .= "ALTER TABLE `jhcisdb`.`visit` DROP KEY `gisiph_pid`;\n";
+	$return .= "ALTER TABLE `jhcisdb`.`visit` ADD KEY `gisiph_pid` (`pid`);\n\n";
+	$return .= "ALTER TABLE `jhcisdb`.`visit` DROP KEY `gisiph_visitno`;\n";
+	$return .= "ALTER TABLE `jhcisdb`.`visit` ADD KEY `gisiph_visitno` (`visitno`);\n\n";
+	$return .= "ALTER TABLE `jhcisdb`.`visit` DROP KEY `gisiph_pid_visitno`;\n";
+	$return .= "ALTER TABLE `jhcisdb`.`visit` ADD KEY `gisiph_pid_visitno` (`pid`, `visitno`);\n\n";
+	$return .= "ALTER TABLE `jhcisdb`.`visitlabsugarblood` DROP KEY `gisiph_visitno`;\n";
+	$return .= "ALTER TABLE `jhcisdb`.`visitlabsugarblood` ADD KEY `gisiph_visitno` (`visitno`);\n\n";
 	
 	//save file
-	echo 'Prepare SQL code...<br/>';
 	$handle = fopen('createdb.sql', 'w+');
-	echo 'File createdb.sql is created.<br/>';
+	send_message('File createdb.sql is created.');
 	fwrite($handle, $return);
-	echo 'Push SQL code to createdb.sql file.<br/>';
+	send_message('Push SQL code to createdb.sql file.');
 	fclose($handle);
 }
 
@@ -158,10 +183,12 @@ if (glob("*.sql") != false) {
 			$zip->addFile($arr_file[$j]);
 			$zip->close();
 			unlink($arr_file[$j]);
-			echo 'Add file '.$arr_file[$j].' to archive.<br/>';
+			send_message('Add file '.$arr_file[$j].' to archive.');
 		}
 	}
 }
-echo 'Compression already successful.<br/>';
+send_message('Compression already successful.');
+$_SESSION['zip'] = $zipname;
+send_message('Done...');
 
 ?>

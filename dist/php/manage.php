@@ -4,6 +4,7 @@ if (!isAjax()) {return;}
 
 try {
 	header('Content-Type: application/json; charset=UTF-8');
+	session_start();
 
 	$myclass = array(
 		'Home',
