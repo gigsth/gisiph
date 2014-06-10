@@ -91,7 +91,7 @@ try {
 				}
 				$manipulator = new ImageManipulator($file['tmp_name']);
 				$dir = '../../uploads/';
-					if(!(file_exists($dir))) {
+				if(!(file_exists($dir))) {
 					mkdir($dir, 0777);
 				}
 				$manipulator->save($dir . $newName);

@@ -68,8 +68,12 @@ try {
 				if (empty($value['ref_id'])) {
 					usleep(1);
 					$filename = md5(microtime()). '.jpg';
-					$path = './uploads/' . $filename;
-					$real_path = '../../.' .$path;
+					$path = './uploads/';
+					$real_path = '../../.'.$path;
+					if(!(file_exists($real_path))) {
+						mkdir($real_path, 0777);
+					}
+					$real_path .= $filename;
 					$src = substr($value['src'], 1 + strrpos($value['src'], ','));
 					$result = Database::getConnection()->query(
 						"
@@ -139,8 +143,12 @@ try {
 				if (empty($value['ref_id'])) {
 					usleep(1);
 					$filename = md5(microtime()). '.jpg';
-					$path = './uploads/' . $filename;
-					$real_path = '../../.' .$path;
+					$path = './uploads/';
+					$real_path = '../../.'.$path;
+					if(!(file_exists($real_path))) {
+						mkdir($real_path, 0777);
+					}
+					$real_path .= $filename;
 					$src = substr($value['src'], 1 + strrpos($value['src'], ','));
 					$result = Database::getConnection()->query(
 						"

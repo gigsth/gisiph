@@ -117,8 +117,10 @@ try {
 		"
 	);
 
+	$path = 'http://'.$_SERVER['HTTP_HOST'].'/gisiph/';
 	foreach ($photos_house as $key => $value) {
-		$image = 'http://'.$_SERVER['HTTP_HOST'].'/gisiph/'.substr($value['src'], 2);
+		$image = $path.substr($value['src'], 2);
+		if(!file_exists($path)) continue;
 		$imageData = base64_encode(file_get_contents($image));
 		$src = 'data: image/jpeg;base64,' . $imageData;
 		$width = 300;
@@ -267,8 +269,10 @@ try {
 		"
 	);
 
+	$path = 'http://'.$_SERVER['HTTP_HOST'].'/gisiph/';
 	foreach ($photos_chronic as $key => $value) {
-		$image = 'http://'.$_SERVER['HTTP_HOST'].'/gisiph/'.substr($value['src'], 2);
+		$image = $path.substr($value['src'], 2);
+		if(!file_exists($path)) continue;
 		$imageData = base64_encode(file_get_contents($image));
 		$src = 'data: image/jpeg;base64,' . $imageData;
 		$width = 300;
