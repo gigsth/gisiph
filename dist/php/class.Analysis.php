@@ -23,8 +23,12 @@ class Analysis
 			SELECT
 				`personchronic`.`pid` AS `pid`, 
 				`cdiseasechronic`.`groupcode` AS `groupcode`
-			FROM
+			FROM 
+				`jhcisdb`.`person`
+			JOIN
 				`jhcisdb`.`personchronic` 
+			ON `person`.`pid` = `personchronic`.`pid` AND
+				TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65 
 			JOIN
 				`jhcisdb`.`cdisease`
 			ON 
@@ -96,6 +100,7 @@ class Analysis
 				`jhcisdb`.`person` ON `house`.`hcode` = `person`.`hcode`
 			JOIN
 				`jhcisdb`.`personchronic` ON `person`.`pid` = `personchronic`.`pid`
+			AND	TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65 
 			JOIN
 				`jhcisdb`.`cdisease` ON	`personchronic`.`chroniccode` = `cdisease`.`diseasecode`
 			JOIN
@@ -161,7 +166,11 @@ class Analysis
 					CASE WHEN `cdiseasechronic`.`groupcode` = '01' THEN 1 END
 				) AS `hypertension`
 			FROM
-				`jhcisdb`.`personchronic`
+				`jhcisdb`.`person`
+			JOIN
+				`jhcisdb`.`personchronic` 
+			ON `person`.`pid` = `personchronic`.`pid` AND
+				TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65 
 			JOIN
 				`jhcisdb`.`cdisease` ON	`personchronic`.`chroniccode` = `cdisease`.`diseasecode`
 			JOIN
@@ -190,6 +199,11 @@ class Analysis
 				`cdisease`.`codechronic` AS `person_codechronic`
 			
 			FROM
+			(	
+				SELECT `person`.`pid`
+				FROM`jhcisdb`.`person`
+				WHERE TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65 ) AS `person`
+			JOIN
 			(
 				SELECT `pressure`.*			
 				FROM
@@ -206,10 +220,10 @@ class Analysis
 						`visit`.`pid`,
 					`visit`.`visitdate` DESC
 					) AS `pressure`
-
 				GROUP BY 
 					`pressure`.`pid`) AS `pressure_pidgroup`
-				
+
+				ON `person`.`pid` =  `pressure_pidgroup`.`pid`				
 				LEFT JOIN `personchronic` ON `pressure_pidgroup`.`pid` = `personchronic`.`pid`
 				LEFT JOIN `cdisease` ON `personchronic`.`chroniccode` = `cdisease`.`diseasecode` 
 
@@ -305,11 +319,16 @@ class Analysis
 	public function getColorFromDiabetes() {
 		$colorFromDiabetes = $this->mysql->queryAndFetchAll(
 			"
-			SELECT 
+				SELECT 
 				`sugarblood_grouppid`.`pid`,
 				`sugarblood_grouppid`.`sugarnumdigit`,
 				`cdisease`.`codechronic` AS 'person_codechronic'
 			FROM
+			(	
+				SELECT `person`.`pid`
+				FROM`jhcisdb`.`person`
+				WHERE TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65 ) AS `person`
+			JOIN
 				(
 					SELECT 
 						`sugarblood`.* 
@@ -320,26 +339,21 @@ class Analysis
 								`visitlabsugarblood`.`sugarnumdigit`,
 								`visit`.`visitdate`
 							FROM
-								`jhcisdb`.`visit`
+								`jhcisdb`.`visit`	
 							JOIN
-								`jhcisdb`.`visitlabsugarblood`
-							ON 
-								`visitlabsugarblood`.`visitno` = `visit`.`visitno`
+								`jhcisdb`.`visitlabsugarblood` ON `visitlabsugarblood`.`visitno` = `visit`.`visitno`
 							ORDER BY 
 								`visit`.`pid`,
 								`visit`.`visitdate` DESC
 						)AS `sugarblood`
 					GROUP BY 
 						`sugarblood`.`pid`
-				) AS `sugarblood_grouppid`
+				) AS `sugarblood_grouppid`				
+			ON `person`.`pid` =  `sugarblood_grouppid`.`pid`	
 			LEFT JOIN 
-				`jhcisdb`.`personchronic`
-			ON 
-				`sugarblood_grouppid`.`pid` = `personchronic`.`pid`
+				`jhcisdb`.`personchronic`ON `sugarblood_grouppid`.`pid` = `personchronic`.`pid`
 			LEFT JOIN 
-				`jhcisdb`.`cdisease`
-			ON 
-				`personchronic`.`chroniccode` = `cdisease`.`diseasecode`
+				`jhcisdb`.`cdisease` ON `personchronic`.`chroniccode` = `cdisease`.`diseasecode`
 
 			GROUP BY 
 				`sugarblood_grouppid`.`pid`,
@@ -447,6 +461,8 @@ class Analysis
 						`person`.`hcode` = `house`.`hcode` 
 					AND
 						`house`.`villcode` = %s[VILLCODE]
+					AND 
+						TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65
 					ORDER BY `person`.`pid`
 				) AS `personvillage` 
 
@@ -506,6 +522,8 @@ class Analysis
 					`person`.`hcode` = `house`.`hcode` 
 				AND 
 					`house`.`villcode` = %n[VILLCODE]
+				AND 
+					TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65
 				ORDER BY `person`.`pid`
 			) AS `personvillage` 
 			JOIN
