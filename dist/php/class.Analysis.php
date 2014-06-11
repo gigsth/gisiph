@@ -24,12 +24,16 @@ class Analysis
 				`personchronic`.`pid` AS `pid`, 
 				`cdiseasechronic`.`groupcode` AS `groupcode`
 			FROM
-				`jhcisdb`.`personchronic`,
-				`jhcisdb`.`cdisease`,
+				`jhcisdb`.`personchronic` 
+			JOIN
+				`jhcisdb`.`cdisease`
+			ON 
+				`personchronic`.`chroniccode` = `cdisease`.`diseasecode`
+			JOIN 
 				`jhcisdb`.`cdiseasechronic`
+			ON 
+				`cdisease`.`codechronic` = `cdiseasechronic`.`groupcode`
 			WHERE
-				`personchronic`.`chroniccode` = `cdisease`.`diseasecode` AND
-				`cdisease`.`codechronic` = `cdiseasechronic`.`groupcode` AND
 				`cdiseasechronic`.`groupcode` IN ('01', '10') 
 			GROUP BY 
 				`personchronic`.`pid`,
@@ -85,23 +89,23 @@ class Analysis
 				`village`.`villname` AS `villname`,				
 				`cdiseasechronic`.`groupcode` AS `groupcode`
 			FROM
-				`jhcisdb`.`village`,
-				`jhcisdb`.`house`,
-				`jhcisdb`.`person`,
-				`jhcisdb`.`personchronic`,
-				`jhcisdb`.`cdisease`,
-				`jhcisdb`.`cdiseasechronic`
+				`jhcisdb`.`village` 
+			JOIN 
+				`jhcisdb`.`house` ON `village`.`villcode` = `house`.`villcode`
+			JOIN
+				`jhcisdb`.`person` ON `house`.`hcode` = `person`.`hcode`
+			JOIN
+				`jhcisdb`.`personchronic` ON `person`.`pid` = `personchronic`.`pid`
+			JOIN
+				`jhcisdb`.`cdisease` ON	`personchronic`.`chroniccode` = `cdisease`.`diseasecode`
+			JOIN
+				`jhcisdb`.`cdiseasechronic` ON	`cdisease`.`codechronic` = `cdiseasechronic`.`groupcode`
 			WHERE
-				`village`.`villcode` = `house`.`villcode` AND
-				`house`.`hcode` = `person`.`hcode` AND
-				`person`.`pid` = `personchronic`.`pid` AND
-				`personchronic`.`chroniccode` = `cdisease`.`diseasecode` AND
-				`cdisease`.`codechronic` = `cdiseasechronic`.`groupcode` AND
 				`cdiseasechronic`.`groupcode` IN ('01', '10')
 			GROUP BY 
 				`person`.`pid`,
 				`cdiseasechronic`.`groupcode`
-				ORDER BY 
+			ORDER BY 
 				`village`.`villcode`,
 				`person`.`pid`,
 				`cdiseasechronic`.`groupcode`
@@ -157,12 +161,11 @@ class Analysis
 					CASE WHEN `cdiseasechronic`.`groupcode` = '01' THEN 1 END
 				) AS `hypertension`
 			FROM
-				`jhcisdb`.`personchronic`,
-				`jhcisdb`.`cdisease`,
-				`jhcisdb`.`cdiseasechronic`
-			WHERE
-				`personchronic`.`chroniccode` = `cdisease`.`diseasecode` AND
-				`cdisease`.`codechronic` = `cdiseasechronic`.`groupcode`
+				`jhcisdb`.`personchronic`
+			JOIN
+				`jhcisdb`.`cdisease` ON	`personchronic`.`chroniccode` = `cdisease`.`diseasecode`
+			JOIN
+				`jhcisdb`.`cdiseasechronic` ON `cdisease`.`codechronic` = `cdiseasechronic`.`groupcode`
 			GROUP BY
 				YEAR(`personchronic`.`datefirstdiag`)
 			"

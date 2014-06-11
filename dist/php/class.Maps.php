@@ -38,9 +38,17 @@ class Maps
 				`gisiph_gps_house`.`latitude`,
 				`gisiph_gps_house`.`longitude`
 			FROM
-				`jhcisdb`.`gisiph_gps_house`,
-				`jhcisdb`.`house`,
-				`jhcisdb`.`village`,
+				`jhcisdb`.`gisiph_gps_house`
+			JOIN
+				`jhcisdb`.`house` ON `gisiph_gps_house`.`hcode` = `house`.`hcode`
+			AND
+				`gisiph_gps_house`.`status` <> 'DELETE' AND
+				`gisiph_gps_house`.`hcode` <> 0 
+			JOIN
+				`jhcisdb`.`village` ON `house`.`villcode` = `village`.`villcode`
+			AND 
+				`village`.`villcode` <> 0 
+			JOIN 
 				(
 					SELECT	
 						CONCAT(
@@ -52,21 +60,14 @@ class Maps
 						`cdistrict`.`distname`,
 						`cprovince`.`provname`
 					FROM
-						`jhcisdb`.`csubdistrict`,
-						`jhcisdb`.`cdistrict`,
-						`jhcisdb`.`cprovince`
-					WHERE
-						`csubdistrict`.`distcode` = `cdistrict`.`distcode` AND
-						`cdistrict`.`provcode` = `cprovince`.`provcode` AND
+						`jhcisdb`.`csubdistrict`
+					JOIN
+						`jhcisdb`.`cdistrict` ON `csubdistrict`.`distcode` = `cdistrict`.`distcode`
+					JOIN
+						`jhcisdb`.`cprovince` ON `cdistrict`.`provcode` = `cprovince`.`provcode`
+					AND
 						`csubdistrict`.`provcode` = `cprovince`.`provcode`
-				) AS `place`
-			WHERE
-				`gisiph_gps_house`.`status` <> 'DELETE' AND
-				`gisiph_gps_house`.`hcode` <> 0 AND
-				`village`.`villcode` <> 0 AND
-				`gisiph_gps_house`.`hcode` = `house`.`hcode` AND
-				`house`.`villcode` = `village`.`villcode` AND
-				SUBSTRING(`village`.`villcode`, 1, 6) = `place`.`place_code`
+				) AS `place` ON SUBSTRING(`village`.`villcode`, 1, 6) = `place`.`place_code`
 			"
 		);
 
