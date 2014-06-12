@@ -120,7 +120,12 @@ try {
 	$path = 'http://'.$_SERVER['HTTP_HOST'].'/gisiph/';
 	foreach ($photos_house as $key => $value) {
 		$image = $path.substr($value['src'], 2);
-		if(!file_exists($path)) continue;
+		if(!file_exists('../../.'.$value['src'])){
+			$photos_house[$key]['photo_id'] = (int)$value['photo_id'];
+			$photos_house[$key]['house_id'] = (int)$value['house_id'];
+			$photos_house[$key]['src'] = 'static/images/connection_fail.png';
+			continue;
+		}
 		$imageData = base64_encode(file_get_contents($image));
 		$src = 'data: image/jpeg;base64,' . $imageData;
 		$width = 300;
@@ -272,7 +277,7 @@ try {
 	$path = 'http://'.$_SERVER['HTTP_HOST'].'/gisiph/';
 	foreach ($photos_chronic as $key => $value) {
 		$image = $path.substr($value['src'], 2);
-		if(!file_exists($path)) continue;
+		if(!file_exists('../../.'.$value['src'])) continue;
 		$imageData = base64_encode(file_get_contents($image));
 		$src = 'data: image/jpeg;base64,' . $imageData;
 		$width = 300;
