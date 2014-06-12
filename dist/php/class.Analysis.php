@@ -236,38 +236,31 @@ class Analysis
 	}
 	
 	public function calcColorFromHypertension($colorFromHypertension) {
-		$person_color = array();
-		$has_disease = array();
-		foreach ($colorFromHypertension as $key => &$value) {
-			$value['top_pressure'] = (int)$value['top_pressure'];
-			$value['down_pressure'] = (int)$value['down_pressure'];
+		$hypertension = array();
+		$incurrent = array();
+		foreach ($colorFromHypertension as $key => $value) {
+			if ($value['person_codechronic'] === '01')
+				$hypertension[$value['pid']] = true;
+			elseif ($value['person_codechronic'] !== '10' && $value['person_codechronic'] !== NULL)
+				$incurrent[$value['pid']] = true;
+		}
 
-			if (($value['person_codechronic'] === NULL || $value['person_codechronic'] !== '01') && !$has_disease[$value['pid']]) {
-				if ($value['top_pressure'] >= 120 && $value['down_pressure'] >= 80 && (int)$person_color[$value['pid']] <= 1) {
-					$person_color[$value['pid']] = 1;
-				}
-				elseif ((int)$person_color[$value['pid']] === 0) {
-					$person_color[$value['pid']] = 0;
-				}
-			}
-			elseif ($value['person_codechronic'] === '01' && !$has_disease[$value['pid']]) {
-				$has_disease[$value['pid']] = true;
-				if ($value['top_pressure'] >= 180 && $value['down_pressure'] >= 110) {
+		$person_color = array();
+		foreach ($colorFromHypertension as $key => $value) {
+			if ($hypertension[$value['pid']] === true) {
+				if ($incurrent[$value['pid']] === true) $person_color[$value['pid']] = 6;
+				elseif ($value['top_pressure'] >= 180 || $value['down_pressure'] >= 110) 
 					$person_color[$value['pid']] = 5;
-				}
-				elseif ($value['top_pressure'] >= 160 && $value['down_pressure'] >= 100) {
+				elseif ($value['top_pressure'] >= 160 || $value['down_pressure'] >= 100) 
 					$person_color[$value['pid']] = 4;
-				}
-				elseif ($value['top_pressure'] >= 140 && $value['down_pressure'] >= 90) {
+				elseif ($value['top_pressure'] >= 140 || $value['down_pressure'] >= 90) 
 					$person_color[$value['pid']] = 3;
-				}
-				else {
-					$person_color[$value['pid']] = 2;
-				}
-			}
-			elseif ($value['person_codechronic'] !== NULL && $value['person_codechronic'] !== '01') {
-				$has_disease[$value['pid']] = true;
-				$person_color[$value['pid']] = 6;
+				else $person_color[$value['pid']] = 2;
+			} 
+			else {
+				if ($value['top_pressure'] >= 120 || $value['down_pressure'] >= 80) 
+					$person_color[$value['pid']] = 1;
+				else $person_color[$value['pid']] = 0;
 			}
 		}
 
@@ -364,39 +357,30 @@ class Analysis
 	}
 
 	public function calcColorFromDiabetes($colorFromDiabetes) {
-		$person_color = array();
-		$has_disease = array();
-		foreach ($colorFromDiabetes as $key => &$value) {
-			$value['sugarnumdigit'] = (int)$value['sugarnumdigit'];
+		$diabetes = array();
+		$incurrent = array();
+		foreach ($colorFromDiabetes as $key => $value) {
+			if ($value['person_codechronic'] === '10')
+				$diabetes[$value['pid']] = true;
+			elseif ($value['person_codechronic'] !== '01' && $value['person_codechronic'] !== NULL)
+				$incurrent[$value['pid']] = true;
+		}
 
-			if (($value['person_codechronic'] === NULL || $value['person_codechronic'] !== '10') && !$has_disease[$value['pid']]) {
-				if ($value['sugarnumdigit'] >= 100 && (int)$person_color[$value['pid']] <= 1) {
-					$person_color[$value['pid']] = 1;
-				}
-				elseif ((int)$person_color[$value['pid']] === 0) {
-					$person_color[$value['pid']] = 0;
-				}
+		$person_color = array();
+		foreach ($colorFromDiabetes as $key => $value) {
+			if ($diabetes[$value['pid']] === true) {
+				if ($incurrent[$value['pid']] === true) $person_color[$value['pid']] = 6;
+				elseif ($value['sugarnumdigit'] >= 183 ) $person_color[$value['pid']] = 5;
+				elseif ($value['sugarnumdigit'] >= 155 ) $person_color[$value['pid']] = 4;
+				elseif ($value['sugarnumdigit'] >= 126 ) $person_color[$value['pid']] = 3;
+				else $person_color[$value['pid']] = 2;
 			}
-			elseif ($value['person_codechronic'] === '10' && !$has_disease[$value['pid']]) {
-				$has_disease[$value['pid']] = true;
-				if ($value['sugarnumdigit'] >= 183) {
-					$person_color[$value['pid']] = 5;
-				}
-				elseif ($value['sugarnumdigit'] >= 155) {
-					$person_color[$value['pid']] = 4;
-				}
-				elseif ($value['sugarnumdigit'] >= 126) {
-					$person_color[$value['pid']] = 3;
-				}
-				else {
-					$person_color[$value['pid']] = 2;
-				}
-			}
-			elseif ($value['person_codechronic'] !== NULL && $value['person_codechronic'] !== '10') {
-				$has_disease[$value['pid']] = true;
-				$person_color[$value['pid']] = 6;
+			else {
+				if ($value['sugarnumdigit'] >= 100 ) $person_color[$value['pid']] = 1;
+				else $person_color[$value['pid']] = 0;
 			}
 		}
+
 
 		$color = array(
 			array(
