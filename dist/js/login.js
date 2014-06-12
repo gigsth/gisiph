@@ -75,4 +75,23 @@ $(document).ready(function() {
 
 	// Focused username textbox
 	$('#username').focus();
+
+	$('#tranfer_setting_btn').click(function(e) {
+		e.preventDefault();
+		$.ajax({
+			type: "POST",
+			url: './dist/php/tranfer_setting.php',
+			data: {
+				HOSTNAME: $("#dbhost").val(),
+				USERNAME: $("#dbuser").val(),
+				PASSWORD: $("#dbpass").val(),
+				PORT: $("#dbport").val()
+			},
+			contentType: "application/x-www-form-urlencoded;charset=utf-8",
+			success: function(data) {
+				console.log('Config done..');
+				$('#tranfer_setting').modal('hide');
+			}
+		});
+	});
 });
