@@ -21,6 +21,9 @@
 				color: #ecf0f1;
 				background-color: #34495e;
 			}
+			.date {
+				color: #777777;
+			}
 			@media print {
 				#prepare_table th {
 					color: black !important;
@@ -230,13 +233,22 @@
 				</div>
 			</div> <!-- row -->
 
+			<div class="row" style="height: 50px;">
+				<div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 clearfix date">
+					<div class="pull-right">Modify Date: <span id="modify_date">dd/mm/yyyy</span></div>
+				</div>
+				<div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 clearfix date">
+					<div class="pull-right">Print Date: <span id="print_date">dd/mm/yyyy</span></div>
+				</div>
+			</div> <!-- row -->
+
 			<div class="row hidden-print" style="height: 200px;">
 				<div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3">
-					<button type="button" class="btn btn-default pull-right" onclick="javascript:window.print();">
+					<button type="button" class="btn btn-default" onclick="javascript:window.print();" style="margin-top: -80px;">
 						<span class="glyphicon glyphicon-print"></span> พิมพ์
 					</button>
 				</div>
-			</div>
+			</div> <!-- row -->
 		
 		</div> <!-- container -->
 

@@ -1,5 +1,6 @@
 <?php
 require 'is_ajax.php';
+session_start();
 //if (!isAjax()) {return;}
 
 
@@ -18,7 +19,8 @@ try {
 			echo json_output(
 				array(
 					'response' => 'success',
-					'values' => $analysis->getChronics()
+					'values' => $analysis->getChronics(),
+					'modify' => $_SESSION['modify']
 				)
 			);
 			break;
@@ -26,7 +28,8 @@ try {
 			echo json_output(
 				array(
 					'response' => 'success',
-					'values' => $analysis->getVillage()
+					'values' => $analysis->getVillage(),
+					'modify' => $_SESSION['modify']
 				)
 			);
 			break;
@@ -36,7 +39,8 @@ try {
 					'response' => 'success',
 					'values' => (isset($_POST['selection']) && $_POST['selection'] != '-1') ? 
 						$analysis->getColorFromHypertensionVillage($_POST['selection']) : 
-						$analysis->getColorFromHypertension()
+						$analysis->getColorFromHypertension(),
+					'modify' => $_SESSION['modify']
 				)
 			);
 			break;
@@ -46,7 +50,8 @@ try {
 					'response' => 'success',
 					'values' => (isset($_POST['selection']) && $_POST['selection'] != '-1') ? 
 						$analysis->getColorFromDiabetesVillage($_POST['selection']) : 
-						$analysis->getColorFromDiabetes()
+						$analysis->getColorFromDiabetes(),
+					'modify' => $_SESSION['modify']
 				)
 			);
 			break;
@@ -54,7 +59,8 @@ try {
 			echo json_output(
 				array(
 					'response' => 'success',
-					'values' => $analysis->getDiscover()
+					'values' => $analysis->getDiscover(),
+					'modify' => $_SESSION['modify']
 				)
 			);
 			break;
@@ -62,7 +68,8 @@ try {
 			echo json_output(
 				array(
 					'response' => 'success',
-					'values' => $analysis->getNameVillage()
+					'values' => $analysis->getNameVillage(),
+					'modify' => $_SESSION['modify']
 				)
 			);
 			break;

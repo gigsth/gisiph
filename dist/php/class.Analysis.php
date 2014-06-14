@@ -22,13 +22,18 @@ class Analysis
 			"
 			SELECT
 				`personchronic`.`pid` AS `pid`, 
-				`cdiseasechronic`.`groupcode` AS `groupcode`
+				`cdiseasechronic`.`groupcode` AS `groupcode`,
+				`visit`.`visitdate`
 			FROM 
 				`jhcisdb`.`person`
 			JOIN
 				`jhcisdb`.`personchronic` 
 			ON `person`.`pid` = `personchronic`.`pid` AND
 				TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65 
+			JOIN
+				`jhcisdb`.`visit`
+			ON
+				`personchronic`.`pid` = `visit`.`pid`
 			JOIN
 				`jhcisdb`.`cdisease`
 			ON 
@@ -48,7 +53,11 @@ class Analysis
 		);
 
 		$person_disease = array();
+		$_SESSION['modify'] = '0000-00-00';
 		foreach ($chronics_groupcode as $key => &$value) {
+			if (strtotime($value['visitdate']) - strtotime($_SESSION['modify']) > 0)
+				$_SESSION['modify'] = $value['visitdate'];
+
 			if(!isset($person_disease[$value['pid']])) {
 				if($value['groupcode'] === '01') {
 					$person_disease[$value['pid']] = 0;

@@ -1,7 +1,7 @@
 google.load('visualization', '1', {packages: ["corechart"]});
 
 var cDiscover, cChronics, cVillage, cColorFromHypertension, cColorFromDiabetes,
- 	cColorFromHypertensionVillage, cColorFromDiabetesVillage;
+	cColorFromHypertensionVillage, cColorFromDiabetesVillage;
 
 $(window).on("resize", function(event) {
 	drawCharts();
@@ -46,6 +46,11 @@ function drawCharts() {
 			callJSON({request: 'colorFromDiabetes', selection: $('#tab3-selection').val()}, drawColorFromDiabetes);
 		};
 	}).promise().done(function() {
+		var date = new Date(),
+			yyyy = (date.getFullYear()+543).toString(),
+			mm = (date.getMonth()+1).toString(),
+			dd  = date.getDate().toString();
+			$('#print_date').html((dd[1]?dd:"0"+dd[0])+'/'+(mm[1]?mm:"0"+mm[0])+'/'+yyyy);
 		$('.progress-bar').delay(100).fadeOut(400);
 	});
 }
@@ -188,7 +193,12 @@ function callJSON(options, callback) {
 		data: options,
 		contentType: "application/x-www-form-urlencoded;charset=utf-8",
 		success: function(data) {
-			if (data.response == 'success') {
+			if (data.response == 'success') {console.log(data.modify);
+				var date = new Date(data.modify),
+					yyyy = (date.getFullYear()+543).toString(),
+					mm = (date.getMonth()+1).toString(),
+					dd  = date.getDate().toString();
+				$('#modify_date').html((dd[1]?dd:"0"+dd[0])+'/'+(mm[1]?mm:"0"+mm[0])+'/'+yyyy);
 				callback(data.values);
 			}
 		}
