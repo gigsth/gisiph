@@ -4,7 +4,7 @@ try {
 	header('Content-Type: ' . ($callback ? 'application/javascript' : 'application/json') . ';charset=UTF-8');
 	header('Access-Control-Allow-Origin: *');
 	require_once 'class.Database.php';
-//$_POST['villcodes'] = 25060601;
+// $_POST['villcodes'] = 25060601;
 	$_VILLCODES_ = split(',', $_POST['villcodes']);
 
 	// $starttime = microtime(true);
@@ -38,7 +38,8 @@ try {
 				CONCAT('จ.', `place`.`provname`)
 			) AS `address`,
 			`gps`.`latitude`,
-			`gps`.`longitude`
+			`gps`.`longitude`,
+			DATE_FORMAT(DATE_ADD(`gps`.`timestamp`, INTERVAL 543 YEAR), '%d/%m/%Y %T') AS `timestamp`
 		FROM
 			(
 				SELECT	
@@ -76,7 +77,8 @@ try {
 				SELECT
 					`gisiph_gps_house`.`hcode`,
 					`gisiph_gps_house`.`latitude`,
-					`gisiph_gps_house`.`longitude`
+					`gisiph_gps_house`.`longitude`,
+					`gisiph_gps_house`.`timestamp`
 				FROM
 					`jhcisdb`.`gisiph_gps_house`
 				WHERE
@@ -108,8 +110,7 @@ try {
 			`gisiph_photo_house`.`hcode` AS `house_id`,
 			`gisiph_photo_house`.`path` AS `src`,
 			`gisiph_photo_house`.`uedit`,
-			`gisiph_photo_house`.`status`,
-			`gisiph_photo_house`.`timestamp`
+			DATE_FORMAT(DATE_ADD(`gisiph_photo_house`.`timestamp`, INTERVAL 543 YEAR), '%d/%m/%Y %T') AS `timestamp`
 		FROM
 			`jhcisdb`.`gisiph_photo_house`
 		WHERE
@@ -241,7 +242,7 @@ try {
 			END AS `disease`,
 			`cdisease`.`diseasenamethai` AS `detail`,
 			`personchronic`.`chroniccode`,
-			`personchronic`.`datefirstdiag`
+			DATE_FORMAT(DATE_ADD(`personchronic`.`datefirstdiag`, INTERVAL 543 YEAR), '%d/%m/%Y') AS `datefirstdiag`
 		FROM
 			`jhcisdb`.`personchronic`,
 			`jhcisdb`.`cdisease`,
@@ -266,7 +267,7 @@ try {
 			`gisiph_photo_pchronic`.`path` AS `src`,
 			`gisiph_photo_pchronic`.`uedit`,
 			`gisiph_photo_pchronic`.`status`,
-			`gisiph_photo_pchronic`.`timestamp`
+			DATE_FORMAT(DATE_ADD(`gisiph_photo_pchronic`.`timestamp`, INTERVAL 543 YEAR), '%d/%m/%Y %T') AS `timestamp`
 		FROM
 			`jhcisdb`.`gisiph_photo_pchronic`
 		WHERE
@@ -316,6 +317,7 @@ try {
 			`pressure`.`pid` AS `person_id`,
 			`pressure`.`last_pressure`,
 			`sugarblood`.`last_sugarblood`,
+			`pressure`.`visitdate`,
 			`incurrents`.`incurrent`
 		FROM
 			
@@ -337,7 +339,8 @@ try {
 			(
 				SELECT
 					`visit`.`pid`,
-					`visit`.`pressure` AS `last_pressure`
+					`visit`.`pressure` AS `last_pressure`,
+					DATE_FORMAT(DATE_ADD(`visit`.`visitdate`, INTERVAL 543 YEAR), '%d/%m/%Y') AS `visitdate`
 				FROM
 					`jhcisdb`.`visit`
 				WHERE
