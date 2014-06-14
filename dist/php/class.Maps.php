@@ -85,10 +85,14 @@ class Maps
 				$person_colors = $this->calcColor($person);
 
 				// Fillter Colors
-				if ($person_colors['hypertension'] > $person_colors['diabetes'] && in_array('01', $chronics))
+				if ($person_colors['hypertension'] > $person_colors['diabetes'] && in_array('01', $chronics)) {
 					$person['color_level'] = $person_colors['hypertension'];
-				elseif ($person_colors['hypertension'] <= $person_colors['diabetes'] && in_array('10', $chronics))
+					$person['color_from'] = 'โรคความคันโลหิตสูง';
+				}
+				elseif ($person_colors['hypertension'] <= $person_colors['diabetes'] && in_array('10', $chronics)) {
 					$person['color_level'] = $person_colors['diabetes'];
+					$person['color_from'] = 'โรคเบาหวาน';
+				}
 
 				if (!in_array($person['color_level'], $colors)) {
 					unset($house['persons'][$key]);

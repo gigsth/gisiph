@@ -29,14 +29,14 @@ try {
 			if ($_POST['chronics']['diabetes'] == true) array_push($chronics, '10');
 
 			$colors = array();
-			if($_POST['colors']['unseen'] == true) array_push($colors, (int)-1);
-			if($_POST['colors']['level_0']  == true) array_push($colors, (int)0);
-			if($_POST['colors']['level_1']  == true) array_push($colors, (int)1);
-			if($_POST['colors']['level_2']  == true) array_push($colors, (int)2);
-			if($_POST['colors']['level_3']  == true) array_push($colors, (int)3);
-			if($_POST['colors']['level_4']  == true) array_push($colors, (int)4);
-			if($_POST['colors']['level_5']  == true) array_push($colors, (int)5);
-			if($_POST['colors']['level_6']  == true) array_push($colors, (int)6);
+			if($_POST['colors']['unseen']  == true) array_push($colors, (int)-1);
+			if($_POST['colors']['level_0'] == true) array_push($colors, (int)0);
+			if($_POST['colors']['level_1'] == true) array_push($colors, (int)1);
+			if($_POST['colors']['level_2'] == true) array_push($colors, (int)2);
+			if($_POST['colors']['level_3'] == true) array_push($colors, (int)3);
+			if($_POST['colors']['level_4'] == true) array_push($colors, (int)4);
+			if($_POST['colors']['level_5'] == true) array_push($colors, (int)5);
+			if($_POST['colors']['level_6'] == true) array_push($colors, (int)6);
 
 			echo json_output(
 				array(

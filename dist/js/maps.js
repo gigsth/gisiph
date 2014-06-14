@@ -189,7 +189,7 @@ function person(person_id) {
 				$('#person .modal-title').html('<span class="glyphicon glyphicon-user"></span> รายละเอียดบุคคล<small> ('
 					+ person_type[person.color_level] + ')</small>');
 				$('#person_type').html('<span class="person-color" style="background-color: #' 
-					+ pins[person.color_level] +';">&nbsp;</span> '+person.name);
+					+ pins[person.color_level] +';">&nbsp;</span> '+person.name+' ('+person.color_from+')');
 
 				$('#name').val(person.name);
 				$('#sex').val(person.sex);
