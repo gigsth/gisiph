@@ -211,10 +211,10 @@ class Analysis
 			(	
 				SELECT `person`.`pid`
 				FROM`jhcisdb`.`person`
-				WHERE (YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65 AS `person`
+				WHERE (YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65) AS `person`
 			JOIN
 			(
-				SELECT `pressure`.*			
+				SELECT `pressure`.*
 				FROM
 					(SELECT
 						`visit`.`pid` AS `pid`,
