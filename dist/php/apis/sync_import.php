@@ -39,6 +39,8 @@ try {
 			) AS `address`,
 			`gps`.`latitude`,
 			`gps`.`longitude`,
+			`gps`.`uedit`,
+			`gps`.`status`,
 			DATE_FORMAT(DATE_ADD(`gps`.`timestamp`, INTERVAL 543 YEAR), '%d/%m/%Y %T') AS `timestamp`
 		FROM
 			(
@@ -78,6 +80,8 @@ try {
 					`gisiph_gps_house`.`hcode`,
 					`gisiph_gps_house`.`latitude`,
 					`gisiph_gps_house`.`longitude`,
+					`gisiph_gps_house`.`uedit`,
+					`gisiph_gps_house`.`status`,
 					`gisiph_gps_house`.`timestamp`
 				FROM
 					`jhcisdb`.`gisiph_gps_house`
@@ -110,6 +114,7 @@ try {
 			`gisiph_photo_house`.`hcode` AS `house_id`,
 			`gisiph_photo_house`.`path` AS `src`,
 			`gisiph_photo_house`.`uedit`,
+			`gisiph_photo_house`.`status`,
 			DATE_FORMAT(DATE_ADD(`gisiph_photo_house`.`timestamp`, INTERVAL 543 YEAR), '%d/%m/%Y %T') AS `timestamp`
 		FROM
 			`jhcisdb`.`gisiph_photo_house`
@@ -220,7 +225,7 @@ try {
 			`person`.`occupa` = `coccupa`.`occupacode` AND
 			`person`.`nation` = `cnation`.`nationcode` AND
 			`person`.`origin` = `corigin`.`nationcode` AND
-			TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65
+			(YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65
 		",
 		array(
 			'HOUSES_ID' => $houses_id
@@ -400,7 +405,7 @@ try {
 	echo json_encode(
 		array(
 			'prop' => 'fail',
-			'data' => 'Empty data..'
+			'data' => 'Empty data..'.$e->getMessage()
 		)
 	);
 }

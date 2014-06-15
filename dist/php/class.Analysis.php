@@ -29,7 +29,7 @@ class Analysis
 			JOIN
 				`jhcisdb`.`personchronic` 
 			ON `person`.`pid` = `personchronic`.`pid` AND
-				TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65 
+				(YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65 
 			JOIN
 				`jhcisdb`.`visit`
 			ON
@@ -109,7 +109,7 @@ class Analysis
 				`jhcisdb`.`person` ON `house`.`hcode` = `person`.`hcode`
 			JOIN
 				`jhcisdb`.`personchronic` ON `person`.`pid` = `personchronic`.`pid`
-			AND	TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65 
+			AND	(YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65
 			JOIN
 				`jhcisdb`.`cdisease` ON	`personchronic`.`chroniccode` = `cdisease`.`diseasecode`
 			JOIN
@@ -179,7 +179,7 @@ class Analysis
 			JOIN
 				`jhcisdb`.`personchronic` 
 			ON `person`.`pid` = `personchronic`.`pid` AND
-				TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65 
+				(YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65
 			JOIN
 				`jhcisdb`.`cdisease` ON	`personchronic`.`chroniccode` = `cdisease`.`diseasecode`
 			JOIN
@@ -211,7 +211,7 @@ class Analysis
 			(	
 				SELECT `person`.`pid`
 				FROM`jhcisdb`.`person`
-				WHERE TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65 ) AS `person`
+				WHERE (YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65 AS `person`
 			JOIN
 			(
 				SELECT `pressure`.*			
@@ -329,7 +329,7 @@ class Analysis
 			(	
 				SELECT `person`.`pid`
 				FROM`jhcisdb`.`person`
-				WHERE TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65 ) AS `person`
+				WHERE (YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65 AS `person`
 			JOIN
 				(
 					SELECT 
@@ -455,7 +455,7 @@ class Analysis
 					AND
 						`house`.`villcode` = %s[VILLCODE]
 					AND 
-						TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65
+						(YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65
 					ORDER BY `person`.`pid`
 				) AS `personvillage` 
 
@@ -516,7 +516,7 @@ class Analysis
 				AND 
 					`house`.`villcode` = %n[VILLCODE]
 				AND 
-					TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65
+					(YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65
 				ORDER BY `person`.`pid`
 			) AS `personvillage` 
 			JOIN

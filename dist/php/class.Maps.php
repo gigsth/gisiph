@@ -87,11 +87,14 @@ class Maps
 				// Fillter Colors
 				if ($person_colors['hypertension'] > $person_colors['diabetes'] && in_array('01', $chronics)) {
 					$person['color_level'] = $person_colors['hypertension'];
-					$person['color_from'] = 'โรคความคันโลหิตสูง';
+					$person['color_from'] = 'โรคความดันโลหิตสูง';
 				}
 				elseif ($person_colors['hypertension'] <= $person_colors['diabetes'] && in_array('10', $chronics)) {
 					$person['color_level'] = $person_colors['diabetes'];
 					$person['color_from'] = 'โรคเบาหวาน';
+				}
+				if ($person_colors['hypertension'] == $person_colors['diabetes'] && in_array('10', $chronics) && in_array('01', $chronics)) {
+					$person['color_from'] = 'โรคเบาหวานและความดันโลหิตสูง';
 				}
 
 				if (!in_array($person['color_level'], $colors)) {
