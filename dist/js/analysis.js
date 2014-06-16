@@ -193,12 +193,8 @@ function callJSON(options, callback) {
 		data: options,
 		contentType: "application/x-www-form-urlencoded;charset=utf-8",
 		success: function(data) {
-			if (data.response == 'success') {console.log(data.modify);
-				var date = new Date(data.modify),
-					yyyy = (date.getFullYear()+543).toString(),
-					mm = (date.getMonth()+1).toString(),
-					dd  = date.getDate().toString();
-				$('#modify_date').html((dd[1]?dd:"0"+dd[0])+'/'+(mm[1]?mm:"0"+mm[0])+'/'+yyyy);
+			if (data.response == 'success') {
+				$('#modify_date').html(data.modify);
 				callback(data.values);
 			}
 		}

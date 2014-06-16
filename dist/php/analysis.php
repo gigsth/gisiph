@@ -20,7 +20,7 @@ try {
 				array(
 					'response' => 'success',
 					'values' => $analysis->getChronics(),
-					'modify' => $_SESSION['modify']
+					'modify' => $analysis->lastDateDiag()
 				)
 			);
 			break;
@@ -29,7 +29,16 @@ try {
 				array(
 					'response' => 'success',
 					'values' => $analysis->getVillage(),
-					'modify' => $_SESSION['modify']
+					'modify' => $analysis->lastDateDiag()
+				)
+			);
+			break;
+		case 'discover':
+			echo json_output(
+				array(
+					'response' => 'success',
+					'values' => $analysis->getDiscover(),
+					'modify' => $analysis->lastDateDiag()
 				)
 			);
 			break;
@@ -40,7 +49,9 @@ try {
 					'values' => (isset($_POST['selection']) && $_POST['selection'] != '-1') ? 
 						$analysis->getColorFromHypertensionVillage($_POST['selection']) : 
 						$analysis->getColorFromHypertension(),
-					'modify' => $_SESSION['modify']
+					'modify' => (isset($_POST['selection']) && $_POST['selection'] != '-1') ?
+						$analysis->lastHypertensionVillageVisit($_POST['selection']) : 
+						$analysis->lastHypertensionVisit()
 				)
 			);
 			break;
@@ -51,16 +62,9 @@ try {
 					'values' => (isset($_POST['selection']) && $_POST['selection'] != '-1') ? 
 						$analysis->getColorFromDiabetesVillage($_POST['selection']) : 
 						$analysis->getColorFromDiabetes(),
-					'modify' => $_SESSION['modify']
-				)
-			);
-			break;
-		case 'discover':
-			echo json_output(
-				array(
-					'response' => 'success',
-					'values' => $analysis->getDiscover(),
-					'modify' => $_SESSION['modify']
+					'modify' => (isset($_POST['selection']) && $_POST['selection'] != '-1') ?
+						$analysis->lastDiabetesVillageVisit($_POST['selection']) : 
+						$analysis->lastDiabetesVisit()
 				)
 			);
 			break;
@@ -68,8 +72,7 @@ try {
 			echo json_output(
 				array(
 					'response' => 'success',
-					'values' => $analysis->getNameVillage(),
-					'modify' => $_SESSION['modify']
+					'values' => $analysis->getNameVillage()
 				)
 			);
 			break;

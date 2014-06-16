@@ -22,18 +22,13 @@ class Analysis
 			"
 			SELECT
 				`personchronic`.`pid` AS `pid`, 
-				`cdiseasechronic`.`groupcode` AS `groupcode`,
-				`visit`.`visitdate`
+				`cdiseasechronic`.`groupcode` AS `groupcode`
 			FROM 
 				`jhcisdb`.`person`
 			JOIN
 				`jhcisdb`.`personchronic` 
 			ON `person`.`pid` = `personchronic`.`pid` AND
 				(YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65 
-			JOIN
-				`jhcisdb`.`visit`
-			ON
-				`personchronic`.`pid` = `visit`.`pid`
 			JOIN
 				`jhcisdb`.`cdisease`
 			ON 
@@ -55,8 +50,8 @@ class Analysis
 		$person_disease = array();
 		$_SESSION['modify'] = '0000-00-00';
 		foreach ($chronics_groupcode as $key => &$value) {
-			if (strtotime($value['visitdate']) - strtotime($_SESSION['modify']) > 0)
-				$_SESSION['modify'] = $value['visitdate'];
+			if (strtotime($value['modify']) - strtotime($_SESSION['modify']) > 0)
+				$_SESSION['modify'] = $value['modify'];
 
 			if(!isset($person_disease[$value['pid']])) {
 				if($value['groupcode'] === '01') {
@@ -209,9 +204,13 @@ class Analysis
 			
 			FROM
 			(	
-				SELECT `person`.`pid`
-				FROM`jhcisdb`.`person`
-				WHERE (YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65 AS `person`
+				SELECT 
+					`person`.`pid`
+				FROM 
+					`jhcisdb`.`person`
+				WHERE 
+					(YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65
+				) AS `person`
 			JOIN
 			(
 				SELECT `pressure`.*			
@@ -329,7 +328,7 @@ class Analysis
 			(	
 				SELECT `person`.`pid`
 				FROM`jhcisdb`.`person`
-				WHERE (YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65 AS `person`
+				WHERE (YEAR(CURRENT_DATE) + 543) - (YEAR(`person`.`birth`) + 543) BETWEEN 15 AND 65) AS `person`
 			JOIN
 				(
 					SELECT 
@@ -576,6 +575,93 @@ class Analysis
 		return $village;
 	}
 
+	public function lastDateDiag() {
+		$last_date = $this->mysql->queryAndFetch(
+			"
+			SELECT	DATE_FORMAT(DATE_ADD(max(`personchronic`.`datefirstdiag`) , INTERVAL 543 YEAR), '%d/%m/%Y') AS `modify`
+			FROM	`jhcisdb`.`personchronic` 
+			JOIN	`jhcisdb`.`cdisease`
+				ON	`personchronic`.`chroniccode` = `cdisease`.`diseasecode`
+				AND	`personchronic`.`datefirstdiag` < NOW()
+			",
+			NULL,
+			'modify'
+		);
+		return $last_date;
+	}
+
+	public function lastHypertensionVisit() {
+		$last_date = $this->mysql->queryAndFetch("
+			SELECT	DATE_FORMAT(DATE_ADD(max(`visit`.`visitdate`) , INTERVAL 543 YEAR), '%d/%m/%Y') AS `modify`
+			FROM	`jhcisdb`.`visit`
+			WHERE	`visit`.`pressure` IS NOT NULL 
+				AND	`visit`.`visitdate` < NOW()
+			",
+			NULL,
+			'modify'
+		);
+		return $last_date;
+	}
+
+	public function lastHypertensionVillageVisit($villcode) {
+		$last_date = $this->mysql->queryAndFetch("
+			SELECT	DATE_FORMAT(DATE_ADD(MAX(`visit`.`visitdate`) , INTERVAL 543 YEAR), '%d/%m/%Y') AS `modify`
+			FROM	(
+				SELECT	`person`.`pid` FROM `jhcisdb`.`person` JOIN `jhcisdb`.`house`
+					ON	`person`.`hcode` = `house`.`hcode`
+					AND	`house`.`villcode` IN (%n[VILLCODE])
+			)	AS	`person`
+			JOIN	`jhcisdb`.`visit`
+				ON	`person`.`pid` = `visit`.`pid`
+				AND	`visit`.`pressure` IS NOT NULL 
+				AND	`visit`.`visitdate` < NOW() 
+			",
+			array(
+				'VILLCODE' => $villcode
+			),
+			'modify'
+		);
+		return $last_date;
+	}
+
+	public function lastDiabetesVisit() {
+		$last_date = $this->mysql->queryAndFetch("
+			SELECT	DATE_FORMAT(DATE_ADD(max(`visit`.`visitdate`) , INTERVAL 543 YEAR), '%d/%m/%Y') AS `modify`
+			FROM	`jhcisdb`.`visit`
+			JOIN	`jhcisdb`.`visitlabsugarblood`
+				ON	`visit`.`visitno` = `visitlabsugarblood`.`visitno`
+			WHERE	`visit`.`pressure` IS NOT NULL 
+				AND	`visit`.`visitdate` < NOW()
+			",
+			NULL,
+			'modify'
+		);
+		return $last_date;
+	}
+
+	public function lastDiabetesVillageVisit($villcode) {
+		$last_date = $this->mysql->queryAndFetch("
+			SELECT	DATE_FORMAT(DATE_ADD(MAX(`visit`.`visitdate`) , INTERVAL 543 YEAR), '%d/%m/%Y') AS `modify`
+			FROM	(
+				SELECT	`person`.`pid`
+				FROM	`jhcisdb`.`person`
+				JOIN	`jhcisdb`.`house`
+					ON	`person`.`hcode` = `house`.`hcode`
+					AND	`house`.`villcode` IN (%n[VILLCODE])
+			)	AS	`person`
+			JOIN	`jhcisdb`.`visit`
+				ON	`person`.`pid` = `visit`.`pid`
+			JOIN	`jhcisdb`.`visitlabsugarblood`
+				ON	`visit`.`visitno` = `visitlabsugarblood`.`visitno`
+				AND	`visit`.`visitdate` < NOW() 
+			",
+			array(
+				'VILLCODE' => $villcode
+			),
+			'modify'
+		);
+		return $last_date;
+	}
 
 }
 ?>
