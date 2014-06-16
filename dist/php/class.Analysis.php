@@ -213,7 +213,7 @@ class Analysis
 				) AS `person`
 			JOIN
 			(
-				SELECT `pressure`.*			
+				SELECT `pressure`.*
 				FROM
 					(SELECT
 						`visit`.`pid` AS `pid`,
