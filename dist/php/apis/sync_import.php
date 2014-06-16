@@ -80,11 +80,14 @@ try {
 					`gisiph_gps_house`.`hcode`,
 					`gisiph_gps_house`.`latitude`,
 					`gisiph_gps_house`.`longitude`,
-					`gisiph_gps_house`.`uedit`,
+					CONCAT(`user`.`fname`, ' ', `user`.`lname`) AS `uedit`,
 					`gisiph_gps_house`.`status`,
 					`gisiph_gps_house`.`timestamp`
 				FROM
 					`jhcisdb`.`gisiph_gps_house`
+				JOIN
+					`jhcisdb`.`user`
+				ON	`gisiph_gps_house`.`uedit` = `user`.`username`
 				WHERE
 					`gisiph_gps_house`.`status` <> 'DELETE'
 			) AS `gps`
@@ -113,11 +116,14 @@ try {
 			`gisiph_photo_house`.`phcode` AS `photo_id`,
 			`gisiph_photo_house`.`hcode` AS `house_id`,
 			`gisiph_photo_house`.`path` AS `src`,
-			`gisiph_photo_house`.`uedit`,
+			CONCAT(`user`.`fname`, ' ', `user`.`lname`) AS `uedit`,
 			`gisiph_photo_house`.`status`,
 			DATE_FORMAT(DATE_ADD(`gisiph_photo_house`.`timestamp`, INTERVAL 543 YEAR), '%d/%m/%Y %T') AS `timestamp`
 		FROM
 			`jhcisdb`.`gisiph_photo_house`
+		JOIN
+			`jhcisdb`.`user`
+		ON	`gisiph_photo_house`.`uedit` = `user`.`username`
 		WHERE
 			`gisiph_photo_house`.`status` <> 'DELETE'
 		"
@@ -270,11 +276,14 @@ try {
 			`gisiph_photo_pchronic`.`pid` AS `person_id`,
 			`gisiph_photo_pchronic`.`chroniccode`,
 			`gisiph_photo_pchronic`.`path` AS `src`,
-			`gisiph_photo_pchronic`.`uedit`,
+			CONCAT(`user`.`fname`, ' ', `user`.`lname`) AS `uedit`,
 			`gisiph_photo_pchronic`.`status`,
 			DATE_FORMAT(DATE_ADD(`gisiph_photo_pchronic`.`timestamp`, INTERVAL 543 YEAR), '%d/%m/%Y %T') AS `timestamp`
 		FROM
 			`jhcisdb`.`gisiph_photo_pchronic`
+		JOIN
+			`jhcisdb`.`user`
+		ON	`gisiph_photo_pchronic`.`uedit` = `user`.`username`
 		WHERE
 			`gisiph_photo_pchronic`.`status` <> 'DELETE'
 		"
