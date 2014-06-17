@@ -34,7 +34,7 @@ try {
 					VALUES
 						(
 							%n[HOUSE_ID],
-							%n[LATTITUDE],
+							%n[LATITUDE],
 							%n[LONGITUDE],
 							%s[UEDIT],
 							%s[STATUS],
@@ -50,7 +50,7 @@ try {
 					",
 					array(
 						'HOUSE_ID' => $value['house_id'],
-						'LATTITUDE' => $value['lattitude'],
+						'LATITUDE' => $value['latitude'],
 						'LONGITUDE' => $value['longitude'],
 						'UEDIT' => $value['uedit'],
 						'STATUS' => $value['status'],
@@ -73,7 +73,7 @@ try {
 					if(!(file_exists($real_path))) {
 						mkdir($real_path, 0777);
 					}
-					$real_path .= $filename;
+					$real_path = $real_path.$filename;
 					$src = substr($value['src'], 1 + strrpos($value['src'], ','));
 					$result = Database::getConnection()->query(
 						"
@@ -97,7 +97,7 @@ try {
 						",
 						array(
 							'HOUSE_ID' => $value['house_id'],
-							'PATH' => $path,
+							'PATH' => $path.$filename,
 							'UEDIT' => $value['uedit'],
 							'STATUS' => $value['status'],
 							'TIMESTAMP' => $value['timestamp']
@@ -148,7 +148,7 @@ try {
 					if(!(file_exists($real_path))) {
 						mkdir($real_path, 0777);
 					}
-					$real_path .= $filename;
+					$real_path = $real_path.$filename;
 					$src = substr($value['src'], 1 + strrpos($value['src'], ','));
 					$result = Database::getConnection()->query(
 						"
@@ -175,7 +175,7 @@ try {
 						array(
 							'PERSON_ID' => $value['person_id'],
 							'CHRONICCODE' => $value['chroniccode'],
-							'PATH' => $path,
+							'PATH' => $path.$filename,
 							'UEDIT' => $value['uedit'],
 							'STATUS' => $value['status'],
 							'TIMESTAMP' => $value['timestamp']
