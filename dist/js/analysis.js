@@ -101,7 +101,7 @@ function drawDiscover(discover) {
 	data.addRows(getValues(discover));
 	cDiscover = new google.visualization.LineChart(document.getElementById('discover'));
 	cDiscover.draw(data, {
-			title: 'จำนวนผู้ป่วยโรคเรื้อรังในแต่ละปี',
+			title: 'จำนวนผู้ป่วยโรคเรื้อรังที่เพิ่มขึ้นจากเดิมในแต่ละปี',
 			width: '100%',
 			height: '100%'
 	});
