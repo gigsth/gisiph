@@ -243,8 +243,14 @@ function prepareTable(columns, rows) {
 	for (var i = 0, len_i = rows.length; i < len_i; i++) {
 		tr = $('<tr></tr>');
 		for (var j = 0, len_j = rows[i].length; j < len_j; j++) {
-			$(tr).append('<td class="text-'+(j !== 0 ? 'right' : 'left')+'">'+rows[i][j]+'</td>');
+			$(tr).append('<td class="text-'+(j !== 0 ? 'right' : 'left')+'">'+(j !== 0 ? number_format(rows[i][j]) : rows[i][j])+'</td>');
 		}
 		$('#prepare_table tbody').append(tr);
 	};
+}
+
+function number_format(n, currency, fixed) {
+	return (currency || '') + n.toFixed(fixed).replace(/./g, function(c, i, a) {
+		return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "," + c : c;
+	});
 }
