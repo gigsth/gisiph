@@ -4,6 +4,7 @@ $(document).ready(function() {
 
 	$('.fake-backup-btn').on('click', function() {
 		$('#zip_input').click();
+		$('#restore-btn').removeClass('disabled');
 	});
 	$('#zip_input').change(zipChange);
 
@@ -12,12 +13,8 @@ $(document).ready(function() {
 	});
 });
 
-function removeCursor(pre_id) {
-	$(pre_id).find('div.cursor').remove();
-}
-
-function appendCursor(pre_id) {
-	$(pre_id).append($('<div class="cursor">&nbsp;</div>'));
+function clearPregressBar(pre_id) {
+	$(pre_id).hide().width('0%').show();
 }
 
 function zipChange() {
@@ -25,12 +22,12 @@ function zipChange() {
 }
 
 function beforeProcess(btn) {
-	$('.btn').attr('disabled', true);
+	$('.btn').addClass('disabled');
 	$(btn).find('.glyphicon-flash').removeClass('glyphicon-flash').addClass('glyphicon-refresh').addClass('glyphicon-spin');
 }
 
 function afterProcess(btn) {
-	$('.btn').attr('disabled', false);
+	$('.btn').removeClass('disabled');
 	$(btn).find('.glyphicon-spin').removeClass('glyphicon-spin').addClass('glyphicon-flash').removeClass('glyphicon-spin');
 	$('#download-btn').removeClass('hide');
 }
@@ -45,10 +42,12 @@ function backup() {
 		var new_response, result, backup_area;
 		xhr.previous_text = '';
 		beforeProcess('#backup-btn');
-		removeCursor('#backup-area');
+		clearPregressBar('#backup-area');
 		xhr.onload = function() {
 			document.getElementById('download-btn').classList.remove('hide');
 			afterProcess('#backup-btn');
+			$('#backup-area').width('100%');
+			console.log('done...');
 		};
 		xhr.onerror = function() {
 			console.log("[XHR] Fatal Error.");
@@ -58,11 +57,7 @@ function backup() {
 				if (xhr.readyState > 2) {
 					new_response = xhr.responseText.substring(xhr.previous_text.length);
 					result = new_response;
-					backup_area = document.getElementById("backup-area");
-					removeCursor('#backup-area');
-					$('#backup-area').append(result);
-					appendCursor('#backup-area');
-					backup_area.scrollTop = backup_area.scrollHeight;
+					$('#backup-area').width(result);
 					xhr.previous_text = xhr.responseText;
 				}
 			}
@@ -87,9 +82,11 @@ function restore() {
 		var xhr = new XMLHttpRequest();  
 		xhr.previous_text = '';
 		beforeProcess('#restore-btn');
-		removeCursor('#restore-area');
+		clearPregressBar('#restore-area');
 		xhr.onload = function() {
 			afterProcess('#restore-btn');
+			$('#restore-area').width('100%');
+			console.log('done...');
 		};
 		xhr.onerror = function() {
 			console.log("[XHR] Fatal Error.");
@@ -99,11 +96,7 @@ function restore() {
 				if (xhr.readyState > 2) {
 					var new_response = xhr.responseText.substring(xhr.previous_text.length);
 					var result = new_response;
-					var restore_area = document.getElementById("restore-area");
-					removeCursor('#restore-area');
-					$('#restore-area').append(result);
-					appendCursor('#restore-area');
-					restore_area.scrollTop = restore_area.scrollHeight;
+					$('#restore-area').width(result);
 					xhr.previous_text = xhr.responseText;
 				}
 			}

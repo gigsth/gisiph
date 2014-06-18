@@ -26,8 +26,8 @@ $dbname = DBNAME; // database name
 /**
  *	Send a partial message
  */
-function send_message($message) {
-	echo $message . PHP_EOL . '&gt;';
+function send_percent($current, $max) {
+	echo floor(($current*100)/$max).'%';
 
 	//PUSH THE data out by all FORCE POSSIBLE
 	ob_flush();
@@ -37,16 +37,9 @@ function send_message($message) {
 
 $file = $_FILES['zip'];
 
-//send_message(print_r($_FILES['zip']));
-send_message('Uploading...');
 
-
-if ($file['error'] === UPLOAD_ERR_OK) {
-	send_message("File {$file['name']} is uploaded.");
-}
-else {
-	send_message("Upload failed.");
-	die();
+if ($file['error'] !== UPLOAD_ERR_OK) {
+	die("Upload failed.");
 }
 
 
@@ -54,15 +47,10 @@ $zip = new ZipArchive;
 if ($zip->open($file['tmp_name']) === TRUE) {
 	$zip->extractTo('./');
 	$zip->close();
-	send_message(getcwd());
 
 	$result = restore_tables($host, $username, $password, $dbname, './');
 	deleteDirectory('../../uploads');
 	rename('uploads', '../../uploads');
-	send_message('Move picture successful.');
-
-	send_message("Queries command {$result['success']} of {$result['total']} is successful.");
-	send_message('Done...');
 } else {
 	echo 'failed';
 }
@@ -73,6 +61,8 @@ if ($zip->open($file['tmp_name']) === TRUE) {
  * Define the function restore_tables which will create a database sql file.
  */
 function restore_tables($host, $user, $pass, $name, $path){
+	global $CURRENT_DATA;
+	global $MAX_DATA;
 	
 	$con = mysql_connect($host,$user,$pass);
 	mysql_select_db($name,$con);
@@ -87,6 +77,7 @@ function restore_tables($host, $user, $pass, $name, $path){
 		$line = trim($line);
 		if( $line && !startsWith($line,'--') ){
 			$commands .= $line;
+			$MAX_DATA++;
 		}
 	}
 
@@ -100,8 +91,8 @@ function restore_tables($host, $user, $pass, $name, $path){
 			$status = @mysql_query($command)==false ? 0 : 1;
 			$success += $status;
 			$total += 1;
-			send_message($status ? $command.';' : 'ERROR');
 		}
+		send_percent(++$CURRENT_DATA, $MAX_DATA);
 	}
 
 

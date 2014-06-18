@@ -32,8 +32,8 @@ $tables = array(
 /**
  *	Send a partial message
  */
-function send_message($message) {
-	echo $message . PHP_EOL . '&gt;';
+function send_percent($current, $max) {
+	echo floor(($current*100)/$max).'%';
 
 	//PUSH THE data out by all FORCE POSSIBLE
 	ob_flush();
@@ -52,6 +52,14 @@ if(!(file_exists($dir))) {
 
 
 /*
+ * Count data for get max data.
+ */
+$CURRENT_DATA = 0;
+$MAX_DATA = 0;
+$MAX_DATA += count_rows($host, $username, $password, $dbname, $tables);
+
+
+/*
  * We are going to save our backup in zip format so create an object of zip.
  */
 $zip = new ZipArchive();
@@ -62,6 +70,7 @@ $zip = new ZipArchive();
  * we can easily find date of last backup. Also I have append ‘gisiph-’ to a name of 
  * zip file which we use in next procedures.
  */
+date_default_timezone_set('Asia/Bangkok');
 $zipname = 'backup-'.date("Ymd-His");
 $zipname = 'gisiph-'.$zipname.'.zip';
 $zipname = str_replace("/", "-", $zipname);
@@ -74,7 +83,6 @@ $zipname = str_replace("/", "-", $zipname);
 if ($zip->open('../backup/'.$zipname, ZIPARCHIVE::CREATE) !== TRUE) {
 	die ("Could not open archive");
 }
-send_message("Archive name $zipname is created.");
 // initialize an iterator
 // pass it the directory to be processed
 $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator("../../uploads/"));
@@ -83,7 +91,6 @@ $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator("../../
 foreach ($iterator as $key=>$value) {
 	$value = substr(str_replace('\\', '/', $value), 6);
 	$zip->addFile(realpath($key), $value) or die ("ERROR: Could not add file: $key");
-	send_message('Add file '.$value.' to archive.');
 }
 // close and save archive
 $zip->close();
@@ -99,6 +106,8 @@ backup_tables($host, $username, $password, $dbname, $tables);
  * Define the function backup_tables which will create a database sql file.
  */
 function backup_tables($host,$user,$pass,$name,$tables = '*') {
+	global $CURRENT_DATA;
+	global $MAX_DATA;
 	/* backup the db OR just a table */
 	$con = mysql_connect($host,$user,$pass);
 	mysql_select_db($name,$con);
@@ -117,7 +126,6 @@ function backup_tables($host,$user,$pass,$name,$tables = '*') {
 	$return = "";
 			
 	//cycle through
-	send_message('Prepare SQL code...');
 	foreach($tables as $table) {
 		$result = mysql_query('SELECT * FROM '.$table);
 		$num_fields = mysql_num_fields($result);
@@ -146,7 +154,7 @@ function backup_tables($host,$user,$pass,$name,$tables = '*') {
 			}
 			$line.= ");";
 			$return.= $line."\n";
-			send_message('Add '.$line);
+			send_percent(++$CURRENT_DATA, $MAX_DATA);
 		}
 		$return.="\n\n\n";
 	}
@@ -163,10 +171,38 @@ function backup_tables($host,$user,$pass,$name,$tables = '*') {
 	
 	//save file
 	$handle = fopen('createdb.sql', 'w+');
-	send_message('File createdb.sql is created.');
 	fwrite($handle, $return);
-	send_message('Push SQL code to createdb.sql file.');
 	fclose($handle);
+}
+
+
+/*
+ * Count rows in tables.
+ */
+function count_rows($host,$user,$pass,$name,$tables = '*') {
+	$con = mysql_connect($host,$user,$pass);
+	mysql_select_db($name,$con);
+
+	//get all of the tables
+	if($tables == '*') {
+		$tables = '*';
+		$result = mysql_query('SHOW TABLES');
+		while($row = mysql_fetch_row($result)) {
+			$tables[] = $row[0];
+		}
+	}
+	else {
+		$tables = is_array($tables) ? $tables : explode(',',$tables);
+	}
+	$return = 0;
+
+	//cycle through
+	foreach($tables as $table) {
+		$result = mysql_query('SELECT * FROM '.$table);
+		$num_rows = mysql_num_rows($result);
+		$return += $num_rows;
+	}
+	return $return;
 }
 
 
@@ -183,12 +219,10 @@ if (glob("*.sql") != false) {
 			$zip->addFile($arr_file[$j]);
 			$zip->close();
 			unlink($arr_file[$j]);
-			send_message('Add file '.$arr_file[$j].' to archive.');
 		}
 	}
 }
-send_message('Compression already successful.');
+
 $_SESSION['zip'] = $zipname;
-send_message('Done...');
 
 ?>
