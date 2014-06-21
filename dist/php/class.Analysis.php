@@ -663,5 +663,16 @@ class Analysis
 		return $last_date;
 	}
 
+	public function getColorStackFromHypertension() {
+		$data = $this->getNameVillage();
+			// print_r($data);
+		$color = array();
+		foreach ($data as $key => $value) {
+			$color[] = $this->getColorFromHypertensionVillage($value['villcode']);
+		}
+
+		return $color;
+	}
+
 }
 ?>

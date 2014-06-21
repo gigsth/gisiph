@@ -4,7 +4,7 @@ session_start();
 //if (!isAjax()) {return;}
 
 
-// $_POST['request'] = 'village';
+// $_POST['request'] = 'colorStackFromHypertension';
 // $_POST['selection'] = 25060600;
 
 try {
@@ -76,6 +76,15 @@ try {
 				)
 			);
 			break;
+		case 'colorStackFromHypertension':
+			echo json_output(
+				array(
+					'response' => 'success',
+					'values' => $analysis->getColorStackFromHypertension()
+				)
+			);
+			break;
+			
 		default: 
 			throw new Exception('ขอบเขตการเรียกดูข้อมูลของคุณไม่ถูกต้อง');
 			break;
