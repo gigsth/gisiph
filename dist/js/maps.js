@@ -192,6 +192,7 @@ function person(person_id) {
 					+ pins[person.color_level] +';">&nbsp;</span> '+person.name+' ('+person.color_from+')');
 
 				$('#name').val(person.name);
+				$('#phone').val(person.phone);
 				$('#sex').val(person.sex);
 				$('#idcard').val(person.idcard);
 				$('#age').val(person.age);

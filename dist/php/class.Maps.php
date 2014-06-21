@@ -163,7 +163,8 @@ class Maps
 				) AS `idcard`,
 				`ceducation`.`educationname` AS `education`,
 				`cnation`.`nationname` AS `nation`,
-				`corigin`.`nationname` AS `origin`
+				`corigin`.`nationname` AS `origin`,
+				`person`.`telephoneperson` AS `phone`
 			FROM
 				`jhcisdb`.`person`,
 				`jhcisdb`.`ctitle`,
@@ -197,6 +198,7 @@ class Maps
 
 				$person[$index]['person_id'] = $list['person_id'];
 				$person[$index]['name'] = $list['name'];
+				$person[$index]['phone'] = $list['phone'];
 				$person[$index]['age'] = (int)$list['age'];
 				$person[$index]['birth'] = $list['birth'];
 				$person[$index]['sex'] = $list['sex'];

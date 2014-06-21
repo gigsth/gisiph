@@ -74,7 +74,8 @@ class Manage_Patient
 						`ceducation`.`educationname` AS `educate`,
 						`coccupa`.`occupaname` AS `occupa`,
 						`cnation`.`nationname` AS `nation`,
-						`corigin`.`nationname` AS `origin`
+						`corigin`.`nationname` AS `origin`,
+						`person`.`telephoneperson` AS `phone`
 					FROM
 						`jhcisdb`.`person`,
 						`jhcisdb`.`ctitle`,
@@ -107,8 +108,6 @@ class Manage_Patient
 						`person`.`nation` = `cnation`.`nationcode`
 						AND
 						`person`.`origin` = `corigin`.`nationcode`
-						AND
-						`person`.`hcode` <> '0'
 						AND
 						TIMESTAMPDIFF(YEAR, `person`.`birth`, CURRENT_DATE) BETWEEN 15 AND 65
 				) AS `personchronic`

@@ -97,10 +97,6 @@ class Manage_Home
 					`house`.`villcode` = `village`.`villcode`
 					AND
 					SUBSTRING(`village`.`villcode`,1,6) = `subselect`.`ref`
-					AND
-					`house`.`hcode` <> '0'
-					AND
-					`village`.`villno` <> '0'
 				) AS `house`
 
 			LEFT JOIN

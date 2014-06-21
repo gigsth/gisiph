@@ -130,6 +130,7 @@ $(document).ready(function() {
 			$('#origin').val($(this).data('origin'));
 			$('#nation').val($(this).data('nation'));
 			$('#educate').val($(this).data('educate'));
+			$('#phone').val($(this).data('phone'));
 
 			$('#historyChronic').empty();
 			// Chronic
@@ -686,7 +687,7 @@ function getDataToTable(option) {
 						var td = '<tr id="'+item['id']+'" data-hcode="'+item['hcode']+'" data-name="'+item['name']+'" data-age="'+item['age']+'" ';
 						td += 'data-birth="'+item['birth']+'" data-sex="'+item['sex']+'" data-idcard="'+item['idcard']+'" data-educate="'+item['educate']+'" ';
 						td += 'data-occupa="'+item['occupa']+'" data-origin="'+item['origin']+'" data-nation="'+item['nation']+'" ';
-						td += 'class="datatable"></tr>';
+						td += 'data-phone="'+item['phone']+'" class="datatable"></tr>';
 						$('tbody').append(
 							$(td).append(
 								$('<td></td>').append(cls),
