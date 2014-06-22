@@ -41,8 +41,7 @@ try {
 			`gps`.`longitude`,
 			`gps`.`uedit`,
 			`gps`.`status`,
-			DATE_FORMAT(DATE_ADD(`gps`.`timestamp`, INTERVAL 543 YEAR), '%d/%m/%Y %T') AS `timestamp`,
-			`person`.`telephoneperson` AS `phone`
+			DATE_FORMAT(DATE_ADD(`gps`.`timestamp`, INTERVAL 543 YEAR), '%d/%m/%Y %T') AS `timestamp`
 		FROM
 			(
 				SELECT	
@@ -217,7 +216,8 @@ try {
 			`ceducation`.`educationname` AS `educate`,
 			`coccupa`.`occupaname` AS `occupa`,
 			`cnation`.`nationname` AS `nation`,
-			`corigin`.`nationname` AS `origin`
+			`corigin`.`nationname` AS `origin`,
+			`person`.`telephoneperson` AS `phone`
 		FROM
 			`jhcisdb`.`person`,
 			`jhcisdb`.`ctitle`,
