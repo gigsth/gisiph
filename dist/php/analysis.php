@@ -4,7 +4,7 @@ session_start();
 //if (!isAjax()) {return;}
 
 
-// $_POST['request'] = 'colorStackFromHypertension';
+// $_POST['request'] = 'colorStackFromDiabetes';
 // $_POST['selection'] = 25060600;
 
 try {
@@ -68,19 +68,29 @@ try {
 				)
 			);
 			break;
+		case 'colorStackFromHypertension':
+			echo json_output(
+				array(
+					'response' => 'success',
+					'values' => $analysis->getColorStackFromHypertension(),
+					'modify' => $analysis->lastHypertensionVisit()
+				)
+			);
+			break;
+		case 'colorStackFromDiabetes':
+			echo json_output(
+				array(
+					'response' => 'success',
+					'values' => $analysis->getColorStackFromDiabetes(),
+					'modify' => $analysis->lastDiabetesVisit()
+				)
+			);
+			break;
 		case 'nameVillage':
 			echo json_output(
 				array(
 					'response' => 'success',
 					'values' => $analysis->getNameVillage()
-				)
-			);
-			break;
-		case 'colorStackFromHypertension':
-			echo json_output(
-				array(
-					'response' => 'success',
-					'values' => $analysis->getColorStackFromHypertension()
 				)
 			);
 			break;

@@ -664,13 +664,42 @@ class Analysis
 	}
 
 	public function getColorStackFromHypertension() {
-		$data = $this->getNameVillage();
-			// print_r($data);
+		$village = $this->getNameVillage();
 		$color = array();
-		foreach ($data as $key => $value) {
-			$color[] = $this->getColorFromHypertensionVillage($value['villcode']);
+		foreach ($village as $key => $value) {
+			$colorFromHypertensionVillage = $this->getColorFromHypertensionVillage($value['villcode']);
+			$color[] = array(
+				'villname' => $value['villname'],
+				'level_0' => $colorFromHypertensionVillage[0]['count'],
+				'style' => 'stroke-color: #000; stroke-width: .1px;',
+				'level_1' => $colorFromHypertensionVillage[1]['count'],
+				'level_2' => $colorFromHypertensionVillage[2]['count'],
+				'level_3' => $colorFromHypertensionVillage[3]['count'],
+				'level_4' => $colorFromHypertensionVillage[4]['count'],
+				'level_5' => $colorFromHypertensionVillage[5]['count'],
+				'level_6' => $colorFromHypertensionVillage[6]['count']
+			);
 		}
+		return $color;
+	}
 
+	public function getColorStackFromDiabetes() {
+		$village = $this->getNameVillage();
+		$color = array();
+		foreach ($village as $key => $value) {
+			$colorFromHypertensionVillage = $this->getColorFromDiabetesVillage($value['villcode']);
+			$color[] = array(
+				'villname' => $value['villname'],
+				'level_0' => $colorFromHypertensionVillage[0]['count'],
+				'style' => 'stroke-color: #000; stroke-width: .1px;',
+				'level_1' => $colorFromHypertensionVillage[1]['count'],
+				'level_2' => $colorFromHypertensionVillage[2]['count'],
+				'level_3' => $colorFromHypertensionVillage[3]['count'],
+				'level_4' => $colorFromHypertensionVillage[4]['count'],
+				'level_5' => $colorFromHypertensionVillage[5]['count'],
+				'level_6' => $colorFromHypertensionVillage[6]['count']
+			);
+		}
 		return $color;
 	}
 

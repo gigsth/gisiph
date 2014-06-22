@@ -125,7 +125,7 @@
 							<ul class="nav nav-tabs nav-justified hidden-print">
 								<li class="active"><a class="sub-menu" href="#tab1-1" data-toggle="tab">สัดส่วนของผู้ป่วยโรคเรื้อรัง</a></li>
 								<li><a class="sub-menu" href="#tab1-2" data-toggle="tab">สัดส่วนของผู้ป่วยโรคเรื้อรังในแต่ละหมู่บ้าน</a></li>
-								<li><a class="sub-menu" href="#tab1-3" data-toggle="tab">จำนวนผู้ป่วยโรคเรื้อรังที่เพิ่มขึ้นจากเดิมในแต่ละปี</a></li>
+								<li><a class="sub-menu" href="#tab1-3" data-toggle="tab">จำนวนผู้ป่วยโรคเรื้อรังที่เพิ่มขึ้นในแต่ละปี</a></li>
 							</ul>
 							
 							<!-- Tab panes -->
@@ -177,48 +177,101 @@
 					<div class="tab-pane view" id="tab2">
 						<div class="clearfix col-sm-8 col-md-9">
 
-							<div class="form hidden-print">
-								<div class="form-group">
-									<label class="control-label">หมู่บ้านที่ต้องการแสดงผล</label>
-									<select id="tab2-selection" class="form-control name-village"></select>
-								</div> <!-- form-group -->
-							</div> <!-- form -->
+							<!-- Nav tabs -->
+							<ul class="nav nav-tabs nav-justified hidden-print">
+								<li class="active"><a class="sub-menu" href="#tab2-1" data-toggle="tab">จำนวนผู้ป่วยจำแนกตามระดับความรุนแรง</a></li>
+								<li><a class="sub-menu" href="#tab2-2" data-toggle="tab">จำนวนผู้ป่วยจำแนกตามระดับความรุนแรงและหมู่บ้าน</a></li>
+							</ul>
 
-							<div class="row">
-								<!-- colorFromHypertension -->
-								<div class="col-sm-12">
-									<div class="panel panel-default">
-										<div class="panel-body">
-											<div id="colorFromHypertension" class="chart-view"></div>
-										</div> <!-- panel-body -->
-									</div> <!-- panel panel-default -->
-								</div> <!-- col-sm-12 -->
-							</div> <!-- row -->
+							<!-- Tab panes -->
+							<div class="tab-content">
+								<div class="tab-pane active" id="tab2-1">
+									<!-- chronics -->
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="panel panel-default">
+												<div class="panel-body">
+
+													<div class="form hidden-print">
+														<div class="form-group">
+															<label class="control-label">หมู่บ้านที่ต้องการแสดงผล</label>
+															<select id="tab2-selection" class="form-control name-village"></select>
+														</div> <!-- form-group -->
+													</div> <!-- form -->
+
+													<div id="colorFromHypertension" class="chart-view"></div>
+
+												</div> <!-- panel-body -->
+											</div> <!-- panel panel-default -->
+										</div> <!-- col-sm-12 -->
+									</div> <!-- row -->
+								</div> <!-- tab2-1 -->
+
+								<div class="tab-pane" id="tab2-2">
+									<!-- village -->
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="panel panel-default">
+												<div class="panel-body">
+														<div id="colorStackFromHypertension" class="chart-view"></div>
+												</div> <!-- panel-body -->
+											</div> <!-- panel panel-default -->
+										</div> <!-- col-sm-12 -->
+									</div> <!-- row -->
+								</div> <!-- tab2-2 -->
+							</div> <!-- tab-content -->
+
 						</div> <!-- col-sm-8 col-md-9 -->
-
 					</div> <!-- tab-pane -->
 
 
 					<div class="tab-pane view" id="tab3">
 						<div class="clearfix col-sm-8 col-md-9">
 
-							<div class="form hidden-print">
-								<div class="form-group">
-									<label class="control-label">หมู่บ้านที่ต้องการแสดงผล</label>
-									<select id="tab3-selection" class="form-control name-village"></select>
-								</div> <!-- form-group -->
-							</div> <!-- form -->
+							<!-- Nav tabs -->
+							<ul class="nav nav-tabs nav-justified hidden-print">
+								<li class="active"><a class="sub-menu" href="#tab3-1" data-toggle="tab">จำนวนผู้ป่วยจำแนกตามระดับความรุนแรง</a></li>
+								<li><a class="sub-menu" href="#tab3-2" data-toggle="tab">จำนวนผู้ป่วยจำแนกตามระดับความรุนแรงและหมู่บ้าน</a></li>
+							</ul>
 
-							<div class="row">
-								<!-- colorFromDiabetes -->
-								<div class="col-sm-12">
-									<div class="panel panel-default">
-										<div class="panel-body">
-											<div id="colorFromDiabetes" class="chart-view"></div>
-										</div> <!-- panel-body -->
-									</div> <!-- panel panel-default -->
-								</div> <!-- col-sm-12 -->
-							</div> <!-- row -->
+							<!-- Tab panes -->
+							<div class="tab-content">
+								<div class="tab-pane active" id="tab3-1">
+									<!-- chronics -->
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="panel panel-default">
+												<div class="panel-body">
+
+													<div class="form hidden-print">
+														<div class="form-group">
+															<label class="control-label">หมู่บ้านที่ต้องการแสดงผล</label>
+															<select id="tab3-selection" class="form-control name-village"></select>
+														</div> <!-- form-group -->
+													</div> <!-- form -->
+
+													<div id="colorFromDiabetes" class="chart-view"></div>
+
+												</div> <!-- panel-body -->
+											</div> <!-- panel panel-default -->
+										</div> <!-- col-sm-12 -->
+									</div> <!-- row -->
+								</div> <!-- tab3-1 -->
+
+								<div class="tab-pane" id="tab3-2">
+									<!-- village -->
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="panel panel-default">
+												<div class="panel-body">
+														<div id="colorStackFromDiabetesVillage" class="chart-view"></div>
+												</div> <!-- panel-body -->
+											</div> <!-- panel panel-default -->
+										</div> <!-- col-sm-12 -->
+									</div> <!-- row -->
+								</div> <!-- tab3-2 -->
+							</div> <!-- tab-content -->
+
 						</div> <!-- col-sm-8 col-md-9 -->
 					</div> <!-- tab-pane -->
 				</div> <!-- tab-content -->

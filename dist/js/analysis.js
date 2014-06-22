@@ -1,7 +1,8 @@
 google.load('visualization', '1', {packages: ["corechart"]});
 
 var cDiscover, cChronics, cVillage, cColorFromHypertension, cColorFromDiabetes,
-	cColorFromHypertensionVillage, cColorFromDiabetesVillage;
+	cColorFromHypertensionVillage, cColorFromDiabetesVillage,
+	cColorStackFromHypertensionVillage, cColorStackFromDiabetesVillage;
 
 $(window).on("resize", function(event) {
 	drawCharts();
@@ -41,9 +42,21 @@ function drawCharts() {
 				callJSON({request: 'discover'}, drawDiscover);
 			};
 		} else if (tab_id === 'tab2') {
-			callJSON({request: 'colorFromHypertension', selection: $('#tab2-selection').val()}, drawColorFromHypertension);
+			var sub_tab_id = $('#tab2 .tab-pane.active').attr('id');
+
+			if (sub_tab_id === 'tab2-1') {
+				callJSON({request: 'colorFromHypertension', selection: $('#tab2-selection').val()}, drawColorFromHypertension);
+			} else if (sub_tab_id === 'tab2-2') {
+				callJSON({request: 'colorStackFromHypertension'}, drawColorStackFromHypertension);
+			};
 		}else if (tab_id === 'tab3') {
-			callJSON({request: 'colorFromDiabetes', selection: $('#tab3-selection').val()}, drawColorFromDiabetes);
+			var sub_tab_id = $('#tab3 .tab-pane.active').attr('id');
+
+			if (sub_tab_id === 'tab3-1') {
+				callJSON({request: 'colorFromDiabetes', selection: $('#tab3-selection').val()}, drawColorFromDiabetes);
+			} else if (sub_tab_id === 'tab3-2') {
+				callJSON({request: 'colorStackFromDiabetes'}, drawColorStackFromDiabetes);
+			};
 		};
 	}).promise().done(function() {
 		var date = new Date(),
@@ -101,7 +114,7 @@ function drawDiscover(discover) {
 	data.addRows(getValues(discover));
 	cDiscover = new google.visualization.LineChart(document.getElementById('discover'));
 	cDiscover.draw(data, {
-			title: 'จำนวนผู้ป่วยโรคเรื้อรังที่เพิ่มขึ้นจากเดิมในแต่ละปี',
+			title: 'จำนวนผู้ป่วยโรคเรื้อรังที่เพิ่มขึ้นในแต่ละปี',
 			width: '100%',
 			height: '100%'
 	});
@@ -147,6 +160,42 @@ function drawColorFromHypertension(colorFromHypertension) {
 	}));
 }
 
+function drawColorStackFromHypertension(colorStackFromHypertension) {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'หมู่บ้าน');
+	data.addColumn('number', 'กลุ่มปกติ');
+	data.addColumn({type: 'string', role: 'style'});
+	data.addColumn('number', 'กลุ่มเสี่ยง');
+	data.addColumn('number', 'กลุ่มผู้ป่วยระดับ 0');
+	data.addColumn('number', 'กลุ่มผู้ป่วยระดับ 1');
+	data.addColumn('number', 'กลุ่มผู้ป่วยระดับ 2');
+	data.addColumn('number', 'กลุ่มผู้ป่วยระดับ 3');
+	data.addColumn('number', 'กลุ่มผู้ป่วยมีโรคแทรกซ้อน');
+	data.addRows(getValues(colorStackFromHypertension));
+	cColorStackFromHypertensionVillage = new google.visualization.ColumnChart(document.getElementById('colorStackFromHypertension'));
+	cColorStackFromHypertensionVillage.draw(data, {
+			title: 'จำนวนของผู้ป่วยโรคความดันโลหิตสูงจำแนกตามระดับความรุนแรงและหมู่บ้าน',
+			width: '100%',
+			height: '100%',
+			isStacked: true,
+			colors: [
+				'#FFFFFF',
+				'#00FF00',
+				'#007700',
+				'#FFFF00',
+				'#FF7F00',
+				'#FF0000',
+				'#000000'
+			]
+	});
+
+	$('#print-header').html('แผนภูมิผู้ป่วยโรคความดันโลหิตสูง');
+	prepareTable(['หมู่บ้าน', 'กลุ่มปกติ(คน)', 'กลุ่มเสี่ยง(คน)', 'กลุ่มผู้ป่วยระดับ 0(คน)', 'กลุ่มผู้ป่วยระดับ 1(คน)', 'กลุ่มผู้ป่วยระดับ 2(คน)', 
+		'กลุ่มผู้ป่วยระดับ 3(คน)', 'กลุ่มผู้ป่วยมีโรคแทรกซ้อน(คน)'], $.map(colorStackFromHypertension, function(value, index) {
+		return [[value.villname, value.level_0, value.level_1, value.level_2, value.level_3, value.level_4, value.level_5, value.level_6]];
+	}));
+}
+
 function drawColorFromDiabetes(colorFromDiabetes) {
 	var data = new google.visualization.DataTable();
 	data.addColumn('string', 'ระดับความรุนแรง');
@@ -183,6 +232,42 @@ function drawColorFromDiabetes(colorFromDiabetes) {
 	$('#print-header').html('แผนภูมิผู้ป่วยโรคเบาหวาน <small>('+$('#tab3-selection option:selected').text()+')</small>');
 	prepareTable(['กลุ่มของอาการ', 'จำนวน(คน)'], $.map(colorFromDiabetes, function(value, index) {
 		return [[value.name, value.count]];
+	}));
+}
+
+function drawColorStackFromDiabetes(colorStackFromDiabetesVillage) {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'หมู่บ้าน');
+	data.addColumn('number', 'กลุ่มปกติ');
+	data.addColumn({type: 'string', role: 'style'});
+	data.addColumn('number', 'กลุ่มเสี่ยง');
+	data.addColumn('number', 'กลุ่มผู้ป่วยระดับ 0');
+	data.addColumn('number', 'กลุ่มผู้ป่วยระดับ 1');
+	data.addColumn('number', 'กลุ่มผู้ป่วยระดับ 2');
+	data.addColumn('number', 'กลุ่มผู้ป่วยระดับ 3');
+	data.addColumn('number', 'กลุ่มผู้ป่วยมีโรคแทรกซ้อน');
+	data.addRows(getValues(colorStackFromDiabetesVillage));
+	cColorStackFromDiabetesVillage = new google.visualization.ColumnChart(document.getElementById('colorStackFromDiabetesVillage'));
+	cColorStackFromDiabetesVillage.draw(data, {
+			title: 'จำนวนของผู้ป่วยโรคเบาหวานจำแนกตามระดับความรุนแรงและหมู่บ้าน',
+			width: '100%',
+			height: '100%',
+			isStacked: true,
+			colors: [
+				'#FFFFFF',
+				'#00FF00',
+				'#007700',
+				'#FFFF00',
+				'#FF7F00',
+				'#FF0000',
+				'#000000'
+			]
+	});
+
+	$('#print-header').html('แผนภูมิผู้ป่วยโรคเบาหวาน');
+	prepareTable(['หมู่บ้าน', 'กลุ่มปกติ(คน)', 'กลุ่มเสี่ยง(คน)', 'กลุ่มผู้ป่วยระดับ 0(คน)', 'กลุ่มผู้ป่วยระดับ 1(คน)', 'กลุ่มผู้ป่วยระดับ 2(คน)', 
+		'กลุ่มผู้ป่วยระดับ 3(คน)', 'กลุ่มผู้ป่วยมีโรคแทรกซ้อน(คน)'], $.map(colorStackFromDiabetesVillage, function(value, index) {
+		return [[value.villname, value.level_0, value.level_1, value.level_2, value.level_3, value.level_4, value.level_5, value.level_6]];
 	}));
 }
 
