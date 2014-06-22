@@ -41,7 +41,8 @@ try {
 			`gps`.`longitude`,
 			`gps`.`uedit`,
 			`gps`.`status`,
-			DATE_FORMAT(DATE_ADD(`gps`.`timestamp`, INTERVAL 543 YEAR), '%d/%m/%Y %T') AS `timestamp`
+			DATE_FORMAT(DATE_ADD(`gps`.`timestamp`, INTERVAL 543 YEAR), '%d/%m/%Y %T') AS `timestamp`,
+			`person`.`telephoneperson` AS `phone`
 		FROM
 			(
 				SELECT	
