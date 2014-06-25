@@ -66,4 +66,7 @@
 
 
 ## Configuration
-You can change default database connection in `/you/workspace/path/gisiph/dist/php/configure.database.php`
+You can change default database connection in `/path/to/you/workspace/gisiph/dist/php/configure.database.php`
+
+## Wiki
+You can see document in this [page](https://github.com/gigsth/gisiph/wiki)
