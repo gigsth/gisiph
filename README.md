@@ -9,12 +9,15 @@
 
 
 ## Getting started
-1. Install *MySQL* and *PHP*
-2. Clone this `git clone git@github.com:gigsth/gisiph.git` project or [Download scource code](https://codeload.github.com/gigsth/gisiph/zip/v1.0)
-3. Let's fun :D
+1. ติดตั้ง *MySQL* และ *PHP*
+2. ทำการ clone โปรเจ็คมาไว้ในเครื่องด้วยคำสั่ง `git clone git@github.com:gigsth/gisiph.git` หรือ [ดาวน์โหลด](https://codeload.github.com/gigsth/gisiph/zip/v1.0)ไฟล์ .zip แล้วแตกไฟล์ไปที่ root ของเซิฟเวอร์
 
 
 ## Create database
+ลงชื่อเข้าใช้ MySQL ด้วยคำสั่ง `mysql -u <username> -p -d jhcisdb`
+
+จากนั้นใช้คำสั่งต่อไปนี้เพื่อสร้างตารางในฐานข้อมูล
+
 	USE jhcisdb;
 
 	DROP TABLE `gisiph_gps_house`;
@@ -66,7 +69,7 @@
 
 
 ## Configuration
-You can change default database connection in `/path/to/you/workspace/gisiph/dist/php/configure.database.php`
+สามารถเข้าไปแก้ไขค่าเริ่มต้อนของการเชื่อต่อกับฐานข้อมูลได้ที่ `/path/to/you/workspace/gisiph/dist/php/configure.database.php`
 
 ## Wiki
-You can see document in this [page](https://github.com/gigsth/gisiph/wiki)
+รายละเอียดเอกสารสามารถอ่านได้[ที่นี่](https://github.com/gigsth/gisiph/wiki)
